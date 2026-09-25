@@ -1,0 +1,17 @@
+# Card metadata consumed by https://designmolecule.com
+name: CellCheck
+slug: cellcheck
+area: Circular Materials
+status: concept          # concept | design | prototype | tested | released
+shortlisted: false
+pitch: >-
+  A second-life battery cell grader: it measures capacity, internal resistance and self-discharge of salvaged lithium cells and sorts them into matched groups for rebuilt packs such as SwapCell.
+problem: >-
+  Salvaged lithium cells are cheap but unknown; building packs from untested cells causes early failure and fires.
+budget_usd: 160
+difficulty: 3  # 1 easiest, 5 hardest
+hero_image: media/hero.png
+licenses:
+  hardware: CERN-OHL-S-2.0
+  software: MIT
+tags: [circular-materials, open-hardware, cern-ohl-s]
