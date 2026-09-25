@@ -6,13 +6,21 @@
 
 A second-life battery cell grader: it measures capacity, internal resistance and self-discharge of salvaged lithium cells and sorts them into matched groups for rebuilt packs such as SwapCell.
 
+![CellCheck concept](media/hero.png)
+
+[Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [Review note](docs/REVIEW.md)
+
 ## Concept rationale
 
-Grading turns waste cells into a known resource and is the missing step between battery collection and safe reuse.
+Most cells in a discarded laptop, power tool or e-bike pack still work, but nobody knows which ones. CellCheck measures the three things that decide whether a cell is worth reusing: how much charge it holds, how much its voltage sags under load (internal resistance) and whether it leaks charge at rest (self-discharge). It then groups good cells so that each parallel group in a rebuilt pack has nearly the same capacity. Eight independent channels, four-wire contacts and a passive 14-day rest rack keep the tool cheap while grading about 12 cells in an attended working day (estimate).
+
+It is open and garage-buildable because the people who reuse cells are repair shops, makerspaces and small off-grid installers, not laboratories. It uses off-the-shelf charger and current-monitor modules, runs from a certified 12 V adapter so no one wires mains, and writes its thresholds and results to plain files that anyone can check. A published grading method also lets different workshops compare cells on the same terms.
 
 ## Burning platform
 
-Growing volumes of laptop, e-bike and power tool batteries are discarded with most of their cells still usable.
+The world produced 62 million tonnes of e-waste in 2022, and only 22.3 % was documented as collected and recycled; in Africa the figure was below 1 % ([UNITAR, Global E-waste Monitor 2024](https://unitar.org/about/news-stories/press/global-e-waste-monitor-2024-electronic-waste-rising-five-times-faster-documented-e-waste-recycling)). Much of what is thrown away still has value: IBM Research India found that discarded 85 Wh laptop packs kept a median of 73 % of their design capacity ([Chandan et al., ACM DEV 2014](https://www.dgp.toronto.edu/~mjain/UrJar-DEV-2014.pdf)).
+
+Discarded lithium batteries are also a fire hazard. The US EPA found 245 fires at 64 waste facilities from 2013 to 2020 caused, or likely caused, by lithium-ion batteries ([US EPA, 2021](https://www.epa.gov/system/files/documents/2021-08/lithium-ion-battery-report-update-7.01_508.pdf)), and the UK counted more than 1,200 battery fires in bin lorries and waste sites in the year to May 2024 ([National Fire Chiefs Council and Material Focus](https://nfcc.org.uk/over-1200-battery-fires-in-bin-lorries-and-waste-sites-across-the-uk-in-last-year/)). People who rebuild packs from untested cells face the same hazard on their own benches. Grading keeps usable cells in service and sends the rest to proper recycling instead of the bin.
 
 ## Where it could be used
 
@@ -20,42 +28,61 @@ Growing volumes of laptop, e-bike and power tool batteries are discarded with mo
 
 | Industry | Use |
 | --- | --- |
-| _To be developed_ | |
+| Electronics and e-bike repair | Sort cells from dead packs, reject bad ones and rebuild matched packs with a record per cell |
+| Battery collection and recycling | Separate reusable cells from those that go to recycling at collection points and micro-factories (ReflowEconomy) |
+| Off-grid energy | Low-cost graded cells for lights, small storage packs and solar home kits |
+| Education and makerspaces | Teach battery health, safety and measurement with a documented, supervised tool |
+| Research | Build data sets of second-life cell capacity and resistance with a published method |
 
 ### By country or region
 
 | Country or region | Why it matters there |
 | --- | --- |
-| _To be developed_ | |
+| United Kingdom | More than 1,200 battery fires in bin lorries and waste sites in the year to May 2024, up from about 700 in 2022 ([NFCC and Material Focus](https://nfcc.org.uk/over-1200-battery-fires-in-bin-lorries-and-waste-sites-across-the-uk-in-last-year/)) |
+| United States | 245 lithium-ion battery fires at 64 waste facilities from 2013 to 2020 ([US EPA](https://www.epa.gov/system/files/documents/2021-08/lithium-ion-battery-report-update-7.01_508.pdf)); many repair shops and makers already rebuild packs |
+| European Union | Collection targets for portable batteries rise to 63 % by the end of 2027 and 73 % by the end of 2030 under the Batteries Regulation ([EPBA summary](https://www.epba.eu/policy/eu-directive/eu-batteries-regulation)), so more cells will reach sorting points |
+| India | The Battery Waste Management Rules, 2022 require all waste batteries to be collected and sent for recycling or refurbishment ([Press Information Bureau](https://www.pib.gov.in/PressReleasePage.aspx?PRID=1854433)); refurbishers need a documented way to test cells |
+| Kenya and East Africa | Second-life lithium storage lowered the cost of electricity in 97.2 % of modeled scenarios for Kenyan primary schools ([Hirmer et al., Scientific Reports, 2023](https://www.nature.com/articles/s41598-023-28377-7)); Africa formally recycles less than 1 % of its e-waste ([UNITAR](https://unitar.org/about/news-stories/press/global-e-waste-monitor-2024-electronic-waste-rising-five-times-faster-documented-e-waste-recycling)) |
+| Colombia and Latin America | Researchers in Colombia measured cells from laptop packs ranging from 0.04 to 2.50 Ah and showed that grouping by measured values builds better packs ([Olivero-Ortiz et al., PLOS One, 2026](https://journals.plos.org/plosone/article?id=10.1371%2Fjournal.pone.0353394)) |
 
 ## What sparked the idea
 
-It came out of a September 2026 review of Design Molecule's applied research areas against the open projects already in the lab. CellCheck was already planned as the companion to SwapCell and ReflowEconomy.
+It came out of a September 2026 review of Design Molecule's applied research areas against the open projects already in the lab. CellCheck was already planned as the companion to SwapCell and ReflowEconomy. The review coincided with rising collection targets for portable batteries in the EU, 63 % by the end of 2027 ([EPBA summary of Regulation (EU) 2023/1542](https://www.epba.eu/policy/eu-directive/eu-batteries-regulation)), and a 71 % rise in UK battery fires in waste systems since 2022 ([NFCC and Material Focus](https://nfcc.org.uk/over-1200-battery-fires-in-bin-lorries-and-waste-sites-across-the-uk-in-last-year/)), both of which put more used cells in front of people who must decide whether to reuse or recycle them.
 
 ## Problem
 
-Salvaged lithium cells are cheap but unknown; building packs from untested cells causes early failure and fires.
+Salvaged lithium cells are cheap but unknown; building packs from untested cells causes early failure and fires. Cells from one pack can differ widely in capacity and resistance, and in a series string the weakest cell limits the pack and is stressed hardest. Single-cell hobby testers are too slow for pack-scale sorting, and closed multi-slot analyzers do not track self-discharge, build matched groups or keep open records.
+
+Full problem statement: [docs/01-problem.md](docs/01-problem.md)
 
 ## Concept
 
 A second-life battery cell grader: it measures capacity, internal resistance and self-discharge of salvaged lithium cells and sorts them into matched groups for rebuilt packs such as SwapCell.
 
-Full design precis: [docs/02-concept.md](docs/02-concept.md)
+Eight channels each charge a cell at 1 A, measure DC internal resistance with a 0.5 A then 2.0 A pulse in the IEC 61960 pattern, discharge at 1 A to measure capacity and recharge to 4.10 V. Cells then rest 14 days in a printed rack and come back for a voltage check. Software grades each cell (A, B, C or reject) and builds groups for any series and parallel count, with each parallel group within ±1 % of the mean capacity. Estimates at TRL 2: about 6.5 h per cell, about 12 cells per attended 10 h day, about 29 W of heat at full load, about $159 in parts.
+
+Use in SwapCell is not yet settled: SwapCell's reference pack specifies new high-current cells, which typical laptop cells cannot match. A second-life variant is proposed, awaiting Amish (see the [review note](docs/REVIEW.md)).
+
+![Material flow per 100 salvaged cells](media/flow.png)
+
+Full design precis: [docs/02-concept.md](docs/02-concept.md) · Requirements: [docs/03-requirements.md](docs/03-requirements.md)
 
 ## Key components
 
-- Multi-channel charge and discharge board
-- Internal resistance measurement circuit
-- Cell holders for 18650 and 21700
-- Temperature sensing per channel
-- Controller and grading software
-- Fire-resistant tray
+- Eight cell holders for 18650 and 21700 cells with four-wire contacts
+- Eight 1 A CC-CV charger modules (TP5100 class, proposed)
+- Eight INA226-class current and voltage monitors with charger switches
+- Eight constant-current MOSFET loads on a fan-cooled heatsink
+- Temperature sensing per cell (NTC thermistors)
+- ESP32-S3 class controller with display, microSD log and local web page, and grading software
+- Steel tray with ceramic fibre liner and a perforated steel cell guard
+- Certified 12 V 5 A adapter and a printed 48-cell rest rack
 
-The working bill of materials is in [bom/bom.csv](bom/bom.csv).
+The working bill of materials is in [bom/bom.csv](bom/bom.csv): about $159 in parts against the $160 budget.
 
 ## Safety
 
-> Lithium cells can overheat, vent and burn. Use protected cells or LiFePO4, fuse every pack, charge only within the cell maker's limits and never leave a first build charging unattended. Grade salvaged cells on a non-flammable surface and isolate any cell that heats or swells.
+> Lithium cells can overheat, vent and burn, and salvaged cells can hide damage. Reject damaged cells and any cell below 2.0 V. Grade on a non-flammable surface inside the steel tray, with a smoke alarm and an extinguisher or sand bucket within reach, and never leave the grader running unattended. Isolate any cell that heats or swells in a metal container of sand. Use only a certified 12 V adapter. CellCheck is a research and prototype tool; its grades do not certify any cell or pack as safe.
 
 ## Repository layout
 

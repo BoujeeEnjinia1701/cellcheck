@@ -1,7 +1,18 @@
 item,qty,spec,supplier,unit_cost_usd,make_buy,notes
-Multi-channel charge and discharge board,,,,,,
-Internal resistance measurement circuit,,,,,,
-Cell holders for 18650 and 21700,,,,,,
-Temperature sensing per channel,,,,,,
-Controller and grading software,,,,,,
-Fire-resistant tray,,,,,,
+1 Steel tray with ceramic fibre liner,1,"Steel tray about 460 x 300 x 45 mm, 1.5 mm wall; ceramic fibre sheet on the floor",Hardware or kitchen supply store,12.00,buy,Indicative price
+2 Base plate on standoffs,1,"2 to 3 mm aluminium or FR4 sheet about 430 x 270 mm, four M4 standoffs",Local supplier,8.00,buy,Indicative price
+3 Cell holder with four-wire contacts,8,"Adjustable 18650 and 21700 holder, spring contacts with separate force and sense leads",Electronics distributor,2.50,buy,Indicative price
+4 NTC thermistor with clip,8,"10 kOhm NTC, B 3950, printed spring clip",Electronics distributor,0.50,buy,Indicative price
+5 Perforated steel cell guard,1,"Perforated steel sheet folded over the cell row, about 360 x 100 x 45 mm",Hardware store,6.00,make,Material cost only
+6 Charger module,8,"1 A CC-CV lithium-ion buck charger, 4.20 V, 12 V input (TP5100 class)",Electronics distributor,1.50,buy,Indicative price; choice proposed awaiting Amish
+7 Channel sense and switch board,8,"INA226-class current and voltage monitor, 25 mOhm 0.5 % shunt, charger enable MOSFET",Electronics distributor,2.75,buy,Indicative price; stock breakouts need the shunt changed
+8 Load MOSFET and op-amp loop,8,"Logic-level MOSFET in TO-220 with op-amp constant-current loop, 0.5 to 2.0 A",Electronics distributor,1.00,buy,Indicative price
+9 Heatsink bar,1,"Finned aluminium extrusion about 320 x 30 x 50 mm",Electronics distributor,8.00,buy,Indicative price
+10 Fan,2,"60 mm 12 V DC fan",Electronics distributor,2.00,buy,Indicative price
+11 Controller board,1,"ESP32-S3 class with microSD slot and Wi-Fi",Electronics distributor,10.00,buy,Indicative price; choice proposed awaiting Amish
+12 Display and buttons,1,"2.8 in SPI display, three buttons, printed stand",Electronics distributor,8.00,buy,Indicative price
+13 Power inlet with fuse and switch,1,"DC jack, 6.3 A fuse and holder, rocker switch",Electronics distributor,5.00,buy,Indicative price
+14 Mains adapter,1,"Certified 12 V 5 A (60 W) DC adapter with safety marks for the country of use",Electronics distributor,15.00,buy,Indicative price; certified unit only
+15 Self-discharge rest rack,1,"3D-printed rack for 48 cells in numbered slots",Self,6.00,make,Material cost only
+16 Wiring and channel fuses,1,"Silicone wire, per-channel 3 A fuses, connectors, heat-shrink",Electronics distributor,8.00,buy,Indicative price; not modelled
+17 Cell ID labels and insulator rings,1,"Printed labels, replacement insulator rings and wraps",Online retailer,3.00,buy,Indicative price; not modelled
