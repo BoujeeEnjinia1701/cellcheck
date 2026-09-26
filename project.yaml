@@ -1,6 +1,7 @@
 # Card metadata consumed by https://designmolecule.com
 name: CellCheck
 slug: cellcheck
+repo: BoujeeEnjinia1701/cellcheck         # GitHub repository, shown on every drawing and render
 area: Circular Materials
 trl: 3                   # Technology Readiness Level, see .kit/STANDARDS.md section 9
 trl_target: 3
