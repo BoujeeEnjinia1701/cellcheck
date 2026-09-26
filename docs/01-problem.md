@@ -3,7 +3,7 @@ doc_id: CCK-PRB-001
 title: CellCheck problem statement
 project: CellCheck
 doc_type: Problem statement
-version: "0.3"
+version: "0.4"
 status: Draft
 date: '2026-09-25'
 author: Amish Chadha
@@ -21,6 +21,10 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Apply CCK-DDR-001 (second-life SwapCell variant, attended operation, budget note); open questions updated
+- version: "0.4"
+  date: '2026-09-25'
+  author: Amish Chadha
+  change: Recommendations accepted by Amish (DDR-002)
 ---
 
 # CellCheck problem statement
@@ -50,7 +54,7 @@ No open, garage-buildable tool covers the whole job: charge, measure capacity, m
 
 | User | Need | Context |
 | --- | --- | --- |
-| Lab projects | A trusted source of graded cells and a record for each one | Lights and small DC storage packs; a second-life, low-current SwapCell variant for PowerBox (CCK-DDR-001 item 1, adopted for TRL 3 and open for Amish's review; needs the SwapCell project's agreement) |
+| Lab projects | A trusted source of graded cells and a record for each one | Lights and small DC storage packs; a second-life, low-current SwapCell variant for PowerBox (CCK-DDR-001 item 1, decided by Amish, 2026-09-25; needs the SwapCell project's agreement) |
 | Repair shops and pack rebuilders | Sort cells from dead packs quickly, reject bad ones, build matched groups | E-bike, laptop and power tool repair; informal repair markets |
 | Makerspaces, repair cafés and schools | A safe, documented way to reuse cells and teach battery basics | Supervised benches with basic fire precautions |
 | Off-grid energy projects | Low-cost cells for lights, small storage and sensor nodes | Solar home systems, community storage pilots |
@@ -60,7 +64,7 @@ Operating context assumed for the concept: cylindrical 18650 and 21700 lithium-i
 
 ## Constraints
 
-- Garage-buildable prototype for about $160 USD in parts (`project.yaml`), excluding cells. A budget of $175 is recommended to cover single-fault protection, Proposed, awaiting Amish (CCK-DDR-001 item 4).
+- Garage-buildable prototype for about $175 USD in parts (`project.yaml`), excluding cells. The budget was raised from $160 to cover single-fault protection (CCK-DDR-001 item 4, decided by Amish, 2026-09-25).
 - Off-the-shelf modules and through-hole or large surface-mount parts only; no custom silicon, no fine-pitch assembly.
 - Extra-low voltage only: a certified mains adapter supplies 12 V DC, and nothing inside the unit exceeds 13 V.
 - Open hardware (CERN-OHL-S-2.0) and open software (MIT); grading thresholds and results in plain, readable files.
@@ -76,8 +80,8 @@ Operating context assumed for the concept: cylindrical 18650 and 21700 lithium-i
 
 ## Open questions
 
-- Graded cells in SwapCell packs: CCK-DDR-001 item 1 keeps SwapCell in the pitch and plans a second-life variant. The TRL 3 study (CCK-CAL-001 section 10) finds only a low-current storage pack for PowerBox feasible. Adopted for TRL 3 under Amish's 2026-09-25 instruction, open for his review; it needs the SwapCell project's agreement.
+- Graded cells in SwapCell packs: CCK-DDR-001 item 1 keeps SwapCell in the pitch and plans a second-life variant. The TRL 3 study (CCK-CAL-001 section 10) finds only a low-current storage pack for PowerBox feasible. Decided by Amish, 2026-09-25: go with recommendation; it needs the SwapCell project's agreement.
 - Which partner should supply cells for first trials (a repair café, an e-bike repair shop or a collection point)? Proposed, awaiting Amish.
-- Unattended operation: charge and discharge attended only, the rest stage may be left (CCK-DDR-001 item 2). Adopted for TRL 3 under Amish's 2026-09-25 instruction, open for his review.
+- Unattended operation: charge and discharge attended only, the rest stage may be left (CCK-DDR-001 item 2). Decided by Amish, 2026-09-25: go with recommendation.
 
 > **Safety:** Salvaged lithium-ion cells can hide damage and can overheat, vent and burn during charge or discharge. Any work on them needs a non-flammable surface, a smoke alarm, an extinguisher or sand bucket within reach and a person present while current flows.

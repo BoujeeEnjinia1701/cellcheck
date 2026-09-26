@@ -37,6 +37,8 @@ Requirements not met or at risk:
 
 ### Proposed, awaiting Amish
 
+Status update: items 1 to 9 are Decided by Amish, 2026-09-25: go with recommendation (CCK-DDR-002); item 10 has no recommendation and stays Proposed, awaiting Amish.
+
 1. **SwapCell link (affects the pitch).** SwapCell's precis and BOM specify new, matched 5 Ah 21700 cells at 10 A each, which typical laptop cells cannot meet. Options: (a) keep the pitch and plan a second-life SwapCell variant (graded power tool cells, or a low-current storage pack for PowerBox), agreed with the SwapCell project; (b) reword the pitch to "rebuilt packs for lights and small storage" and drop the SwapCell example; (c) leave both unchanged. Recommendation: (a), with the variant studied at TRL 3. The README notes that SwapCell use is not yet settled; `project.yaml` pitch and problem were not changed.
 2. **Unattended overnight operation (safety trade-off).** Options: never; allowed only inside a fire-rated metal cabinet with a remote smoke alarm; allowed only for the rest-rack stage (no current flowing). Recommendation: attended only for charge and discharge; rest rack may be left.
 3. **Single-fault protection.** Add a hardware watchdog that removes load gate drive when the controller stops, plus a per-channel undervoltage comparator, about $5 in total, to meet R9. This would take the BOM to about $164. Recommendation: add, with a budget change to $175 (see item 4).
@@ -96,16 +98,16 @@ Corrections to TRL 2 figures: time per cell 6.5 to 6.33 h; voltage error ±10 to
 
 ### Decisions recorded (CCK-DDR-001)
 
-Adopted as recommended for TRL 3 under Amish's 2026-09-25 instruction, open for his review: (1) keep the pitch and plan a second-life SwapCell variant, studied in CAL-001 section 10 (low-current PowerBox storage pack, about 334 Wh and 165 W; e-bike use ruled out); (2) charge and discharge attended only, rest stage may be left, so R14 is redefined; (3) hardware watchdog and per-channel undervoltage comparators; (5) grading thresholds, 14-day rest with 50 mV limit and ±1 % group tolerance as starting values; (6) TP5100, INA226 and ESP32-S3 class modules; (7) eight channels with a linear load; (8) LFP profile later; (9) record mapped to ReflowEconomy's passport v0.2. No pitch or problem rewording was recommended, so both are unchanged.
+Status update: all of these are now Decided by Amish, 2026-09-25: go with recommendation (CCK-DDR-002). Originally adopted as recommended for TRL 3 under Amish's 2026-09-25 instruction, open for his review: (1) keep the pitch and plan a second-life SwapCell variant, studied in CAL-001 section 10 (low-current PowerBox storage pack, about 334 Wh and 165 W; e-bike use ruled out); (2) charge and discharge attended only, rest stage may be left, so R14 is redefined; (3) hardware watchdog and per-channel undervoltage comparators; (5) grading thresholds, 14-day rest with 50 mV limit and ±1 % group tolerance as starting values; (6) TP5100, INA226 and ESP32-S3 class modules; (7) eight channels with a linear load; (8) LFP profile later; (9) record mapped to ReflowEconomy's passport v0.2. No pitch or problem rewording was recommended, so both are unchanged.
 
 ### Items still awaiting Amish
 
-- Budget: $175 recommended; `budget_usd` stays at $160 (item 4).
+- Budget: $175 recommended (item 4). Now Decided by Amish, 2026-09-25: go with recommendation; `budget_usd` is $175.
 - First trial partner: repair café, e-bike repair shop or collection point; no preference stated (item 10).
-- DC four-wire resistance and the 14-day rest (in the precis, not separate TRL 2 review items) (item 11).
+- DC four-wire resistance and the 14-day rest (in the precis, not separate TRL 2 review items) (item 11). Now Decided by Amish, 2026-09-25: go with recommendation.
 - Scheduling rule for the attended day: finish current stages the same day, or pause overnight with the unit off (item 12).
-- Engineering proposals from CAL-001: same-channel and same-day cohort self-discharge reading, temperature-gated resistance pulse, per-channel calibration, fan-fault stop, detached-thermistor plausibility check (item 13).
-- Responses to R12, R11 (a 1.2 mm tray saves 0.49 kg but thins the containment) and R5 (item 14).
+- Engineering proposals from CAL-001: same-channel and same-day cohort self-discharge reading, temperature-gated resistance pulse, per-channel calibration, fan-fault stop, detached-thermistor plausibility check (item 13). Now Decided by Amish, 2026-09-25: go with recommendation.
+- Responses to R12, R11 (a 1.2 mm tray saves 0.49 kg but thins the containment) and R5 (item 14). R12 is resolved by item 4; R11 and R5 stay open.
 - Grade A resistance limits per cell model need named data sheets (item 16).
 
 ### Cross-repo notes (not edited in the other repos)
@@ -129,3 +131,55 @@ Adopted as recommended for TRL 3 under Amish's 2026-09-25 instruction, open for 
 ### Recommended next step
 
 Amish to review CCK-DDR-001, decide the budget (item 4) and the trial partner (item 10), and confirm or change the adopted items and engineering proposals. TRL 4 is on hold by Amish's instruction. For reference only, TRL 4 would need: a built unit; bench test reports (TST, `environment: lab`) for capacity, voltage, resistance repeatability and self-discharge against a calibrated reference; a fault-injection test of the watchdog, comparators and fuses; a fan-failure thermal test; a containment test with a sourced cell failure method in a suitable facility; and dated build-log entries.
+
+## Session 2026-09-25: recommendations accepted
+
+On 2026-09-25 Amish wrote: "i accept all your recommendations, go with them across all repos." Every item above with a recommendation is now **Decided by Amish, 2026-09-25: go with recommendation**; where several options were offered, the recommended option is the decision. Items without a recommendation stay Proposed, awaiting Amish. The record is `docs/decisions/0002-recommendations-accepted.md` (CCK-DDR-002 v0.1); CCK-DDR-001 is updated to v0.2.
+
+### Decisions applied and what changed
+
+| DDR-001 item | Decision | Change (before to after) |
+| --- | --- | --- |
+| 4 | Budget raised (option a) | `budget_usd` $160 to $175; R12 target $160 to $175; R12 Not met ($4.00 over) to Met ($11.00 under) |
+| 13 | Firmware and build rules from CCK-CAL-001 | Resistance pulse starts only within 1 K of the bench: R4 worst case ±2.99 to ±2.09 mΩ (RSS ±2.02 to ±1.28 mΩ), At risk to Met. Self-discharge read in the same channel against the same-day cohort median: R6 reading ±10.6 to ±2.3 mV, still at risk (relaxation spread not bounded). Fan-fault stop, per-channel calibration and a detached-thermistor plausibility check written into the precis |
+| 11 | DC four-wire resistance and 14-day rest | Proposed to decided; no numbers change |
+| 1 | Keep SwapCell in the pitch; plan a second-life variant (option a) | Wording only; pitch and problem unchanged; cross-repo action below |
+| 2, 3, 5, 6, 7, 8, 9 | Attended charge and discharge; watchdog and comparators; grading thresholds; modules; eight linear channels; LFP later; passport mapping | Wording only; already implemented at TRL 3 |
+| 15 | Raise passport gaps with ReflowEconomy | Listed under cross-repo actions |
+
+Documents bumped with a revision row "Recommendations accepted by Amish (DDR-002)": CCK-PRB-001 v0.4, CCK-PRC-001 v0.4, CCK-REQ-001 v0.4, CCK-CAL-001 v0.2 (with `sizing.py` and `results.csv`), CCK-DDR-001 v0.2. `project.yaml` (budget, evidence list), `README.md` and `bom/bom-notes.md` updated. No part was added or resized, so `model.py`, STEP, STL and CCK-DWG-001 (Rev P1) are unchanged in geometry and notes; they, the concept media and all PDFs were regenerated. The README "What sparked the idea" section now traces the idea to IBM Research India's 2014 UrJar project.
+
+### Requirement status (CCK-CAL-001 v0.2)
+
+Met on paper: 13 of 17 (was 11). None is failed outright.
+
+| ID | Status | Value |
+| --- | --- | --- |
+| R5 | At risk | 12.0 cells per attended day (stage-boundary rule); 12.8 with an overnight pause; 8.0 for 2.5 Ah cells |
+| R6 | At risk | ±2.3 mV in the same channel against ±3 mV; spread of relaxation between cells not bounded |
+| R11 | At risk | 4.97 kg against 5 kg; 460 x 300 x 75 mm |
+| R10 | Not verifiable at TRL 3 | Containment of a venting cell cannot be analysed credibly on paper |
+| R4 | Met | ±2.09 mΩ worst case against ±3.0 mΩ (was at risk) |
+| R12 | Met | $164.00 against $175 (was not met against $160) |
+| R1, R2, R3, R7, R8, R9, R13 to R17 | Met | Unchanged; see CCK-CAL-001 Table 4 |
+
+### Items still awaiting Amish (no recommendation was made)
+
+- First trial partner: repair café, e-bike repair shop or collection point (item 10).
+- Scheduling rule for the attended day (item 12).
+- Responses to R11 and R5 (item 14).
+- Grade A resistance limit per cell model; needs named data sheets (item 16).
+
+### Cross-repo actions (no other repo edited)
+
+- **SwapCell and PowerBox:** agree the second-life low-current storage pack (about 334 Wh, 3.5 A discharge, 0.5C charge); PowerBox would need a lower host charge limit and an AC limit of about 150 W for that pack (item 1).
+- **ReflowEconomy:** add a `product_form` for graded cells and an electrical test in `identification.method` to the material passport schema (item 15).
+- **CellGuard:** none; consistent with CGD-DDR-001 item 7.
+
+### Decided but on hold (TRL 4)
+
+Tuning the grading thresholds on the first 100 real cells (item 5), buying modules (item 6), writing and testing the firmware rules and doing the per-channel calibration (item 13), and every test listed in the previous session. TRL 4 remains on hold by Amish's instruction; `trl` and `trl_target` stay at 3.
+
+### Safety concerns
+
+Unchanged from the TRL 3 session. The detached-thermistor plausibility check narrows but does not remove that residual risk, and the 100 kJ runaway figure in CCK-CAL-001 section 7 still needs a sourced value before any TRL 4 work.

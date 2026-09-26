@@ -2,7 +2,7 @@
 
 ![TRL 3](https://img.shields.io/badge/TRL-3%20of%209-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827)
 
-**Area:** Circular Materials · **TRL:** 3 of 9 (proof of concept on paper) · **Prototype budget:** about $160 USD · **Difficulty:** 3 of 5
+**Area:** Circular Materials · **TRL:** 3 of 9 (proof of concept on paper) · **Prototype budget:** about $175 USD · **Difficulty:** 3 of 5
 
 A second-life battery cell grader: it measures capacity, internal resistance and self-discharge of salvaged lithium cells and sorts them into matched groups for rebuilt packs such as SwapCell.
 
@@ -47,7 +47,7 @@ Discarded lithium batteries are also a fire hazard. The US EPA found 245 fires a
 
 ## What sparked the idea
 
-It came out of a September 2026 review of Design Molecule's applied research areas against the open projects already in the lab. CellCheck was already planned as the companion to SwapCell and ReflowEconomy. The review coincided with rising collection targets for portable batteries in the EU, 63 % by the end of 2027 ([EPBA summary of Regulation (EU) 2023/1542](https://www.epba.eu/policy/eu-directive/eu-batteries-regulation)), and a 71 % rise in UK battery fires in waste systems since 2022 ([NFCC and Material Focus](https://nfcc.org.uk/over-1200-battery-fires-in-bin-lorries-and-waste-sites-across-the-uk-in-last-year/)), both of which put more used cells in front of people who must decide whether to reuse or recycle them.
+The starting point was UrJar, a 2014 IBM Research India project in Bangalore that rebuilt cells from 32 discarded ThinkPad laptop packs into lighting units for street vendors ([Chandan et al., ACM DEV 2014](https://www.dgp.toronto.edu/~mjain/UrJar-DEV-2014.pdf)). The study showed that most of the packs still held useful capacity, yet after reading each pack's capacity through the laptop, the researchers selected individual cells by checking that their terminal voltage was above 3.7 V. A voltage check says little about a cell's capacity, internal resistance or self-discharge, which decide how long a rebuilt pack lasts and how safely it ages. CellCheck turns that hand check into a repeatable, multi-channel grading step that any repair bench could run.
 
 ## Problem
 
@@ -59,9 +59,9 @@ Full problem statement: [docs/01-problem.md](docs/01-problem.md)
 
 A second-life battery cell grader: it measures capacity, internal resistance and self-discharge of salvaged lithium cells and sorts them into matched groups for rebuilt packs such as SwapCell.
 
-Eight channels each charge a cell at 1 A, measure DC internal resistance with a 0.5 A then 2.0 A pulse in the IEC 61960 pattern, discharge at 1 A to measure capacity and recharge until the cell reads 4.10 V under current. Cells then rest 14 days in a printed rack and come back for a voltage check. Software grades each cell (A, B, C or reject) and builds groups for any series and parallel count, with each parallel group within ±1 % of the mean capacity. A hardware watchdog, per-channel undervoltage comparators and 3 A cell fuses cover single faults. The sizing note CCK-CAL-001 finds 6.33 h of channel time per typical cell, 12.0 cells per attended 10 h day, 33.6 W of peak heat with MOSFET cases at about 59 °C, 460 x 300 x 75 mm and 4.97 kg, and $164 in parts, which is $4 over the $160 budget; a $175 budget is recommended and awaits Amish.
+Eight channels each charge a cell at 1 A, measure DC internal resistance with a 0.5 A then 2.0 A pulse in the IEC 61960 pattern, discharge at 1 A to measure capacity and recharge until the cell reads 4.10 V under current. Cells then rest 14 days in a printed rack and come back for a voltage check. Software grades each cell (A, B, C or reject) and builds groups for any series and parallel count, with each parallel group within ±1 % of the mean capacity. A hardware watchdog, per-channel undervoltage comparators and 3 A cell fuses cover single faults. The sizing note CCK-CAL-001 finds 6.33 h of channel time per typical cell, 12.0 cells per attended 10 h day, 33.6 W of peak heat with MOSFET cases at about 59 °C, 460 x 300 x 75 mm and 4.97 kg, and $164 in parts, $11 under the $175 budget.
 
-SwapCell stays in the pitch. Its reference pack uses new high-current cells, which graded laptop cells cannot match, so a second-life variant is planned: the TRL 3 study finds a low-current storage pack for PowerBox (about 334 Wh, 165 W) feasible, and e-bike use is ruled out. This is adopted for TRL 3 under Amish's 2026-09-25 instruction, open for his review, and needs the SwapCell project's agreement (see the [decision record](docs/decisions/0001-trl2-review-decisions.md)).
+SwapCell stays in the pitch. Its reference pack uses new high-current cells, which graded laptop cells cannot match, so a second-life variant is planned: the TRL 3 study finds a low-current storage pack for PowerBox (about 334 Wh, 165 W) feasible, and e-bike use is ruled out. Amish decided on 2026-09-25 to go with this recommendation; it needs the SwapCell project's agreement (see the decision records [CCK-DDR-001](docs/decisions/0001-trl2-review-decisions.md) and [CCK-DDR-002](docs/decisions/0002-recommendations-accepted.md)).
 
 ![Material flow per 100 salvaged cells](media/flow.png)
 
@@ -69,7 +69,7 @@ Full design precis: [docs/02-concept.md](docs/02-concept.md) · Requirements: [d
 
 ![General arrangement CCK-DWG-001](cad/drawings/CCK-DWG-001.png)
 
-On paper CellCheck meets 11 of its 17 requirements. R12 (cost against $160) is not met; R4 (resistance repeatability), R5 (throughput), R6 (self-discharge reading) and R11 (mass) are at risk; R10 (containment of a venting cell) cannot be verified at TRL 3.
+On paper CellCheck meets 13 of its 17 requirements, and none is failed outright. R5 (throughput), R6 (self-discharge reading) and R11 (mass) are at risk; R10 (containment of a venting cell) cannot be verified at TRL 3.
 
 ## Key components
 
@@ -83,7 +83,7 @@ On paper CellCheck meets 11 of its 17 requirements. R12 (cost against $160) is n
 - Steel tray with ceramic fibre liner and a perforated steel cell guard
 - Certified 12 V 5 A adapter and a printed 48-cell rest rack
 
-The priced bill of materials is in [bom/bom.csv](bom/bom.csv): $164 in parts against the $160 budget (a $175 budget is recommended, Proposed, awaiting Amish).
+The priced bill of materials is in [bom/bom.csv](bom/bom.csv): $164 in parts against the $175 budget.
 
 ## Safety
 

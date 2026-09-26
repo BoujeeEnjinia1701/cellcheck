@@ -1,4 +1,4 @@
-"""CellCheck sizing calculations, CCK-CAL-001 v0.1 (TRL 3).
+"""CellCheck sizing calculations, CCK-CAL-001 v0.2 (TRL 3).
 
 Run from the repo root:  python docs/04-calcs/sizing.py
 Prints every number quoted in docs/04-calcs/01-sizing.md and writes docs/04-calcs/results.csv.
@@ -65,7 +65,8 @@ REF_COUNTS = 2e-3    # plus 2 counts of 1 mV
 CAL_RESID = 0.001    # residual current gain error after calibration against a reference load
 CUTOFF_SLOPE = 0.01 / 0.050   # share of capacity per volt near the 2.80 V cut-off (1 % per 50 mV, assumption)
 DCIR_TCOEF = 0.015   # per K, DC resistance change with cell temperature (assumption)
-DT_REINSERT = 2.0    # K, cell temperature difference between reinsertions
+DT_REINSERT = 1.0    # K, cell temperature difference between reinsertions; the pulse starts only
+                     # within 1 K of the bench reading (CCK-DDR-002, item 13)
 R_GRADE_A = 0.060    # ohm
 OCV_TCOEF = 0.2e-3   # V/K, open-circuit voltage change with temperature (assumption)
 DT_ROOM = 5.0        # K, bench temperature difference between day 0 and day 14
@@ -96,7 +97,7 @@ BOUGHT = {            # kg, assumptions for bought parts
     "standoffs and fasteners": 0.100, "NTC clips": 0.010,
 }
 
-print("CellCheck sizing, CCK-CAL-001 v0.1 (all values are paper estimates)")
+print("CellCheck sizing, CCK-CAL-001 v0.2 (all values are paper estimates)")
 
 # ---------------------------------------------------------------- 2. Cycle time (R5)
 head("2. Cycle time per cell")
@@ -308,7 +309,8 @@ SD_SAME = 2 * (VBUS_LSB / 2) + sd_temp     # same channel both times: offset and
 out("self-discharge reading, any two channels, worst case", SD_WC * 1000, "{:.1f}", "mV")
 out("self-discharge reading, RSS", SD_RSS * 1000, "{:.1f}", "mV")
 out("self-discharge reading, same channel, worst case", SD_SAME * 1000, "{:.1f}", "mV")
-rows.append(("R6", f"+/-{SD_WC * 1000:.1f} mV worst case (+/-{SD_RSS * 1000:.1f} RSS); relaxation after charge not bounded",
+rows.append(("R6", f"+/-{SD_SAME * 1000:.1f} mV in the same channel (+/-{SD_WC * 1000:.1f} across channels, not allowed); "
+             "judged against the same-day cohort median; spread of relaxation between cells not bounded",
              "+/-3 mV; flag above 50 mV", "At risk"))
 
 B, R0, T0 = 3950.0, 10000.0, 298.15
@@ -473,13 +475,13 @@ SL_WH, SL_I = pack_wh, I_MAX_A
 head("11. Cost (R12)")
 bom = list(csv.DictReader((ROOT / "bom/bom.csv").open()))
 COST = sum(int(r["qty"]) * float(r["unit_cost_usd"]) for r in bom)
-BUDGET, BUDGET_REC = 160.0, 175.0
+BUDGET, BUDGET_OLD = 175.0, 160.0   # project.yaml budget_usd, raised from $160 (CCK-DDR-002, item 4)
 out("BOM lines", len(bom), "{:.0f}")
 out("parts cost", COST, "{:.2f}", "USD")
-out("against project.yaml budget $160", COST - BUDGET, "{:+.2f}", "USD")
-out("against recommended budget $175 (awaiting Amish)", COST - BUDGET_REC, "{:+.2f}", "USD")
-rows.append(("R12", f"${COST:.2f}; ${COST - BUDGET:+.2f} against $160; ${COST - BUDGET_REC:+.2f} against the recommended $175",
-             "$160 or less (project.yaml)", "Not met" if COST > BUDGET else "Met"))
+out("against project.yaml budget $175", COST - BUDGET, "{:+.2f}", "USD")
+out("against the former budget $160", COST - BUDGET_OLD, "{:+.2f}", "USD")
+rows.append(("R12", f"${COST:.2f}; ${BUDGET - COST:.2f} under the $175 budget",
+             "$175 or less (project.yaml)", "Not met" if COST > BUDGET else "Met"))
 
 # ---------------------------------------------------------------- 12. Design review items
 rows += [

@@ -9,6 +9,7 @@ trl_evidence:
   - docs/02-concept.md
   - docs/03-requirements.md
   - docs/decisions/0001-trl2-review-decisions.md
+  - docs/decisions/0002-recommendations-accepted.md
   - docs/04-calcs/01-sizing.md
   - docs/04-calcs/sizing.py
   - docs/04-calcs/results.csv
@@ -25,7 +26,7 @@ pitch: >-
   A second-life battery cell grader: it measures capacity, internal resistance and self-discharge of salvaged lithium cells and sorts them into matched groups for rebuilt packs such as SwapCell.
 problem: >-
   Salvaged lithium cells are cheap but unknown; building packs from untested cells causes early failure and fires.
-budget_usd: 160
+budget_usd: 175
 difficulty: 3  # 1 easiest, 5 hardest
 hero_image: media/hero.png
 licenses:

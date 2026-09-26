@@ -3,7 +3,7 @@ doc_id: CCK-CAL-001
 title: CellCheck sizing calculations
 project: CellCheck
 doc_type: Calculation note
-version: "0.1"
+version: "0.2"
 status: Draft
 date: '2026-09-25'
 author: Amish Chadha
@@ -13,11 +13,15 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: First TRL 3 sizing note (cycle time and throughput, power, heatsink, measurement error budgets, single-fault analysis, containment, mass, grading on synthetic data, second-life SwapCell study, cost)
+- version: "0.2"
+  date: '2026-09-25'
+  author: Amish Chadha
+  change: Recommendations accepted by Amish (DDR-002). Budget $175 (R12 met); temperature-gated resistance pulse (R4 met); same-channel, cohort-median self-discharge reading (R6)
 ---
 
 # CellCheck sizing calculations
 
-On paper, CellCheck meets 11 of its 17 requirements. **R12 (budget) is not met**: the parts cost is $164 against the $160 in `project.yaml`, because the hardware watchdog and undervoltage comparators adopted for R9 add $5; it is $11 under the recommended $175, which awaits Amish. Four requirements are **at risk**: R4 (resistance repeatability has no margin), R5 (throughput is exactly 12 cells per attended day), R6 (self-discharge reading) and R11 (mass is 4.97 kg against 5 kg). R10 (containment) cannot be verified at TRL 3. The TRL 2 figures change in several places: time per cell falls from about 6.5 to 6.33 h, capacity error without calibration is ±1.1 % rather than ±2 %, voltage error without calibration is ±12.4 mV rather than ±10 mV, and the unit is 75 mm high and 4.97 kg rather than 90 mm and 3.5 kg. The heatsink fins in the TRL 2 massing model ran across the fan airflow; they are now vertical plates in line with it.
+On paper, CellCheck meets 13 of its 17 requirements, and no requirement is failed outright. Version 0.2 applies the decisions Amish accepted on 2026-09-25 (CCK-DDR-002): the budget in `project.yaml` is now $175, so the $164 parts cost meets **R12** with $11 of margin (it was $4 over the former $160), and the resistance pulse now starts only within 1 K of the bench reading, so **R4** is met at ±2.09 mΩ against ±3.0 mΩ (it was ±2.99 mΩ, at risk). Three requirements remain **at risk**: R5 (throughput is exactly 12 cells per attended day), R6 (self-discharge reading) and R11 (mass is 4.97 kg against 5 kg). R10 (containment) cannot be verified at TRL 3. The TRL 2 figures change in several places: time per cell falls from about 6.5 to 6.33 h, capacity error without calibration is ±1.1 % rather than ±2 %, voltage error without calibration is ±12.4 mV rather than ±10 mV, and the unit is 75 mm high and 4.97 kg rather than 90 mm and 3.5 kg. The heatsink fins in the TRL 2 massing model ran across the fan airflow; they are now vertical plates in line with it.
 
 Every number here is printed by `docs/04-calcs/sizing.py` (run from the repo root: `python docs/04-calcs/sizing.py`), which also writes `docs/04-calcs/results.csv`. The script reads the geometry from `cad/src/model.py` and the costs from `bom/bom.csv`. All values are first-principles estimates; nothing is measured.
 
@@ -39,6 +43,7 @@ Every number here is printed by `docs/04-calcs/sizing.py` (run from the repo roo
 | Shunt | 25 mΩ, 0.5 %, 100 ppm/K over a 20 K swing | |
 | Calibration | Two-point voltage calibration per channel against a meter of 0.05 % + 2 counts (1 mV); current gain calibrated to 0.1 % | One-time, at build |
 | Cell behaviour | Near the 2.80 V cut-off, 1 % of capacity per 50 mV; resistance changes 1.5 %/K; open-circuit voltage changes 0.2 mV/K | Assumptions for a generic lithium-ion cell |
+| Resistance pulse start | Only when the cell reads within 1 K of the bench thermistor, so reinsertions differ by 1 K at most | Firmware rule, CCK-DDR-002 item 13 |
 | Temperature sensing | 10 kΩ NTC, B 3950, 1 %, 10 kΩ divider from 3.3 V; ADC error 20 mV after factory calibration; 0.3 K for part tolerance | ESP32-class ADC; assumption |
 | Heatsink | 40 aluminium fins, 1.6 x 30 x 50 mm at 8 mm pitch on a 320 x 6 x 50 mm spine; case to sink 1.0 K/W through an insulating pad; junction to case 1.0 K/W | `cad/src/model.py` |
 | Fans | 60 mm, 8 L/s free air each, half of that through the fins; Nusselt number 10 in the fin channels; 5 W/(m² K) effective with the fans stopped | Assumptions |
@@ -81,9 +86,9 @@ Cell heating at 1 A is small: 0.06 W and about 1.4 K for a 60 mΩ cell, 3.6 K at
 
 **Voltage (R3).** Without calibration the worst case is 7.5 mV offset, 4.3 mV gain error at 4.3 V and half a count: **±12.4 mV**, which does not meet ±10 mV. After a two-point calibration of each channel against a 0.05 % meter it is **±4.8 mV**. R3 is met only with the per-channel calibration, which is now part of the design.
 
-**DC resistance (R4).** A 1.25 mV count over the 1.5 A current step gives **0.83 mΩ per count**. For a 60 mΩ cell, the repeatability over reinsertions sums to **±2.99 mΩ** worst case (0.83 mΩ quantization, 0.36 mΩ gain, 1.80 mΩ from a 2 K cell temperature difference) and ±2.02 mΩ RSS, against a limit of ±3.0 mΩ. Offsets cancel in the difference, and the four-wire contacts keep contact resistance out. **R4 is at risk**: the cell temperature term dominates, so the pulse should start only when the cell is within 1 K of the bench reading.
+**DC resistance (R4).** A 1.25 mV count over the 1.5 A current step gives **0.83 mΩ per count**. For a 60 mΩ cell, the repeatability over reinsertions sums to **±2.09 mΩ** worst case (0.83 mΩ quantization, 0.36 mΩ gain, 0.90 mΩ from a 1 K cell temperature difference) and ±1.28 mΩ RSS, against a limit of ±3.0 mΩ. Offsets cancel in the difference, and the four-wire contacts keep contact resistance out. The firmware starts the pulse only when the cell is within 1 K of the bench reading (CCK-DDR-002 item 13); version 0.1 allowed 2 K and found ±2.99 mΩ, at risk. **R4 is met** on the error budget. The 30 min rest before the pulse is normally enough for a cell that warmed by about 1.4 K on charge; a warmer cell waits longer, which this note does not add to the cycle time.
 
-**Self-discharge (R6).** If the day-14 reading is taken in a different channel from the day-0 reading, the two calibrated readings and a 5 K room change give **±10.6 mV** worst case (±6.8 mV RSS) against ±3 mV. In the same channel, offset and gain cancel and the error falls to **±2.3 mV**. In addition, a cell whose charge stops under current relaxes by an amount this note cannot bound. **R6 is at risk.** Two engineering proposals follow (CCK-DDR-001 Table 2, item 13): return each cell to the channel it was graded in, and judge the drop against the median drop of the cells charged on the same day, which cancels relaxation and room temperature.
+**Self-discharge (R6).** If the day-14 reading is taken in a different channel from the day-0 reading, the two calibrated readings and a 5 K room change give **±10.6 mV** worst case (±6.8 mV RSS) against ±3 mV. In the same channel, offset and gain cancel and the error falls to **±2.3 mV**. In addition, a cell whose charge stops under current relaxes by an amount this note cannot bound. Under CCK-DDR-002 item 13 each cell now returns to the channel it was graded in, so the reading error is **±2.3 mV**, inside ±3 mV, and its drop is judged against the median drop of the cells charged on the same day, which cancels the common part of relaxation and room temperature. The spread of relaxation between cells is still not bounded on paper, so **R6 remains at risk**.
 
 **Temperature (R7).** The divider gives 27.2 mV/K at 45 °C; a 20 mV ADC error plus 0.3 K of part tolerance is **±1.04 K**, inside ±2 K. Sampling at 1 Hz is a firmware setting. The thermal lag of the clip is not analysed and is not verifiable at TRL 3.
 
@@ -105,7 +110,7 @@ This is the failure mode and effects analysis called for at TRL 2, with the hard
 | Fan stops | MOSFETs could reach about 99 °C | Firmware stops discharges on a tachometer or heatsink fault | Safe (firmware) |
 | Adapter output high | Bus voltage rises | Certified adapter; charger modules regulate their own output | Safe for R9; R13 depends on the adapter |
 
-**R9 is met on analysis** for the faults it lists. The detached thermistor is a residual risk that R9 does not name; a plausibility check (cell temperature must rise slightly during discharge) would narrow it and is proposed, awaiting Amish. The fuses and comparators are not verified by test at TRL 3.
+**R9 is met on analysis** for the faults it lists. The detached thermistor is a residual risk that R9 does not name; a plausibility check (cell temperature must rise slightly during discharge) narrows it and is now part of the firmware rules (CCK-DDR-002 item 13), but it is not verified at TRL 3. The fuses and comparators are not verified by test at TRL 3.
 
 ## 7. Containment (R10)
 
@@ -113,7 +118,7 @@ The 1.5 mm steel tray has 0.206 m² of sheet and weighs **2.43 kg**. If a 21700 
 
 ## 8. Size and mass (R11)
 
-The model envelope is **460 x 300 x 75 mm** (the fans set the height), inside 500 x 320 x 120 mm. The mass without the adapter is **4.97 kg**: tray 2.43 kg, base plate 0.63 kg, heatsink 0.52 kg, guard 0.23 kg, shroud 0.08 kg, liner 0.05 kg, and 1.03 kg of bought parts and wiring. **R11 is at risk** with 0.03 kg of margin. A 1.2 mm tray would save about 0.49 kg; this is an engineering proposal awaiting Amish because the tray is also the containment.
+The model envelope is **460 x 300 x 75 mm** (the fans set the height), inside 500 x 320 x 120 mm. The mass without the adapter is **4.97 kg**: tray 2.43 kg, base plate 0.63 kg, heatsink 0.52 kg, guard 0.23 kg, shroud 0.08 kg, liner 0.05 kg, and 1.03 kg of bought parts and wiring. **R11 is at risk** with 0.03 kg of margin. A 1.2 mm tray would save about 0.49 kg; no response has been chosen and it stays Proposed, awaiting Amish (item 14), because the tray is also the containment.
 
 ## 9. Grading and matching on synthetic data (R15)
 
@@ -125,26 +130,26 @@ CCK-DDR-001 item 1 keeps SwapCell in the pitch and asks for a second-life varian
 
 ## 11. Cost (R12)
 
-The 18 BOM lines total **$164.00**: $4.00 over the $160 in `project.yaml` and $11.00 under the recommended $175, which is **Proposed, awaiting Amish**. **R12 is not met** against the budget in force. The increase over TRL 2 is line 18 (watchdog and comparators, $5.00).
+The 18 BOM lines total **$164.00**, $11.00 under the $175 in `project.yaml`. Amish accepted the $175 budget on 2026-09-25 (CCK-DDR-002 item 4); against the former $160 the BOM was $4.00 over. **R12 is met.** The increase over TRL 2 is line 18 (watchdog and comparators, $5.00).
 
 ## 12. Results against requirements
 
-*Table 4. Requirement status (not met and at risk first). Values from `results.csv`.*
+*Table 4. Requirement status (at risk first; no requirement is failed outright). Values from `results.csv`.*
 
 | ID | Value | Target | Status |
 | --- | --- | --- | --- |
-| R12 | $164.00; +$4.00 against $160; -$11.00 against the recommended $175 | $160 or less (`project.yaml`) | **Not met** |
-| R4 | 0.83 mΩ per count; ±2.99 mΩ worst case, ±2.02 mΩ RSS at 60 mΩ | 1 mΩ; ±3 mΩ or ±5 % | At risk |
 | R5 | 12.0 cells per day if current stages finish the same day; 12.8 with an overnight pause; 8.0 for 2.5 Ah cells | 12 cells per attended day on 1.8 Ah cells | At risk |
-| R6 | ±10.6 mV worst case (±6.8 mV RSS) across channels; ±2.3 mV in the same channel; relaxation not bounded | ±3 mV; flag above 50 mV | At risk |
+| R6 | ±2.3 mV in the same channel, judged against the same-day cohort median (±10.6 mV across channels, no longer allowed); spread of relaxation not bounded | ±3 mV; flag above 50 mV | At risk |
 | R11 | 460 x 300 x 75 mm; 4.97 kg | 500 x 320 x 120 mm; 5 kg | At risk |
 | R10 | Mean tray rise 84 K for an assumed 100 kJ event; jets and flame not analysable | Hold one venting 21700 in the tray | Not verifiable at TRL 3 |
 | R1 | Eight channels; holders for 18650 and 21700 cells up to 70 mm long | 18650 and 21700; 8 channels or more | Met (design review) |
 | R2 | ±1.1 % uncalibrated; ±0.4 % calibrated | ±2 % | Met |
 | R3 | ±12.4 mV uncalibrated; ±4.8 mV after per-channel calibration | ±10 mV | Met (with per-channel calibration) |
+| R4 | 0.83 mΩ per count; ±2.09 mΩ worst case, ±1.28 mΩ RSS at 60 mΩ, pulse gated within 1 K | 1 mΩ; ±3 mΩ or ±5 % | Met |
 | R7 | ±1.0 K at 45 °C; 1 Hz sampling | 1 Hz, ±2 K; stop at 45 °C or +8 K | Met (accuracy); response time not verifiable at TRL 3 |
 | R8 | 58.7 °C case with fans (0.58 K/W); 99 °C if the fans stop | 75 °C or less at 35 °C | Met |
-| R9 | Watchdog, undervoltage comparators, 3 A fuses; detached thermistor residual | No single fault past 4.25 V, 60 °C or 2.5 V | Met (analysis) |
+| R9 | Watchdog, undervoltage comparators, 3 A fuses; detached thermistor narrowed by a plausibility check, still residual | No single fault past 4.25 V, 60 °C or 2.5 V | Met (analysis) |
+| R12 | $164.00; $11.00 under $175 | $175 or less (`project.yaml`) | Met |
 | R13 | Certified 12 V adapter; 12.6 V highest; 42.5 W of 60 W | Certified 12 V; 13 V or less | Met (design review) |
 | R14 | Rest stage unattended; current stages attended | As redefined in CCK-REQ-001 v0.3 | Met (design review) |
 | R15 | 0.006 % group deviation on synthetic 4S6P | ±1 % | Met (synthetic data) |
@@ -153,7 +158,7 @@ The 18 BOM lines total **$164.00**: $4.00 over the $160 in `project.yaml` and $1
 
 ## 13. Record mapping to the ReflowEconomy passport (R16)
 
-CCK-DDR-001 item 9 maps the CellCheck record to ReflowEconomy's material passport schema v0.2. The per-cell CSV stays the primary record; one passport is issued per lot that leaves the bench.
+CCK-DDR-001 item 9 (decided by Amish, CCK-DDR-002) maps the CellCheck record to ReflowEconomy's material passport schema v0.2. The per-cell CSV stays the primary record; one passport is issued per lot that leaves the bench.
 
 *Table 5. Passport fields for a CellCheck lot.*
 
