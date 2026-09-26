@@ -3,7 +3,7 @@ doc_id: CCK-PRC-001
 title: CellCheck design precis
 project: CellCheck
 doc_type: Design precis
-version: "0.2"
+version: "0.3"
 status: Draft
 date: '2026-09-25'
 author: Amish Chadha
@@ -17,28 +17,32 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Populate to TRL 2 (architecture, grading method, first-order numbers, safety, media)
+- version: "0.3"
+  date: '2026-09-25'
+  author: Amish Chadha
+  change: Apply CCK-DDR-001 (design choices adopted for TRL 3, open for Amish's review); numbers replaced by CCK-CAL-001; watchdog and undervoltage board added; heatsink fins turned in line with the airflow; general arrangement CCK-DWG-001
 ---
 
 # CellCheck design precis
 
 ## Summary
 
-CellCheck is an eight-channel bench grader for salvaged 18650 and 21700 lithium-ion cells. Each channel charges one cell, measures its DC internal resistance with a two-step current pulse, discharges it at a constant 1 A to measure capacity, and recharges it for a 14-day self-discharge rest. Software then sorts the passing cells into grades and builds matched groups for a pack of a chosen series and parallel count, with a record for every cell. First-order numbers suggest about 6.5 h per cell, about 12 cells per attended 10 h day and about $159 in parts, just inside the $160 budget. Every figure below is an estimate for concept review and will be checked at TRL 3.
+CellCheck is an eight-channel bench grader for salvaged 18650 and 21700 lithium-ion cells. Each channel charges one cell, measures its DC internal resistance with a two-step current pulse, discharges it at a constant 1 A to measure capacity, and recharges it for a 14-day self-discharge rest. Software then sorts the passing cells into grades and builds matched groups for a pack of a chosen series and parallel count, with a record for every cell. The calculation note CCK-CAL-001 finds 6.33 h of channel time per typical cell, 12.0 cells per attended 10 h day, MOSFET cases at 58.7 °C at full load and $164 in parts, which is $4 over the $160 budget because of the single-fault protection added for TRL 3. Every figure is a paper estimate; nothing has been built or measured.
 
 ![CellCheck on a bench with its rest rack and a salvaged laptop pack](../media/hero.png)
 
-*Figure 1. Concept massing model on a bench: steel tray with eight cell channels (center), rest rack for the self-discharge check (left), 12 V adapter (right) and a salvaged laptop pack (front) for scale.*
+*Figure 1. Massing model on a bench: steel tray with eight cell channels (center), rest rack for the self-discharge check (left), 12 V adapter (right) and a salvaged laptop pack (front) for scale.*
 
 ## How it works
 
 1. **Intake (by hand).** The operator removes cells from a pack, rejects any with dents, torn wraps, leaks or corrosion, measures open-circuit voltage and rejects cells below 2.0 V. Each cell gets an ID label. Cells below 2.0 V are not revived: deep discharge can grow copper dendrites that cause internal shorts when the cell is charged again.
-2. **Charge.** The cell goes into a channel. A 1 A CC-CV charger module brings it to 4.20 V and stops at 0.1 A. A thermistor clipped to the cell stops the channel if the cell passes 45 °C or rises more than 8 K above the bench.
-3. **Rest and resistance.** After a 30 min rest the channel runs a DC resistance test in the pattern of IEC 61960: 0.5 A for 10 s, then 2.0 A for 1 s, with resistance taken as the change in voltage over the change in current ([test pattern summarized by Arbin Instruments](https://www.arbin.com/how-to-perform-internal-resistance-measurement-accroding-to-iec-61960-with-arbin.html)). IEC 61960 uses 0.2C and 1C; CellCheck uses fixed currents so results are comparable within a batch, not with data sheet values.
+2. **Charge.** The cell goes into a channel. A 1 A CC-CV charger module brings it to 4.20 V and stops at 0.1 A (about 1.8 h for a 1.8 Ah cell). A thermistor clipped to the cell stops the channel if the cell passes 45 °C or rises more than 8 K above the bench.
+3. **Rest and resistance.** After a 30 min rest, and once the cell is within 1 K of the bench reading, the channel runs a DC resistance test in the pattern of IEC 61960: 0.5 A for 10 s, then 2.0 A for 1 s, with resistance taken as the change in voltage over the change in current ([test pattern summarized by Arbin Instruments](https://www.arbin.com/how-to-perform-internal-resistance-measurement-accroding-to-iec-61960-with-arbin.html)). IEC 61960 uses 0.2C and 1C; CellCheck uses fixed currents so results are comparable within a batch, not with data sheet values.
 4. **Capacity.** A linear constant-current load discharges the cell at 1.0 A to 2.80 V while a current monitor integrates ampere-hours and watt-hours. Cell temperature is logged throughout; a cell that heats abnormally is flagged.
-5. **Recharge for rest.** The charger brings the cell back to 4.10 V. The operator moves it to the printed rest rack, which holds 48 cells.
-6. **Self-discharge check.** After 14 days the operator puts the cell back into any channel for a 10 s open-circuit reading. A drop of more than 50 mV marks the cell as rejected.
-7. **Grade and match.** Software assigns a grade from capacity, resistance, heating and self-discharge (Table 2), then builds groups for the pack the user wants (for example 4S6P): cells of one grade are distributed with a serpentine sort so that each parallel group's total capacity is within ±1 % of the mean. Serpentine sorting of retired 18650 cells has been studied as a grouping method ([Xi et al., Batteries, 2026](https://www.mdpi.com/2313-0105/12/9/368)), and clustering by measured capacity and resistance produced a markedly better second-life pack than random selection in a recent study ([Olivero-Ortiz et al., PLOS One, 2026](https://journals.plos.org/plosone/article?id=10.1371%2Fjournal.pone.0353394)).
-8. **Record.** Every cell gets a CSV row: ID, source pack, cell model if known, arrival voltage, capacity, resistance, temperature rise, self-discharge, grade, group and dates. Rejected cells are logged too and go to a battery collection point for recycling.
+5. **Recharge for rest.** The charger runs at 1 A until the cell's terminal voltage reads 4.10 V under current, at about 80 % state of charge, and the firmware then opens the charge switch. The operator moves the cell to the printed rest rack, which holds 48 cells.
+6. **Self-discharge check.** After 14 days the operator puts the cell back into a channel for a 10 s open-circuit reading. A drop of more than 50 mV marks the cell as rejected. CCK-CAL-001 shows that the reading is only good to ±3 mV in the same channel, so returning each cell to its own channel and comparing it with the median of cells charged the same day are proposed, awaiting Amish (CCK-DDR-001 item 13).
+7. **Grade and match.** Software assigns a grade from capacity, resistance, heating and self-discharge (Table 2), then builds groups for the pack the user wants (for example 4S6P): it picks the cells of one grade with the narrowest capacity window, distributes them with a serpentine sort and swaps cells between groups until each parallel group's total capacity is within ±1 % of the mean. On synthetic data the groups come out within 0.006 % (CCK-CAL-001 section 9). Serpentine sorting of retired 18650 cells has been studied as a grouping method ([Xi et al., Batteries, 2026](https://www.mdpi.com/2313-0105/12/9/368)), and clustering by measured capacity and resistance produced a markedly better second-life pack than random selection in a recent study ([Olivero-Ortiz et al., PLOS One, 2026](https://journals.plos.org/plosone/article?id=10.1371%2Fjournal.pone.0353394)).
+8. **Record.** Every cell gets a CSV row: ID, source pack, cell model if known, arrival voltage, capacity, resistance, temperature rise, self-discharge, grade, group and dates. Each matched group and each lot of rejected cells also gets a ReflowEconomy material passport record (CCK-CAL-001 section 13). Rejected cells go to a battery collection point for recycling.
 
 ![Material flow per 100 salvaged cells](../media/flow.png)
 
@@ -46,25 +50,28 @@ CellCheck is an eight-channel bench grader for salvaged 18650 and 21700 lithium-
 
 ## Main components
 
-Table 1. Main components, numbered as in the exploded view (Figure 3) and `bom/bom.csv`.
+Table 1. Main components, numbered as in the exploded view (Figure 3), `bom/bom.csv` and the general arrangement CCK-DWG-001.
 
-| # | Component | Proposed choice | Notes |
+| # | Component | Choice | Notes |
 | --- | --- | --- | --- |
-| 1 | Steel tray with liner | 460 x 300 x 45 mm steel tray, ceramic fibre sheet on the floor | Contains ejecta from a venting cell; the whole unit sits in it |
-| 2 | Base plate | Aluminium or FR4 carrier on four standoffs | Carries all modules; standoffs keep it off the tray |
-| 3 | Cell holders | Eight holders for 18650 and 21700 with spring contacts, separate force and sense contacts at each end (four-wire) | Kelvin sensing keeps contact resistance out of the reading |
-| 4 | Temperature sensing | 10 kΩ NTC thermistor clipped to each cell | Read by the controller's ADC |
+| 1 | Steel tray with liner | 460 x 300 x 45 mm steel tray, 1.5 mm, 3 mm ceramic fibre sheet on the floor, two fan intake slots in the back wall | Contains ejecta from a venting cell; the whole unit sits in it |
+| 2 | Base plate | 2 mm aluminium, 430 x 270 mm, on four standoffs | Carries all modules |
+| 3 | Cell holders | Eight holders for 18650 and 21700 at a 40 mm pitch with spring contacts, separate force and sense contacts at each end (four-wire) | Kelvin sensing keeps contact resistance out of the reading |
+| 4 | Temperature sensing | 10 kΩ NTC thermistor clipped to each cell | Read by the controller's ADC, ±1.0 K at 45 °C |
 | 5 | Cell guard | Perforated steel cover over the cells | Stops loose ejecta; cells stay visible |
 | 6 | Chargers | 1 A CC-CV buck charger module per channel, 4.20 V, fed from 12 V (TP5100 class) | Module sets its own voltage limit, independent of firmware |
-| 7 | Sense and switch boards | INA226-class current and voltage monitor with a 25 mΩ shunt, plus a charger enable switch, per channel | 16-bit readings over I2C at addresses 0x40 to 0x47 |
+| 7 | Sense and switch boards | INA226-class current and voltage monitor with a 25 mΩ shunt, plus a charge switch in series between charger and cell, per channel | 16-bit readings over I2C at addresses 0x40 to 0x47; calibrated per channel at build |
 | 8 | Load MOSFETs | Logic-level MOSFET in TO-220 with an op-amp loop per channel, constant current 0.5 to 2.0 A | Linear load; energy ends up as heat |
-| 9 | Heatsink | Finned aluminium bar, about 320 mm long | All eight MOSFETs on one bar |
-| 10 | Fans | Two 60 mm 12 V fans | Temperature-controlled |
+| 9 | Heatsink | Aluminium spine 320 x 6 x 50 mm with 40 vertical fins 30 mm deep at 8 mm pitch | 0.58 K/W with the fans (CCK-CAL-001) |
+| 10 | Fans | Two 60 mm 12 V fans with tachometers on a shroud behind the fins, pushing air forward into the fin channels | Air leaves through the open fin tops |
 | 11 | Controller | ESP32-S3 class board | Runs the test sequence, logs to microSD, serves a local web page |
 | 12 | Display and buttons | 2.8 in display with three buttons | Channel status without a laptop |
 | 13 | Power inlet | DC jack, 6.3 A main fuse, switch | Only 12 V DC enters the unit |
 | 14 | Power supply | Certified 12 V 5 A mains adapter | No mains wiring inside CellCheck |
 | 15 | Rest rack | 3D-printed rack for 48 cells, numbered slots | Holds cells for the 14-day check |
+| 18 | Watchdog and undervoltage board | Hardware watchdog gating all charge and load enables; eight 2.5 V comparators removing load gate drive | Added for R9 (CCK-DDR-001 item 3) |
+
+Lines 16 (wiring and 3 A channel fuses) and 17 (labels and insulator rings) are in the BOM but not modelled. The general arrangement drawing is CCK-DWG-001 Rev P1 (`cad/drawings/CCK-DWG-001.pdf`), generated from `cad/src/model.py`.
 
 ![Exploded view with BOM numbers](../media/exploded.png)
 
@@ -72,7 +79,7 @@ Table 1. Main components, numbered as in the exploded view (Figure 3) and `bom/b
 
 ## Grading rules
 
-Table 2. Proposed grades (thresholds are estimates for review; all live in a plain configuration file). Proposed, awaiting Amish.
+Table 2. Grades. The thresholds are starting values adopted for TRL 3 under Amish's 2026-09-25 instruction, open for his review (CCK-DDR-001 item 5), to be tuned with the first 100 real cells. All live in a plain configuration file.
 
 | Grade | Capacity, share of rated | DC resistance (18650 default) | Other conditions | Suggested use |
 | --- | --- | --- | --- | --- |
@@ -81,64 +88,68 @@ Table 2. Proposed grades (thresholds are estimates for review; all live in a pla
 | C | 50 % or more | 150 mΩ or less | As A | Low-drain uses only: lights, small sensor nodes |
 | Reject | Below 50 % | Above 150 mΩ | Or any failed condition, arrival voltage below 2.0 V, or visible damage | Battery recycling |
 
-Rated capacity comes from the cell model printed on the wrap, looked up in a cell table; if the model is unknown, the grade uses measured capacity only and the record says so. The 60 mΩ default for grade A is an assumption for a typical laptop 18650 in good health; it will be set per cell model at TRL 3.
+Rated capacity comes from the cell model printed on the wrap, looked up in a cell table; if the model is unknown, the grade uses measured capacity only and the record says so. The 60 mΩ default for grade A is an assumption for a typical laptop 18650 in good health; setting it per cell model needs named data sheets and remains open (CCK-DDR-001 item 16). At 1 A a 60 mΩ cell warms by about 1.4 K and the worst 418 mΩ cell reported by Olivero-Ortiz et al. by about 10 K, so the 8 K limit separates them.
 
-## First-order numbers
+## Key numbers
 
-All values are estimates for concept review and will be checked at TRL 3. Assumptions: a typical salvaged 18650 holds about 1.8 Ah as found (close to the 1.62 Ah mean reported by Olivero-Ortiz et al., 2026), arrives at about 30 % charge, has a mean voltage of about 3.65 V on discharge and about 3.9 V on charge; charger modules are about 85 % efficient and the adapter about 88 %; controller and fans draw about 3 W.
+All values come from CCK-CAL-001 and are paper estimates.
 
-Table 3. First-order numbers.
+Table 3. Key numbers.
 
-| Quantity | Estimate | Basis | Requirement |
-| --- | --- | --- | --- |
-| Time per cell | about 6.5 h (6 to 8 h) | Charge 1.6 h, rest 0.5 h, discharge 1.8 h, rest 0.25 h, recharge to 4.10 V 1.8 h, handling about 0.5 h; a 2.5 Ah cell takes about 8 h | |
-| Throughput | about 12 cells per attended 10 h day; about 28 per 24 h if run overnight | 8 channels, each started as soon as it is free | R5 met, thin margin |
-| Cells for one 4S6P pack of grade A or B | about 36 candidates, about 3 attended days plus the 14-day rest | 24 cells at about 66 % yield (Figure 2) | |
-| Capacity accuracy | about ±1 % after a one-time calibration, about ±2 % without | 25 mΩ shunt at 0.5 % tolerance, monitor gain error about 0.1 % | R2 met on estimate |
-| Voltage accuracy | about ±10 mV worst case before calibration, better after | Typical current-monitor data sheet figures | R3 at risk until checked |
-| Resistance resolution | about 0.8 mΩ per count; about ±3 mΩ repeatability expected | 1.25 mV voltage step over a 1.5 A current step, 16 readings averaged, four-wire contacts | R4 met on estimate, unverified |
-| Heat at full discharge load | about 29 W average, about 34 W peak | 8 cells x 1.0 A x 3.65 V (4.2 V at start) | |
-| Heatsink needed | 1.1 K/W or better to keep MOSFET cases at 75 °C or less in a 35 °C room | 34 W, about 2 K case-to-sink | R8 met on estimate with fans (about 0.5 to 0.8 K/W expected) |
-| Adapter load, all channels charging | about 43 W of 60 W (about 71 %) | 8 x 4.2 V x 1 A / 0.85 + 3 W | |
-| Energy per cell from the mains | about 18 Wh | (5.0 Wh first charge + 6.2 Wh recharge) / 0.85 + 2.4 Wh overhead, then / 0.88 | Cost well under $0.01 per cell at $0.15/kWh |
-| Cell heating at 1 A | about 0.1 W per cell, a few kelvin | 1 A squared times about 0.1 Ω | An 8 K rise flags a fault |
-| Size and mass | 460 x 300 x 90 mm with guard; about 3.5 kg without adapter | Tray 2.0 kg, heatsink 0.6 kg, plate and modules 0.9 kg | R11 met |
-| Parts cost | about $159 | Indicative prices, see `bom/bom.csv` | R12 met, about $1 margin |
+| Quantity | Value | Requirement |
+| --- | --- | --- |
+| Channel time per cell | 6.33 h for 1.8 Ah; 8.30 h for 2.5 Ah; 13.93 h for a 4.5 Ah 21700 | |
+| Throughput | 12.0 cells per attended 10 h day if current stages finish the same day; 12.8 with an overnight pause | R5 at risk |
+| Cells for one 4S6P pack | about 36 candidates, about 3 attended days plus the 14-day rest | |
+| Capacity error | ±1.1 % without calibration, ±0.4 % with | R2 met |
+| Voltage error | ±12.4 mV without calibration, ±4.8 mV after per-channel calibration | R3 met with calibration |
+| Resistance | 0.83 mΩ per count; repeatability ±2.99 mΩ worst case at 60 mΩ | R4 at risk |
+| Self-discharge reading | ±10.6 mV across two channels; ±2.3 mV in the same channel | R6 at risk |
+| Heat at full discharge load | 29.2 W average, 33.6 W peak | |
+| Heatsink | 0.58 K/W with fans (1.07 K/W needed); MOSFET cases 58.7 °C at 35 °C room; about 99 °C if the fans stop | R8 met |
+| Adapter load, all channels charging | 42.5 W of 60 W; 3.54 A at 12 V | R13 met |
+| Energy per cell from the mains | 16.8 Wh, well under $0.01 at $0.15/kWh | |
+| Size and mass | 460 x 300 x 75 mm; 4.97 kg without adapter | R11 at risk |
+| Parts cost | $164.00 against $160 (and the recommended $175, awaiting Amish) | R12 not met |
 
 ## Key design choices
 
-- **Linear load, not energy recovery.** Discharge energy is burned in MOSFETs on one heatsink. Feeding it back to the 12 V bus or to a charging cell would save about 6.6 Wh per cell but adds a bidirectional converter per channel and costs more than the budget allows. Proposed, awaiting Amish; regenerative discharge is a possible later variant.
-- **One cell per channel, eight channels.** Eight channels keep heat near 30 W and cost within budget while giving about 12 cells a day. A 16-channel version is an option for a busy repair shop. Recommendation: eight channels. Proposed, awaiting Amish.
-- **Four-wire DC resistance, not 1 kHz AC impedance.** DC pulses need no signal generator and reflect how the cell behaves under load; AC readings from handheld meters are lower and not comparable. Recommendation: DC. Proposed, awaiting Amish.
-- **Passive rest rack for self-discharge.** Holding cells in channels for 14 days would stall the grader, so cells rest in a rack and come back for a 10 s reading. Recommendation: 14 days (7 days is an option that catches only the worst cells). Proposed, awaiting Amish.
+These are adopted for TRL 3 under Amish's 2026-09-25 instruction, open for his review (CCK-DDR-001), unless marked otherwise.
+
+- **Linear load, eight channels (item 7).** Discharge energy (6.6 Wh per typical cell) is burned in MOSFETs on one heatsink. A bidirectional converter per channel would recover it but costs more than the budget allows. Sixteen channels and regenerative discharge are later variants.
+- **Modules (item 6).** TP5100-class charger, INA226-class monitor with a 25 mΩ shunt, ESP32-S3 class controller.
+- **Single-fault protection (item 3).** A hardware watchdog removes all charge enables and load gate drive when the controller stops; a per-channel comparator removes load gate drive below 2.5 V; each cell has a 3 A fuse and a series charge switch.
+- **Attended operation (item 2).** Charge, pulse and discharge run only with a person present; the rest stage may be left.
+- **Four-wire DC resistance and a 14-day rest.** The precis recommends DC pulses (no signal generator; closer to behaviour under load) and 14 days (7 days catches only the worst cells). These were not separate TRL 2 review items and stay Proposed, awaiting Amish (item 11); CCK-CAL-001 uses them as its working basis.
 - **12 V DC input only.** A certified adapter keeps mains out of the unit, so builders never wire mains.
-- **Local-first data.** Records stay on the microSD card and the local web page; no cloud account is needed. The CSV fields could map to ReflowEconomy's material passport at TRL 3. Proposed, awaiting Amish.
-- **Lithium-ion first, LFP later.** The first release covers LCO, NMC and NCA cells at 4.20 V. LFP cells need a 3.65 V charger and a 2.5 V discharge limit; an LFP profile is an open question.
+- **Local-first data (item 9).** Records stay on the microSD card and the local web page; no cloud account is needed. Groups and reject lots map to ReflowEconomy's material passport v0.2.
+- **Lithium-ion first, LFP later (item 8).** The first release covers LCO, NMC and NCA cells at 4.20 V. An LFP profile (3.65 V charge, 2.5 V discharge limit) follows once the lithium-ion profile is proven.
+- **Heatsink orientation.** The TRL 2 model had fins across the fan airflow. The fins are now vertical plates normal to the heatsink length, so the fans push air along the channels and out of the top.
 
 ## Relation to other lab projects
 
-- **SwapCell.** The pitch names SwapCell as a user of rebuilt packs. SwapCell's current precis specifies new, matched 5 Ah 21700 cells carrying 10 A continuous each in a 13S2P pack. Typical laptop cells are rated for far less current, so graded laptop cells cannot meet the SwapCell reference pack as specified. A second-life SwapCell variant (for example a low-current storage pack for PowerBox, or a pack of graded power tool cells) needs a decision by Amish and agreement with the SwapCell project. Proposed, awaiting Amish.
-- **CellGuard.** Packs rebuilt from graded LFP cells would use CellGuard; lithium-ion packs depend on CellGuard's proposed NMC profile, which is itself awaiting Amish.
-- **ReflowEconomy.** CellCheck is the grading step for the battery stream in ReflowEconomy's micro-factory, where cells that cannot be reused are exported for industrial recycling.
+- **SwapCell.** The pitch keeps SwapCell (CCK-DDR-001 item 1). SwapCell's reference pack uses new 5 Ah 21700 cells carrying 10 A continuous each, which graded laptop cells cannot match. The TRL 3 study (CCK-CAL-001 section 10) finds a 13S4P second-life pack of grade A cells feasible as a low-current storage pack for PowerBox, about 334 Wh and 165 W, with PowerBox's AC output limited to about 150 W; e-bike use is ruled out. The variant needs the SwapCell project's agreement and its own pack design.
+- **CellGuard.** Packs rebuilt from graded LFP cells would use CellGuard; lithium-ion packs depend on CellGuard's NMC profile, which CellGuard adopted for TRL 3 (hardware for both, LFP firmware first), open for Amish's review.
+- **ReflowEconomy.** CellCheck is the grading step for the battery stream in ReflowEconomy's micro-factory, where cells that cannot be reused are exported for industrial recycling. Two passport schema gaps are raised with that project (CCK-DDR-001 item 15).
 
 ## Safety
 
-> **Safety:** Salvaged lithium-ion cells can have hidden damage and can overheat, vent flammable and toxic gas, and burn. Work on a non-flammable surface, with a smoke alarm and a Class D or large dry-powder extinguisher or a sand bucket within reach, and never leave the grader running unattended until Amish has decided whether and how overnight operation is allowed.
+> **Safety:** Salvaged lithium-ion cells can have hidden damage and can overheat, vent flammable and toxic gas, and burn. Work on a non-flammable surface, with a smoke alarm and a Class D or large dry-powder extinguisher or a sand bucket within reach. Stay with the grader whenever a cell is charging or discharging; only cells resting with no current flowing may be left.
 
 - **Pack disassembly.** Removing spot-welded nickel strip can short cells or tear wraps. Use insulated tools, cut one strip at a time, wear eye protection and gloves, and tape exposed terminals.
 - **Damaged and deeply discharged cells.** Reject cells with any visible damage and cells below 2.0 V. Do not try to revive them.
-- **Charging.** Each charger module limits voltage to 4.20 V by itself; the firmware adds temperature and time limits. A cell that passes 45 °C or rises 8 K above the bench is disconnected and flagged; the operator moves it to a metal container of sand once it is cool.
-- **Single faults.** A load MOSFET that fails short would drain its cell far below 2.0 V; the cell must then be rejected. A hardware watchdog that removes all load gate drive when the controller stops is proposed (R9).
-- **Heat.** The heatsink can reach about 70 °C; the guard and layout keep it away from the cells, and the fans run whenever a load is on.
-- **Containment.** The steel tray, ceramic fibre liner and steel guard are meant to hold ejecta from one venting cell. This has not been checked and must not be relied on.
+- **Charging.** Each charger module limits voltage to 4.20 V by itself; the firmware adds voltage, current, temperature and time limits and opens the series charge switch. A cell that passes 45 °C or rises 8 K above the bench is disconnected and flagged; the operator moves it to a metal container of sand once it is cool.
+- **Single faults.** The watchdog, undervoltage comparators and 3 A channel fuses cover the faults in R9 on paper (CCK-CAL-001 Table 3). A thermistor clip that falls off is not detected and remains a residual risk. None of this is tested.
+- **Heat.** MOSFET cases reach about 59 °C with the fans running and could approach 99 °C if both fans stopped, so the firmware stops discharges on a fan or heatsink fault. Keep hands off the heatsink during discharge.
+- **Containment.** The steel tray, ceramic fibre liner and steel guard are meant to hold ejecta from one venting cell. This cannot be verified on paper and must not be relied on. The fan intake slots are an opening in the tray wall.
 - **Transport and storage.** Store graded cells at about 3.7 V in a non-flammable container with terminals covered. Rejected cells go to a battery collection point, never to household waste.
 - **Scope.** CellCheck is a research and prototype tool. Its grades do not certify any cell or pack as safe.
 
 ## Open questions
 
-- [ ] May graded cells ever go into SwapCell packs, and if so, which cell sources and current limits? Proposed, awaiting Amish.
-- [ ] Can the grader run unattended overnight, and with what precautions (for example a fire-rated cabinet and a remote alarm)? Proposed, awaiting Amish.
-- [ ] Grading thresholds, rest period and matching tolerance (Table 2 and item 7). Proposed, awaiting Amish.
-- [ ] Should an LFP profile be in the first release? Proposed, awaiting Amish.
+- [ ] Budget: $175 recommended, Proposed, awaiting Amish (CCK-DDR-001 item 4).
 - [ ] Which partner should supply cells for first trials: a repair café, an e-bike repair shop or a collection point? Proposed, awaiting Amish.
-- [ ] How does the grading record map onto ReflowEconomy's material passport? To be studied at TRL 3.
+- [ ] DC resistance method and 14-day rest; scheduling rule for the attended day. Proposed, awaiting Amish (items 11 and 12).
+- [ ] TRL 3 engineering proposals (same-channel and cohort self-discharge reading, temperature-gated pulse, calibration, fan-fault stop, thermistor plausibility check). Awaiting Amish (item 13).
+- [ ] Responses to R12, R11 and R5. Proposed, awaiting Amish (item 14).
+- [ ] ReflowEconomy passport gaps, raised with that project (item 15).

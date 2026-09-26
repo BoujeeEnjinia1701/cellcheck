@@ -3,7 +3,7 @@ doc_id: CCK-REQ-001
 title: CellCheck requirements
 project: CellCheck
 doc_type: Requirements
-version: "0.2"
+version: "0.3"
 status: Draft
 date: '2026-09-25'
 author: Amish Chadha
@@ -17,11 +17,15 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: First measurable requirements for TRL 2
+- version: "0.3"
+  date: '2026-09-25'
+  author: Amish Chadha
+  change: Apply CCK-DDR-001 (R14 redefined, R9 protection adopted, R3 calibration, R12 against both budgets); status table from CCK-CAL-001
 ---
 
 # CellCheck requirements
 
-These are first-pass requirements for the concept. Targets are proposals for review, not user-validated needs; they will be checked by calculation at TRL 3 and revised with the first trial partner. Status in Table 2 is judged against the estimates in CCK-PRC-001. Two requirements are not met at TRL 2 (R9 and R14) and three are at risk (R3, R10 and R13).
+These are first-pass requirements for the concept. Targets are proposals for review, not user-validated needs, and will be revised with the first trial partner. Status in Table 2 comes from the calculation note CCK-CAL-001. One requirement is not met (R12, cost against the $160 budget), four are at risk (R4, R5, R6 and R11), and R10 cannot be verified at TRL 3. R14 was redefined in v0.3 under CCK-DDR-001 item 2, adopted for TRL 3 under Amish's 2026-09-25 instruction and open for his review.
 
 Table 1. Requirements.
 
@@ -29,7 +33,7 @@ Table 1. Requirements.
 | --- | --- | --- | --- |
 | R1 | Test the common salvaged cell sizes | 18650 and 21700 cylindrical lithium-ion cells (LCO, NMC, NCA), one cell per channel, 8 channels or more | Design review of holders and profiles |
 | R2 | Measure capacity accurately | ±2 % of reading at a constant 1.0 A discharge from 4.20 V to 2.80 V | Error budget; later comparison with a calibrated reference |
-| R3 | Measure cell voltage accurately | ±10 mV from 2.0 to 4.3 V | Data sheet error budget; later comparison with a calibrated meter |
+| R3 | Measure cell voltage accurately | ±10 mV from 2.0 to 4.3 V, after a one-time per-channel calibration at build | Data sheet error budget; later comparison with a calibrated meter |
 | R4 | Measure DC internal resistance repeatably | Resolution 1 mΩ or better; repeatability ±3 mΩ or ±5 % of reading, whichever is larger, over 5 reinsertions of one cell | Error budget; later repeat test |
 | R5 | Grade enough cells | 12 cells or more per attended 10 h day on typical 1.8 Ah cells | Cycle-time calculation |
 | R6 | Detect self-discharge | Open-circuit voltage change over a 14-day rest measured to ±3 mV; cells dropping more than 50 mV (default) flagged | Calculation; later repeat readings |
@@ -38,37 +42,39 @@ Table 1. Requirements.
 | R9 | Stay safe after a single fault | No single failure (controller crash, stuck-on load MOSFET, open thermistor, failed charger) lets a cell be charged above 4.25 V, heated past 60 °C, or discharged below 2.5 V | Failure mode and effects analysis |
 | R10 | Contain a single cell failure | Tray, liner and guard hold ejecta and flame from one venting 21700 cell without spread beyond the tray | Analysis at TRL 3; physical test only at TRL 4 or later |
 | R11 | Fit on a bench | 500 x 320 x 120 mm or smaller, 5 kg or less without the adapter | Massing model; later weighing |
-| R12 | Stay within the concept budget | $160 or less in parts at quantity one, excluding cells | Priced BOM |
+| R12 | Stay within the concept budget | $160 or less in parts at quantity one, excluding cells (`project.yaml`); a budget of $175 is recommended, Proposed, awaiting Amish (CCK-DDR-001 item 4) | Priced BOM |
 | R13 | Run from a safe supply | Certified 12 V DC adapter; nothing inside the unit above 13 V; no user mains wiring | Design review |
-| R14 | Operate without supervision | Grading can run overnight without a person present | Safety review by Amish |
+| R14 | Limit unattended operation to safe stages | The self-discharge rest (no current flowing) can run without a person present; charge, resistance pulse and discharge run only with a person present. Redefined in v0.3 from "grading can run overnight without a person present" (CCK-DDR-001 item 2) | Design review; safety review by Amish |
 | R15 | Grade and match automatically | Grades per a configurable rule table; groups for any SxP pack with each parallel group's capacity within ±1 % of the mean | Run on sample data |
 | R16 | Keep a record for every cell | CSV row per cell with ID, source, measurements, grade, group and dates; export over USB or local Wi-Fi with no cloud account | Design review of the file format |
 | R17 | Be buildable and open | Off-the-shelf modules, no fine-pitch assembly; hardware CERN-OHL-S-2.0, software MIT | Design review of the parts list |
 
-Table 2. Status at TRL 2 (estimates).
+Table 2. Status at TRL 3 (CCK-CAL-001, paper estimates; not met and at risk first).
 
 | ID | Status | Basis |
 | --- | --- | --- |
-| R1 | Met by design | Eight holders for 18650 and 21700 |
-| R2 | Met on estimate | About ±1 % after one-time calibration, about ±2 % without |
-| R3 | **At risk** | About ±10 mV worst case from typical data sheet figures before calibration; unchecked |
-| R4 | Met on estimate, unverified | About 0.8 mΩ per count; repeatability depends on contact force and cell temperature |
-| R5 | Met, thin margin | About 12 cells per attended 10 h day |
-| R6 | Met on estimate | 1.25 mV resolution; room temperature changes of a few kelvin shift readings by about 1 mV (assumption) |
-| R7 | Met by design | NTC per cell, firmware limits; response time unverified |
-| R8 | Met on estimate | Needs 1.1 K/W; a fan-cooled finned bar is expected to give about 0.5 to 0.8 K/W |
-| R9 | **Not met** | Charger modules limit voltage independently, but a stuck-on load MOSFET can drain a cell below 2.5 V and temperature limits rely on firmware. A hardware watchdog and a per-channel undervoltage comparator are proposed, awaiting Amish |
-| R10 | **At risk** | Containment concept only; no analysis yet |
-| R11 | Met | About 460 x 300 x 90 mm, about 3.5 kg |
-| R12 | Met, about $1 margin | About $159 in parts |
-| R13 | **At risk** | Met by design only if the adapter is a certified unit; low-cost adapters without certification are common |
-| R14 | **Not met** | The concept requires a person present while cells charge or discharge; whether and how overnight runs are allowed is a safety trade-off awaiting Amish |
-| R15 | Met by design | Serpentine sort within a grade; tolerance to be confirmed on real cells |
-| R16 | Met by design | CSV on microSD and local web page |
-| R17 | Met by design | Module-based build |
+| R12 | **Not met** | $164.00 in parts, $4.00 over $160; $11.00 under the recommended $175, which is Proposed, awaiting Amish |
+| R4 | **At risk** | 0.83 mΩ per count; repeatability ±2.99 mΩ worst case against ±3.0 mΩ at 60 mΩ; a 2 K cell temperature difference dominates |
+| R5 | **At risk** | 12.0 cells per attended day if current stages finish the same day; 12.8 with an overnight pause; 8.0 for 2.5 Ah cells |
+| R6 | **At risk** | ±10.6 mV across two channels, ±2.3 mV in the same channel; relaxation after charge not bounded |
+| R11 | **At risk** | 460 x 300 x 75 mm; 4.97 kg against 5 kg |
+| R10 | Not verifiable at TRL 3 | Containment cannot be analysed credibly on paper; mean tray rise about 84 K for an assumed 100 kJ event |
+| R1 | Met (design review) | Eight holders for 18650 and 21700 cells |
+| R2 | Met | ±1.1 % without calibration, ±0.4 % with |
+| R3 | Met (with per-channel calibration) | ±12.4 mV without calibration; ±4.8 mV after it |
+| R7 | Met (accuracy) | ±1.0 K at 45 °C, 1 Hz sampling; clip response time not verifiable at TRL 3 |
+| R8 | Met | MOSFET cases 58.7 °C with fans; about 99 °C if the fans stop, so the firmware stops discharges on a fan fault |
+| R9 | Met (analysis) | Watchdog, undervoltage comparators, 3 A channel fuses and a series charge switch (CCK-CAL-001 Table 3); a detached thermistor is a residual risk |
+| R13 | Met (design review) | Certified 12 V adapter; 12.6 V highest inside; 42.5 W of 60 W |
+| R14 | Met (design review) | As redefined in v0.3 |
+| R15 | Met (synthetic data) | 0.006 % group deviation for a 4S6P pack from synthetic cells |
+| R16 | Met (design review) | CSV per cell; lots map to the ReflowEconomy passport v0.2 with two schema gaps |
+| R17 | Met (design review) | Module-based build; open licences |
 
 ## Assumptions
 
 - A typical salvaged 18650 holds about 1.8 Ah as found and arrives at about 30 % charge.
-- A 14-day rest at 4.10 V separates cells with a harmful self-discharge from healthy ones; the 50 mV threshold is a starting value to be tuned with real cells.
+- A 14-day rest after a recharge that stops at 4.10 V under current separates cells with a harmful self-discharge from healthy ones; the 50 mV threshold is a starting value to be tuned with real cells.
 - Operators remove cells from packs by hand before grading; disassembly is outside the scope of this design.
+
+> **Safety:** CellCheck charges and discharges salvaged lithium-ion cells, which can overheat, vent and burn. Charge and discharge run only with a person present. Meeting these requirements on paper does not make a unit safe, and grades do not certify any cell or pack.

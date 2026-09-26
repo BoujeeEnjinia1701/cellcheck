@@ -2,12 +2,24 @@
 name: CellCheck
 slug: cellcheck
 area: Circular Materials
-trl: 2                   # Technology Readiness Level, see .kit/STANDARDS.md section 9
+trl: 3                   # Technology Readiness Level, see .kit/STANDARDS.md section 9
 trl_target: 3
 trl_evidence:
   - docs/01-problem.md
   - docs/02-concept.md
   - docs/03-requirements.md
+  - docs/decisions/0001-trl2-review-decisions.md
+  - docs/04-calcs/01-sizing.md
+  - docs/04-calcs/sizing.py
+  - docs/04-calcs/results.csv
+  - cad/src/model.py
+  - cad/src/sheets.py
+  - cad/step/cellcheck-assembly.step
+  - cad/stl/cellcheck-assembly.stl
+  - cad/drawings/CCK-DWG-001.svg
+  - cad/drawings/CCK-DWG-001.pdf
+  - bom/bom.csv
+  - bom/bom-notes.md
 shortlisted: false
 pitch: >-
   A second-life battery cell grader: it measures capacity, internal resistance and self-discharge of salvaged lithium cells and sorts them into matched groups for rebuilt packs such as SwapCell.

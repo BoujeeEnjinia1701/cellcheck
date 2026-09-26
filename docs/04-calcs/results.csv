@@ -1,0 +1,18 @@
+id,value,target,status
+R12,$164.00; $+4.00 against $160; $-11.00 against the recommended $175,$160 or less (project.yaml),Not met
+R4,"0.83 mOhm per count; +/-2.99 mOhm worst case, +/-2.02 RSS at 60 mOhm",1 mOhm; +/-3 mOhm or 5 %,At risk
+R5,12.0 cells/day if current stages finish the same day; 12.8 with an overnight pause; 8.0 for 2.5 Ah cells,12 cells/day on 1.8 Ah cells,At risk
+R6,+/-10.6 mV worst case (+/-6.8 RSS); relaxation after charge not bounded,+/-3 mV; flag above 50 mV,At risk
+R11,460 x 300 x 75 mm; 4.97 kg,500 x 320 x 120 mm; 5 kg,At risk
+R10,"Mean tray rise 84 K for an assumed 100 kJ event; jets, hot spots and flame not analysable on paper",Hold one venting 21700 within the tray,Not verifiable at TRL 3
+R1,"8 channels; holders for 18650 and 21700 (cell to 70 mm long, 21.0 mm diameter)","18650 and 21700, 8 channels or more",Met (design review)
+R2,"+/-1.1 % uncalibrated, +/-0.4 % calibrated (worst case)",+/-2 %,Met
+R3,+/-12.4 mV uncalibrated; +/-4.8 mV after per-channel calibration,+/-10 mV,Met (with per-channel calibration)
+R7,"+/-1.0 K at 45 C, 1 Hz sampling; clip response time not analysed","1 Hz, +/-2 K; stop at 45 C or +8 K",Met (accuracy); response not verifiable at TRL 3
+R8,59 C case (0.58 K/W with fans); 99 C if the fans stop,75 C or less at 35 C room,Met
+R9,"Met on FMEA with watchdog, UV comparators and 3 A channel fuses (short gives at least 5.9 A); detached thermistor is a residual risk","No single fault: >4.25 V, >60 C or <2.5 V",Met (analysis)
+R13,"12 V certified adapter, bus at most 12.6 V, 43 W of 60 W",Certified 12 V; 13 V or less inside; no mains wiring,Met (design review)
+R14,Rest stage unattended (no current); charge and discharge attended (DDR item 2),Rest stage unattended; current stages attended (redefined v0.3),Met (design review)
+R15,4S6P from 47 grade B synthetic cells: max group deviation 0.01 %,Configurable grades; groups within +/-1 %,Met (synthetic data)
+R16,CSV per cell; group and reject lots map to the ReflowEconomy passport v0.2 (two schema gaps),CSV per cell; local export; no cloud,Met (design review)
+R17,Modules and through-hole parts; CERN-OHL-S-2.0 and MIT,Off-the-shelf; open licences,Met (design review)

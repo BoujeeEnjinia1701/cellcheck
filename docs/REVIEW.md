@@ -59,3 +59,73 @@ Requirements not met or at risk:
 ### Recommended next step
 
 Review this note and the media, and decide items 1 to 4. If approved, run `/advance-trl3` to check the thermal budget, measurement error budgets and cycle time by calculation, write the failure mode analysis for R9, and produce the parametric model and drawing sheet.
+
+## Session 2026-09-25: TRL 3
+
+Amish asked for this batch to be taken through the usual process with the instruction "you know the drill, nothing gets past TRL 3". He has not reviewed the CellCheck TRL 2 items one by one, so each item with a recommendation is adopted as recommended for TRL 3 under Amish's 2026-09-25 instruction, open for his review. TRL 4 is on hold by Amish's instruction.
+
+### What was done
+
+- `docs/decisions/0001-trl2-review-decisions.md` (CCK-DDR-001 v0.1, status proposed): items 1 to 3 and 5 to 9 adopted for TRL 3 pending Amish's review; items 4 and 10 to 16 stay open.
+- `docs/04-calcs/01-sizing.md` (CCK-CAL-001 v0.1) with `docs/04-calcs/sizing.py` and `results.csv`: cycle time and a day-by-day throughput simulation, power and energy, heatsink and MOSFET temperatures, error budgets for capacity, voltage, resistance, self-discharge and temperature, the R9 failure mode analysis, a containment estimate, size and mass, grading and matching on synthetic cells, a second-life SwapCell study, cost, and the mapping to ReflowEconomy's material passport.
+- `cad/src/model.py`: parametric build123d model (tray with intake slots, base plate, eight four-wire holders, guard, module rows, heatsink with 40 vertical fins, fan shroud, controller, watchdog board, display, inlet, adapter, rest rack). Exports `cad/step/` and `cad/stl/` for the assembly, tray, heatsink, holders and rest rack; prints volumes and a clash check (no clashes).
+- `cad/src/sheets.py` and `cad/drawings/CCK-DWG-001.svg`, `.pdf` and `.png`: general arrangement at Rev P1, "PRELIMINARY, NOT FOR FABRICATION". The concept sheet keeps CCK-DWG-010, so DWG-001 was the first free number.
+- `bom/bom.csv`: 18 lines, all priced with supplier types; new line 18 (watchdog and undervoltage board, $5.00). `bom/bom-notes.md` updated.
+- `cad/src/concept_media.py` now builds from `model.py`; `media/` refreshed (hero, blueprint, exploded with callout 18, flow, GLB and viewer). No cutaway, as at TRL 2: the unit is open-topped, so the kit's cutaway is not used. The flow diagram losses now sit under the stage that removes them. Temporary `media/_views*` folders deleted.
+- Docs bumped to v0.3 with revision rows: CCK-PRB-001, CCK-PRC-001 (numbers from CAL-001, adopted choices, heatsink orientation, component 18), CCK-REQ-001 (R14 redefined, R3 calibration, R12 against both budgets, status table from CAL-001).
+- `README.md`: TRL 3 badge, links to the drawing and CAL-001, numbers from CAL-001, SwapCell wording aligned with DDR item 1; the required sections are unchanged in order.
+- `project.yaml`: `trl: 3`, `trl_target: 3`, evidence list. Pitch, problem and `budget_usd` unchanged.
+
+### Requirements (CCK-CAL-001)
+
+Met on paper: 11 of 17. Not met and at risk first:
+
+| ID | Status | Value |
+| --- | --- | --- |
+| R12 | **Not met** | $164.00 against $160; $11.00 under the recommended $175 |
+| R4 | At risk | ±2.99 mΩ worst case against ±3.0 mΩ; cell temperature dominates |
+| R5 | At risk | 12.0 cells per attended day on the stage-boundary rule; 12.8 with an overnight pause; 8.0 for 2.5 Ah cells |
+| R6 | At risk | ±10.6 mV across channels, ±2.3 mV in the same channel; relaxation after charge not bounded |
+| R11 | At risk | 4.97 kg against 5 kg; 460 x 300 x 75 mm |
+| R10 | Not verifiable at TRL 3 | Containment of a venting cell cannot be analysed credibly on paper |
+| R1, R2, R3, R7, R8, R9, R13 to R17 | Met (R3 with per-channel calibration; R9 on analysis; R15 on synthetic data) | See CCK-CAL-001 Table 4 |
+
+Key numbers: 6.33 h per 1.8 Ah cell; 42.5 W adapter load; 16.8 Wh per cell from the mains; 33.6 W peak heat, 0.58 K/W heatsink, MOSFET cases 58.7 °C (about 99 °C if both fans stop); capacity ±1.1 % uncalibrated; voltage ±12.4 mV uncalibrated and ±4.8 mV calibrated.
+
+Corrections to TRL 2 figures: time per cell 6.5 to 6.33 h; voltage error ±10 to ±12.4 mV before calibration; capacity error ±2 to ±1.1 %; height 90 to 75 mm; mass 3.5 to 4.97 kg (the tray alone is 2.43 kg); cost $159 to $164. The TRL 2 massing model had heatsink fins across the fan airflow; they are now in line with it.
+
+### Decisions recorded (CCK-DDR-001)
+
+Adopted as recommended for TRL 3 under Amish's 2026-09-25 instruction, open for his review: (1) keep the pitch and plan a second-life SwapCell variant, studied in CAL-001 section 10 (low-current PowerBox storage pack, about 334 Wh and 165 W; e-bike use ruled out); (2) charge and discharge attended only, rest stage may be left, so R14 is redefined; (3) hardware watchdog and per-channel undervoltage comparators; (5) grading thresholds, 14-day rest with 50 mV limit and ±1 % group tolerance as starting values; (6) TP5100, INA226 and ESP32-S3 class modules; (7) eight channels with a linear load; (8) LFP profile later; (9) record mapped to ReflowEconomy's passport v0.2. No pitch or problem rewording was recommended, so both are unchanged.
+
+### Items still awaiting Amish
+
+- Budget: $175 recommended; `budget_usd` stays at $160 (item 4).
+- First trial partner: repair café, e-bike repair shop or collection point; no preference stated (item 10).
+- DC four-wire resistance and the 14-day rest (in the precis, not separate TRL 2 review items) (item 11).
+- Scheduling rule for the attended day: finish current stages the same day, or pause overnight with the unit off (item 12).
+- Engineering proposals from CAL-001: same-channel and same-day cohort self-discharge reading, temperature-gated resistance pulse, per-channel calibration, fan-fault stop, detached-thermistor plausibility check (item 13).
+- Responses to R12, R11 (a 1.2 mm tray saves 0.49 kg but thins the containment) and R5 (item 14).
+- Grade A resistance limits per cell model need named data sheets (item 16).
+
+### Cross-repo notes (not edited in the other repos)
+
+- **ReflowEconomy:** the material passport v0.2 has no `product_form` for graded cells and no electrical test in `identification.method`. Raised here for the ReflowEconomy project (item 15).
+- **SwapCell and PowerBox:** a second-life pack would limit discharge to about 3.5 A and charge to 0.5C, below PowerBox's 5.0 A charge and 300 W inverter; PowerBox would need a lower host charge limit and AC limit for that pack. Needs the SwapCell project's agreement.
+- **CellGuard:** consistent. CellCheck assumes CellGuard's NMC-capable hardware with LFP firmware first, as adopted in CGD-DDR-001 item 7. No other shared component (FieldNode, MotionCore, ThermaCart, TwinKit, CalRig) is used.
+
+### Safety concerns
+
+- Salvaged cells can hide damage; charge and discharge now require a person present. The failure mode analysis covers the R9 faults on paper, but a detached thermistor clip goes undetected.
+- If both fans stop, the MOSFET cases could approach 99 °C; the firmware must stop discharges on a fan or heatsink fault.
+- Containment is unverified, and the new fan intake slots are an opening in the tray wall. The 100 kJ runaway figure in CAL-001 section 7 is an assumption with no source yet and must be replaced by a cited value.
+- Grades must not be presented as a safety certification of any cell or pack.
+
+### Citations and other checks
+
+- No unchecked citations were listed in this note, so no WebFetch was needed. The INA226-class and ESP32-class figures in CAL-001 are typical data sheet values used as assumptions, not verified against a data sheet in this session.
+- No TRL 4 material exists in the repo (`build-log/` holds only its README and `.gitkeep`; `firmware/` and `electronics/` are empty).
+
+### Recommended next step
+
+Amish to review CCK-DDR-001, decide the budget (item 4) and the trial partner (item 10), and confirm or change the adopted items and engineering proposals. TRL 4 is on hold by Amish's instruction. For reference only, TRL 4 would need: a built unit; bench test reports (TST, `environment: lab`) for capacity, voltage, resistance repeatability and self-discharge against a calibrated reference; a fault-injection test of the watchdog, comparators and fuses; a fan-failure thermal test; a containment test with a sourced cell failure method in a suitable facility; and dated build-log entries.

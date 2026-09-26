@@ -1,18 +1,18 @@
 # CellCheck
 
-![TRL 2](https://img.shields.io/badge/TRL-2%20of%209-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827)
+![TRL 3](https://img.shields.io/badge/TRL-3%20of%209-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827)
 
-**Area:** Circular Materials · **TRL:** 2 of 9 (concept formulated) · **Prototype budget:** about $160 USD · **Difficulty:** 3 of 5
+**Area:** Circular Materials · **TRL:** 3 of 9 (proof of concept on paper) · **Prototype budget:** about $160 USD · **Difficulty:** 3 of 5
 
 A second-life battery cell grader: it measures capacity, internal resistance and self-discharge of salvaged lithium cells and sorts them into matched groups for rebuilt packs such as SwapCell.
 
 ![CellCheck concept](media/hero.png)
 
-[Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [Review note](docs/REVIEW.md)
+[Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement CCK-DWG-001 (PDF)](cad/drawings/CCK-DWG-001.pdf) · [Sizing note CCK-CAL-001](docs/04-calcs/01-sizing.md) · [Review note](docs/REVIEW.md)
 
 ## Concept rationale
 
-Most cells in a discarded laptop, power tool or e-bike pack still work, but nobody knows which ones. CellCheck measures the three things that decide whether a cell is worth reusing: how much charge it holds, how much its voltage sags under load (internal resistance) and whether it leaks charge at rest (self-discharge). It then groups good cells so that each parallel group in a rebuilt pack has nearly the same capacity. Eight independent channels, four-wire contacts and a passive 14-day rest rack keep the tool cheap while grading about 12 cells in an attended working day (estimate).
+Most cells in a discarded laptop, power tool or e-bike pack still work, but nobody knows which ones. CellCheck measures the three things that decide whether a cell is worth reusing: how much charge it holds, how much its voltage sags under load (internal resistance) and whether it leaks charge at rest (self-discharge). It then groups good cells so that each parallel group in a rebuilt pack has nearly the same capacity. Eight independent channels, four-wire contacts and a passive 14-day rest rack keep the tool cheap while grading 12 typical cells in an attended 10 h working day (CCK-CAL-001, a paper estimate with no margin).
 
 It is open and garage-buildable because the people who reuse cells are repair shops, makerspaces and small off-grid installers, not laboratories. It uses off-the-shelf charger and current-monitor modules, runs from a certified 12 V adapter so no one wires mains, and writes its thresholds and results to plain files that anyone can check. A published grading method also lets different workshops compare cells on the same terms.
 
@@ -59,30 +59,35 @@ Full problem statement: [docs/01-problem.md](docs/01-problem.md)
 
 A second-life battery cell grader: it measures capacity, internal resistance and self-discharge of salvaged lithium cells and sorts them into matched groups for rebuilt packs such as SwapCell.
 
-Eight channels each charge a cell at 1 A, measure DC internal resistance with a 0.5 A then 2.0 A pulse in the IEC 61960 pattern, discharge at 1 A to measure capacity and recharge to 4.10 V. Cells then rest 14 days in a printed rack and come back for a voltage check. Software grades each cell (A, B, C or reject) and builds groups for any series and parallel count, with each parallel group within ±1 % of the mean capacity. Estimates at TRL 2: about 6.5 h per cell, about 12 cells per attended 10 h day, about 29 W of heat at full load, about $159 in parts.
+Eight channels each charge a cell at 1 A, measure DC internal resistance with a 0.5 A then 2.0 A pulse in the IEC 61960 pattern, discharge at 1 A to measure capacity and recharge until the cell reads 4.10 V under current. Cells then rest 14 days in a printed rack and come back for a voltage check. Software grades each cell (A, B, C or reject) and builds groups for any series and parallel count, with each parallel group within ±1 % of the mean capacity. A hardware watchdog, per-channel undervoltage comparators and 3 A cell fuses cover single faults. The sizing note CCK-CAL-001 finds 6.33 h of channel time per typical cell, 12.0 cells per attended 10 h day, 33.6 W of peak heat with MOSFET cases at about 59 °C, 460 x 300 x 75 mm and 4.97 kg, and $164 in parts, which is $4 over the $160 budget; a $175 budget is recommended and awaits Amish.
 
-Use in SwapCell is not yet settled: SwapCell's reference pack specifies new high-current cells, which typical laptop cells cannot match. A second-life variant is proposed, awaiting Amish (see the [review note](docs/REVIEW.md)).
+SwapCell stays in the pitch. Its reference pack uses new high-current cells, which graded laptop cells cannot match, so a second-life variant is planned: the TRL 3 study finds a low-current storage pack for PowerBox (about 334 Wh, 165 W) feasible, and e-bike use is ruled out. This is adopted for TRL 3 under Amish's 2026-09-25 instruction, open for his review, and needs the SwapCell project's agreement (see the [decision record](docs/decisions/0001-trl2-review-decisions.md)).
 
 ![Material flow per 100 salvaged cells](media/flow.png)
 
-Full design precis: [docs/02-concept.md](docs/02-concept.md) · Requirements: [docs/03-requirements.md](docs/03-requirements.md)
+Full design precis: [docs/02-concept.md](docs/02-concept.md) · Requirements: [docs/03-requirements.md](docs/03-requirements.md) · Calculations: [docs/04-calcs/01-sizing.md](docs/04-calcs/01-sizing.md)
+
+![General arrangement CCK-DWG-001](cad/drawings/CCK-DWG-001.png)
+
+On paper CellCheck meets 11 of its 17 requirements. R12 (cost against $160) is not met; R4 (resistance repeatability), R5 (throughput), R6 (self-discharge reading) and R11 (mass) are at risk; R10 (containment of a venting cell) cannot be verified at TRL 3.
 
 ## Key components
 
 - Eight cell holders for 18650 and 21700 cells with four-wire contacts
-- Eight 1 A CC-CV charger modules (TP5100 class, proposed)
-- Eight INA226-class current and voltage monitors with charger switches
-- Eight constant-current MOSFET loads on a fan-cooled heatsink
+- Eight 1 A CC-CV charger modules (TP5100 class)
+- Eight INA226-class current and voltage monitors with series charge switches
+- Eight constant-current MOSFET loads on a fan-cooled heatsink with vertical fins
+- Hardware watchdog and per-channel undervoltage comparators
 - Temperature sensing per cell (NTC thermistors)
 - ESP32-S3 class controller with display, microSD log and local web page, and grading software
 - Steel tray with ceramic fibre liner and a perforated steel cell guard
 - Certified 12 V 5 A adapter and a printed 48-cell rest rack
 
-The working bill of materials is in [bom/bom.csv](bom/bom.csv): about $159 in parts against the $160 budget.
+The priced bill of materials is in [bom/bom.csv](bom/bom.csv): $164 in parts against the $160 budget (a $175 budget is recommended, Proposed, awaiting Amish).
 
 ## Safety
 
-> Lithium cells can overheat, vent and burn, and salvaged cells can hide damage. Reject damaged cells and any cell below 2.0 V. Grade on a non-flammable surface inside the steel tray, with a smoke alarm and an extinguisher or sand bucket within reach, and never leave the grader running unattended. Isolate any cell that heats or swells in a metal container of sand. Use only a certified 12 V adapter. CellCheck is a research and prototype tool; its grades do not certify any cell or pack as safe.
+> Lithium cells can overheat, vent and burn, and salvaged cells can hide damage. Reject damaged cells and any cell below 2.0 V. Grade on a non-flammable surface inside the steel tray, with a smoke alarm and an extinguisher or sand bucket within reach, and stay with the grader whenever a cell is charging or discharging; only cells resting with no current flowing may be left. Isolate any cell that heats or swells in a metal container of sand. Use only a certified 12 V adapter. CellCheck is a research and prototype tool; its grades do not certify any cell or pack as safe.
 
 ## Repository layout
 
@@ -91,7 +96,7 @@ The working bill of materials is in [bom/bom.csv](bom/bom.csv): about $159 in pa
 | `docs/` | Problem, concept, requirements, calculations and design decisions |
 | `cad/src/` | build123d Python source, the source of truth for all geometry |
 | `cad/step/`, `cad/stl/` | Exported models for FreeCAD, other CAD tools and printing |
-| `cad/drawings/` | 2D sketches and dimensioned drawings |
+| `cad/drawings/` | General arrangement CCK-DWG-001 (Rev P1) |
 | `bom/` | Bill of materials |
 | `electronics/` | KiCad schematics and PCB layouts |
 | `firmware/` | Microcontroller code |
