@@ -183,3 +183,35 @@ Tuning the grading thresholds on the first 100 real cells (item 5), buying modul
 ### Safety concerns
 
 Unchanged from the TRL 3 session. The detached-thermistor plausibility check narrows but does not remove that residual risk, and the 100 kJ runaway figure in CCK-CAL-001 section 7 still needs a sourced value before any TRL 4 work.
+
+## Session 2026-09-26: product appearance model and photoreal renders
+
+Amish chose this repo for the first batch of product renders on 2026-09-26. This session added an appearance model for photoreal product shots; it changes no design parameter.
+
+### What was done
+
+- `cad/src/product_model.py` (new): `product_parts()` returns 91 coloured, material-tagged parts (shell 16, internal 46, accessory 14, context 15) with BOM numbers and explode offsets, plus `TITLE` and `RENDER_VIEWS` (hero, exploded, detail). All dimensions come from `PARAMS`, `channel_x()` and `heatsink_extent()` in `cad/src/model.py`, which is unchanged.
+- `README.md`: the hero image now points to `media/render-hero.png`, and the links line starts with the exploded render. Both files are produced later by the render pipeline.
+
+What the appearance model adds:
+
+- Steel tray with rounded corners, a rolled rim, rounded intake slots, a teal nameplate and a lithium warning label; ceramic fibre liner shown separately.
+- Aluminium base plate with hex standoffs, fixing screws and printed channel numbers 1 to 8.
+- Filleted cell holders with two nickel contacts at each end (force and sense) and solder tabs; 18650 cells with ID labels and insulator rings in six of the eight bays; saddle-shaped thermistor clips, with the two spare clips parked on the empty holders.
+- Slotted perforated guard with foot flanges and screws.
+- Populated charger modules, sense boards with lit status LEDs, TO-220 MOSFETs with clamp screws, the finned heatsink, fan shroud and two fans with blades, hubs and finger guards.
+- Controller board, watchdog perfboard with DIP packages, a charcoal display stand with dark glass, lit channel rows and three buttons, and a power inlet with rocker switch, fuse holder, DC jack and power LED.
+- Accessories: the rest rack with column numbers and resting cells, and the 12 V adapter with its rating label and cable to the inlet.
+- Context: a silicone bench mat and three bins labelled A, B and C holding matched cells.
+
+### Differences from model.py (Proposed, awaiting Amish)
+
+- **18650 cells in the bays.** `model.py` draws 21700 cells (the largest accepted) in all eight bays; the render shows 18650 cells, the common salvaged size, in six bays with two bays empty so the contacts are visible. The thermistor clips sit lower to match. Recommendation: accept for the renders; the model keeps the 21700 envelope for clearance checks.
+- **Matched group bins A, B and C.** These are not in `bom/bom.csv`. They show where graded cells go after matching. Options: (a) keep them as render context only, (b) add a BOM line for three printed or bought bins, costed against the $175 budget. Recommendation: (a) for now, and decide (b) with the rest of the TRL 4 purchasing.
+- **Fan finger guards.** Not in the BOM; they sit 1 mm behind the fans and change no clearance. Recommendation: add them to BOM line 10 at TRL 4 and cost them then.
+- **Perforation pattern.** The guard is drawn with slots at about 50 % open area instead of round holes, and the sheet is shown 1.0 mm thick instead of 0.8 mm. Recommendation: accept as an appearance choice; the BOM specification stays as written.
+- **Channel status LEDs, labels and screws** are appearance details placed on existing BOM items (lines 2, 5, 7, 8 and 17).
+
+### Status
+
+This is an appearance model only: no tolerances, PCB layouts or fabrication detail. `trl` and `trl_target` stay at 3, and TRL 4 remains on hold.

@@ -6,9 +6,9 @@
 
 A second-life battery cell grader: it measures capacity, internal resistance and self-discharge of salvaged lithium cells and sorts them into matched groups for rebuilt packs such as SwapCell.
 
-![CellCheck concept](media/hero.png)
+![CellCheck: bench grader for salvaged lithium cells, product render](media/render-hero.png)
 
-[Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement CCK-DWG-001 (PDF)](cad/drawings/CCK-DWG-001.pdf) · [Sizing note CCK-CAL-001](docs/04-calcs/01-sizing.md) · [Review note](docs/REVIEW.md)
+[Exploded render](media/render-exploded.png) · [Detail render](media/render-detail.png) · [Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement CCK-DWG-001 (PDF)](cad/drawings/CCK-DWG-001.pdf) · [Sizing note CCK-CAL-001](docs/04-calcs/01-sizing.md) · [Review note](docs/REVIEW.md)
 
 ## Concept rationale
 
