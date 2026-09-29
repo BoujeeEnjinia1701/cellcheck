@@ -1,6 +1,6 @@
 # CellCheck
 
-![TRL 3](https://img.shields.io/badge/TRL-3%20of%209-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827)
+![TRL 3](https://img.shields.io/badge/TRL-3%20of%209-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827) [![DOI](https://zenodo.org/badge/1388475576.svg)](https://zenodo.org/badge/latestdoi/1388475576) [![REUSE compliant](https://github.com/BoujeeEnjinia1701/cellcheck/actions/workflows/reuse.yml/badge.svg)](https://github.com/BoujeeEnjinia1701/cellcheck/actions/workflows/reuse.yml) [![Archived in Software Heritage](https://archive.softwareheritage.org/badge/origin/https://github.com/BoujeeEnjinia1701/cellcheck/)](https://archive.softwareheritage.org/browse/origin/?origin_url=https://github.com/BoujeeEnjinia1701/cellcheck)
 
 **Area:** Circular Materials · **TRL:** 3 of 9 (proof of concept on paper) · **Prototype budget:** about $175 USD · **Difficulty:** 3 of 5
 
