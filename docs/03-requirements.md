@@ -3,7 +3,7 @@ doc_id: CCK-REQ-001
 title: CellCheck requirements
 project: CellCheck
 doc_type: Requirements
-version: "0.5"
+version: "0.6"
 status: Draft
 date: '2026-10-01'
 author: Amish Chadha
@@ -29,11 +29,15 @@ revisions:
   date: '2026-10-01'
   author: Amish Chadha
   change: R11 and R12 values for the constructable design (CCK-DDR-003, CCK-CAL-001 v0.3); no status changed
+- version: "0.6"
+  date: '2026-10-01'
+  author: Amish Chadha
+  change: Budget treated as a value-engineering target; cost wording only, no number changed
 ---
 
 # CellCheck requirements
 
-These are first-pass requirements for the concept. Targets are proposals for review, not user-validated needs, and will be revised with the first trial partner. Status in Table 2 comes from the calculation note CCK-CAL-001 v0.3. No requirement is failed outright; three are at risk (R5, R6 and R11), and R10 cannot be verified at TRL 3. R14 was redefined in v0.3 under CCK-DDR-001 item 2, and R12 was restated in v0.4 for the $175 budget; both follow decisions Amish accepted on 2026-09-25 (CCK-DDR-002).
+These are first-pass requirements for the concept. Targets are proposals for review, not user-validated needs, and will be revised with the first trial partner. Status in Table 2 comes from the calculation note CCK-CAL-001 v0.3. No requirement is failed outright; three are at risk (R5, R6 and R11), and R10 cannot be verified at TRL 3. R14 was redefined in v0.3 under CCK-DDR-001 item 2, and R12 was restated in v0.4 for the $175 value-engineering target; both follow decisions Amish accepted on 2026-09-25 (CCK-DDR-002).
 
 Table 1. Requirements.
 
@@ -50,7 +54,7 @@ Table 1. Requirements.
 | R9 | Stay safe after a single fault | No single failure (controller crash, stuck-on load MOSFET, open thermistor, failed charger) lets a cell be charged above 4.25 V, heated past 60 °C, or discharged below 2.5 V | Failure mode and effects analysis |
 | R10 | Contain a single cell failure | Tray, liner and guard hold ejecta and flame from one venting 21700 cell without spread beyond the tray | Analysis at TRL 3; physical test only at TRL 4 or later |
 | R11 | Fit on a bench | 500 x 320 x 120 mm or smaller, 5 kg or less without the adapter | Massing model; later weighing |
-| R12 | Stay within the concept budget | $175 or less in parts at quantity one, excluding cells (`project.yaml`). Restated in v0.4 from $160 (CCK-DDR-001 item 4, decided by Amish, 2026-09-25) | Priced BOM |
+| R12 | Stay within the value-engineering target | $175 or less in parts at quantity one, excluding cells (`project.yaml`, a hypothetical control target, not a limit). Restated in v0.4 from $160 (CCK-DDR-001 item 4, decided by Amish, 2026-09-25) | Priced BOM |
 | R13 | Run from a safe supply | Certified 12 V DC adapter; nothing inside the unit above 13 V; no user mains wiring | Design review |
 | R14 | Limit unattended operation to safe stages | The self-discharge rest (no current flowing) can run without a person present; charge, resistance pulse and discharge run only with a person present. Redefined in v0.3 from "grading can run overnight without a person present" (CCK-DDR-001 item 2) | Design review; safety review by Amish |
 | R15 | Grade and match automatically | Grades per a configurable rule table; groups for any SxP pack with each parallel group's capacity within ±1 % of the mean | Run on sample data |
@@ -72,7 +76,7 @@ Table 2. Status at TRL 3 (CCK-CAL-001 v0.3, paper estimates; at risk first, no r
 | R7 | Met (accuracy) | ±1.0 K at 45 °C, 1 Hz sampling; clip response time not verifiable at TRL 3 |
 | R8 | Met | MOSFET cases 58.7 °C with fans; about 99 °C if the fans stop, so the firmware stops discharges on a fan fault |
 | R9 | Met (analysis) | Watchdog, undervoltage comparators, 3 A channel fuses and a series charge switch (CCK-CAL-001 Table 3); a detached thermistor is narrowed by a plausibility check but remains a residual risk |
-| R12 | Met | $172.40 in parts, $2.60 under $175 (lines 19 to 21 added for construction, CCK-DDR-003) |
+| R12 | Within the value-engineering target | $172.40 estimated in parts, $2.60 under $175 (lines 19 to 21 added for construction, CCK-DDR-003) |
 | R13 | Met (design review) | Certified 12 V adapter; 12.6 V highest inside; 42.5 W of 60 W |
 | R14 | Met (design review) | As redefined in v0.3 |
 | R15 | Met (synthetic data) | 0.006 % group deviation for a 4S6P pack from synthetic cells |

@@ -3,7 +3,7 @@ doc_id: CCK-DEC-001
 title: CellCheck design decisions register
 project: CellCheck
 doc_type: Design decisions register
-version: "0.1"
+version: "0.2"
 status: Draft
 date: '2026-10-01'
 author: Amish Chadha
@@ -13,6 +13,10 @@ revisions:
     date: '2026-10-01'
     author: Amish Chadha
     change: Register opened with the open decisions from the review note and decision records, the build plan work and every decision made so far
+  - version: "0.2"
+    date: '2026-10-01'
+    author: Amish Chadha
+    change: Budget treated as a value-engineering target
 ---
 
 # CellCheck design decisions register
@@ -32,7 +36,7 @@ Every design decision still to be made, and every decision made, in one place. E
 | 5 | Responses to the requirements at risk, R11 (mass, 4.91 kg against 5 kg) and R5 (throughput) | For R11: accept and weigh at TRL 4, or a 1.2 mm tray (saves about 0.49 kg but thins the containment); for R5: scheduling rule, more channels later | None made | Tray thickness if R11 changes | CCK-DDR-001, item 14; CCK-CAL-001 section 8 |
 | 6 | Grade A resistance limit per cell model (60 mΩ default) | Values per cell model from named data sheets | None; needs data sheets | Grading table only | CCK-DDR-001, item 16 |
 | 7 | 18650 cells shown in the product renders where the model uses the 21700 envelope | Accept for the renders, or render 21700 cells | Accept; the model keeps the 21700 envelope for clearance checks | None | REVIEW 2026-09-26 |
-| 8 | Bins for matched groups A, B and C shown in the renders | (a) render context only; (b) a BOM line for three bins, costed against the budget | (a) now; decide (b) with TRL 4 purchasing | None now | REVIEW 2026-09-26 |
+| 8 | Bins for matched groups A, B and C shown in the renders | (a) render context only; (b) a BOM line for three bins, costed against the value-engineering target | (a) now; decide (b) with TRL 4 purchasing | None now | REVIEW 2026-09-26 |
 | 9 | Fan finger guards shown in the renders | Add to BOM line 10 at TRL 4 and cost them then, or leave out | Add at TRL 4 | Fans (step 7) | REVIEW 2026-09-26 |
 | 10 | Guard perforation drawn as slots and 1.0 mm sheet in the renders | Accept as appearance, or redraw with round holes and 0.8 mm | Accept; the BOM specification stays as written | None | REVIEW 2026-09-26 |
 | 11 | Second-life SwapCell pack for PowerBox (low-current storage, about 334 Wh, 165 W) | Agree with the SwapCell and PowerBox projects, or not | Raise with those projects (cross-repo action) | None | CCK-DDR-001, item 1; CCK-CAL-001 section 10 |
@@ -53,6 +57,17 @@ Every design decision still to be made, and every decision made, in one place. E
 | 8 | The fans have a 50 mm square screw pattern | Shroud holes | CCK-DDR-003, P8 |
 | 9 | The DC jack, fuse holder and rocker switch cut-out sizes against the inlet housing (11.2 mm, 12 mm, 12 x 16 mm) | Inlet housing holes | CCK-DDR-003, P10 |
 | 10 | A sourced figure for the heat released by one 21700 cell in thermal runaway, to replace the assumed 100 kJ | Containment estimate before any TRL 4 work | CCK-CAL-001 section 7 |
+
+## Value engineering
+
+Value-engineering target: USD 175.00 (a hypothetical control target, not a limit). Estimated cost of the constructable design: USD 172.40 (USD 2.60 under the target).
+
+Main cost drivers (CCK-CAL-001, section 11): the per-channel parts, which are bought eight times (cell holder with four-wire contacts, charger module, channel board, load MOSFET and op-amp loop, thermistor: about $66 for the eight channels), the mains adapter ($15), the steel tray with liner ($12) and the controller board ($10). The parts added for construction (lines 19 to 21) cost $8.40.
+
+Savings worth trying, should indicative prices rise above the target:
+
+- Leave the matched-group bins and the fan finger guards out of the BOM until TRL 4 purchasing (open decisions 8 and 9).
+- Look for a cheaper cell holder or charger module, since each saving is multiplied by eight.
 
 ## Decisions made
 

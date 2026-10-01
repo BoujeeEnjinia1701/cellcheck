@@ -233,7 +233,7 @@ Amish approved the build plan format on 2026-09-30 and asked for it across all r
 - `docs/05-build-plan.md` (CCK-BLD-001 v0.1): the illustrated build plan, with no open decisions in it.
 - `docs/06-design-decisions.md` (CCK-DEC-001 v0.1): 11 open decisions, 10 items to confirm when parts are bought, and the decisions made.
 - `cad/src/build_plan_media.py`: overview, 10 making sketches (`cad/drawings/CCK-DWG-101` to `110`), a plate hole layout, 7 joint close-ups, 11 step pictures and the block wiring diagram (the picture for step 9), all in `docs/05-build-plan/`.
-- `bom/bom.csv`: lines 19 (rubber feet), 20 (fixings) and 21 (5 V converter) added; lines 1 to 5, 7 to 10, 12, 13 and 16 respecified. $172.40, $2.60 under the $175 budget.
+- `bom/bom.csv`: lines 19 (rubber feet), 20 (fixings) and 21 (5 V converter) added; lines 1 to 5, 7 to 10, 12, 13 and 16 respecified. $172.40 estimated, $2.60 under the $175 value-engineering target.
 - Recalculated: CCK-CAL-001 v0.3 (size, mass, cost), with `sizing.py` and `results.csv`; CCK-PRC-001 v0.5 and CCK-REQ-001 v0.5 updated to match.
 - Regenerated: STEP and STL, the general arrangement CCK-DWG-001 at Rev P2, and the concept media (`hero.png`, `exploded.png`, `flow.png`, `concept-blueprint`, `model.glb`, `viewer.html`).
 - `project.yaml`: `design_state: constructable`; the build plan, register and CCK-DDR-003 added to `trl_evidence`. `README.md`: links line and a "Building the prototype" section with the overview picture.

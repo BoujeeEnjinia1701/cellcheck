@@ -3,7 +3,7 @@ doc_id: CCK-DDR-003
 title: CellCheck design for construction
 project: CellCheck
 doc_type: Design decision record
-version: "0.1"
+version: "0.2"
 status: Draft
 date: '2026-10-01'
 author: Amish Chadha
@@ -13,6 +13,10 @@ revisions:
   date: '2026-10-01'
   author: Amish Chadha
   change: Changes that make the concept physically buildable, with the reason for each; made under Amish's 2026-09-30 instruction to make the design physically buildable; open for his review
+- version: "0.2"
+  date: '2026-10-01'
+  author: Amish Chadha
+  change: Budget treated as a value-engineering target; cost wording only, no number changed
 ---
 
 # 0003: Design for construction
@@ -51,7 +55,7 @@ The changes keep what CellCheck does: eight channels at the same 40 mm pitch, th
 | --- | --- | --- |
 | Mass | 4.91 kg without the adapter (was 4.97 kg): feet, fixings, guard flanges and the converter add about 0.12 kg; the thinner plate takes off 0.16 kg. R11 stays at risk with 0.09 kg of margin. | CCK-CAL-001 v0.3 section 8 |
 | Size | 460 x 300 x 85 mm (was 75 mm high): the display stand and the 8 mm feet set the height. | CCK-CAL-001 v0.3 section 8 |
-| Cost | Lines 19 (rubber feet, $2.40), 20 (fixings, $4.00) and 21 (5 V converter, $2.00) added: $172.40, $2.60 under the $175 budget, so R12 stays met. Lines 1 to 5, 7 to 10, 12, 13 and 16 are respecified with the same prices. | CCK-CAL-001 v0.3 section 11 |
+| Cost | Lines 19 (rubber feet, $2.40), 20 (fixings, $4.00) and 21 (5 V converter, $2.00) added: $172.40 estimated, $2.60 under the $175 value-engineering target, so R12 stays within the target. Lines 1 to 5, 7 to 10, 12, 13 and 16 are respecified with the same prices. | CCK-CAL-001 v0.3 section 11 |
 | Thermal | Unchanged: the heatsink, fans and fin airflow keep their size and place. | CCK-CAL-001 section 4 |
 | Drawings | General arrangement CCK-DWG-001 Rev P2; making sketches CCK-DWG-101 to 110 added. | Follow the model |
 | Documents | CCK-CAL-001 v0.3, CCK-PRC-001 v0.5, CCK-REQ-001 v0.5: mass, height and cost updated. No requirement changed status. | Follow the model |

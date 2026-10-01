@@ -3,7 +3,7 @@ doc_id: CCK-PRC-001
 title: CellCheck design precis
 project: CellCheck
 doc_type: Design precis
-version: "0.5"
+version: "0.6"
 status: Draft
 date: '2026-10-01'
 author: Amish Chadha
@@ -29,13 +29,17 @@ revisions:
   date: '2026-10-01'
   author: Amish Chadha
   change: Design made constructable (CCK-DDR-003); component table, size, mass and cost from CCK-CAL-001 v0.3; build plan CCK-BLD-001
+- version: "0.6"
+  date: '2026-10-01'
+  author: Amish Chadha
+  change: Budget treated as a value-engineering target; cost wording only, no number changed
 ---
 
 # CellCheck design precis
 
 ## Summary
 
-CellCheck is an eight-channel bench grader for salvaged 18650 and 21700 lithium-ion cells. Each channel charges one cell, measures its DC internal resistance with a two-step current pulse, discharges it at a constant 1 A to measure capacity, and recharges it for a 14-day self-discharge rest. Software then sorts the passing cells into grades and builds matched groups for a pack of a chosen series and parallel count, with a record for every cell. The calculation note CCK-CAL-001 finds 6.33 h of channel time per typical cell, 12.0 cells per attended 10 h day, MOSFET cases at 58.7 °C at full load and $172.40 in parts, $2.60 under the $175 budget that Amish accepted on 2026-09-25 to cover the single-fault protection added for TRL 3. Every figure is a paper estimate; nothing has been built or measured.
+CellCheck is an eight-channel bench grader for salvaged 18650 and 21700 lithium-ion cells. Each channel charges one cell, measures its DC internal resistance with a two-step current pulse, discharges it at a constant 1 A to measure capacity, and recharges it for a 14-day self-discharge rest. Software then sorts the passing cells into grades and builds matched groups for a pack of a chosen series and parallel count, with a record for every cell. The calculation note CCK-CAL-001 finds 6.33 h of channel time per typical cell, 12.0 cells per attended 10 h day, MOSFET cases at 58.7 °C at full load and $172.40 in parts, $2.60 under the $175 value-engineering target that Amish accepted on 2026-09-25 to cover the single-fault protection added for TRL 3. Every figure is a paper estimate; nothing has been built or measured.
 
 ![CellCheck on a bench with its rest rack and a salvaged laptop pack](../media/hero.png)
 
@@ -119,19 +123,19 @@ Table 3. Key numbers.
 | Adapter load, all channels charging | 42.5 W of 60 W; 3.54 A at 12 V | R13 met |
 | Energy per cell from the mains | 16.8 Wh, well under $0.01 at $0.15/kWh | |
 | Size and mass | 460 x 300 x 85 mm; 4.91 kg without adapter | R11 at risk |
-| Parts cost | $172.40 against the $175 budget | R12 met |
+| Parts cost | $172.40 estimated against the $175 value-engineering target | R12 within the value-engineering target ($2.60 under) |
 
 ## Key design choices
 
 These were decided by Amish on 2026-09-25 (CCK-DDR-001 and CCK-DDR-002: go with recommendation).
 
-- **Linear load, eight channels (item 7).** Discharge energy (6.6 Wh per typical cell) is burned in MOSFETs on one heatsink. A bidirectional converter per channel would recover it but costs more than the budget allows. Sixteen channels and regenerative discharge are later variants.
+- **Linear load, eight channels (item 7).** Discharge energy (6.6 Wh per typical cell) is burned in MOSFETs on one heatsink. A bidirectional converter per channel would recover it but costs more than the value-engineering target allows. Sixteen channels and regenerative discharge are later variants.
 - **Modules (item 6).** TP5100-class charger, INA226-class monitor with a 25 mΩ shunt, ESP32-S3 class controller.
 - **Single-fault protection (item 3).** A hardware watchdog removes all charge enables and load gate drive when the controller stops; a per-channel comparator removes load gate drive below 2.5 V; each cell has a 3 A fuse and a series charge switch.
 - **Attended operation (item 2).** Charge, pulse and discharge run only with a person present; the rest stage may be left.
 - **Four-wire DC resistance and a 14-day rest (item 11).** DC pulses (no signal generator; closer to behaviour under load) and 14 days (7 days catches only the worst cells).
 - **Firmware and build rules (item 13).** The resistance pulse starts only within 1 K of the bench; self-discharge is read in the same channel and against the same-day cohort median; each channel gets a two-point voltage calibration at build; discharges stop on a fan or heatsink fault; a thermistor that shows no rise during current flow is treated as detached. These are rules for the firmware sketch; writing, calibrating and testing them is TRL 4 work and on hold.
-- **Budget (item 4).** $175 in parts, raised from $160 to cover the single-fault protection with margin.
+- **Value-engineering target (item 4).** $175 in parts, a hypothetical control target, not a limit, raised from $160 to cover the single-fault protection with margin.
 - **12 V DC input only.** A certified adapter keeps mains out of the unit, so builders never wire mains.
 - **Local-first data (item 9).** Records stay on the microSD card and the local web page; no cloud account is needed. Groups and reject lots map to ReflowEconomy's material passport v0.2.
 - **Lithium-ion first, LFP later (item 8).** The first release covers LCO, NMC and NCA cells at 4.20 V. An LFP profile (3.65 V charge, 2.5 V discharge limit) follows once the lithium-ion profile is proven.

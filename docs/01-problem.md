@@ -3,9 +3,9 @@ doc_id: CCK-PRB-001
 title: CellCheck problem statement
 project: CellCheck
 doc_type: Problem statement
-version: "0.4"
+version: "0.5"
 status: Draft
-date: '2026-09-25'
+date: '2026-10-01'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -25,6 +25,10 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Recommendations accepted by Amish (DDR-002)
+- version: "0.5"
+  date: '2026-10-01'
+  author: Amish Chadha
+  change: Budget treated as a value-engineering target; cost wording only, no number changed
 ---
 
 # CellCheck problem statement
@@ -64,7 +68,7 @@ Operating context assumed for the concept: cylindrical 18650 and 21700 lithium-i
 
 ## Constraints
 
-- Garage-buildable prototype for about $175 USD in parts (`project.yaml`), excluding cells. The budget was raised from $160 to cover single-fault protection (CCK-DDR-001 item 4, decided by Amish, 2026-09-25).
+- Garage-buildable prototype with a value-engineering target of about $175 USD in parts (`project.yaml`, a hypothetical control target, not a limit), excluding cells. The target was raised from $160 to cover single-fault protection (CCK-DDR-001 item 4, decided by Amish, 2026-09-25).
 - Off-the-shelf modules and through-hole or large surface-mount parts only; no custom silicon, no fine-pitch assembly.
 - Extra-low voltage only: a certified mains adapter supplies 12 V DC, and nothing inside the unit exceeds 13 V.
 - Open hardware (CERN-OHL-S-2.0) and open software (MIT); grading thresholds and results in plain, readable files.
