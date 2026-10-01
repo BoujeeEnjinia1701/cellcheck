@@ -3,9 +3,9 @@ doc_id: CCK-PRC-001
 title: CellCheck design precis
 project: CellCheck
 doc_type: Design precis
-version: "0.4"
+version: "0.5"
 status: Draft
-date: '2026-09-25'
+date: '2026-10-01'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -25,13 +25,17 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Recommendations accepted by Amish (DDR-002). Budget $175; firmware rules for the resistance pulse, self-discharge reading, fan fault and thermistor plausibility; numbers from CCK-CAL-001 v0.2
+- version: "0.5"
+  date: '2026-10-01'
+  author: Amish Chadha
+  change: Design made constructable (CCK-DDR-003); component table, size, mass and cost from CCK-CAL-001 v0.3; build plan CCK-BLD-001
 ---
 
 # CellCheck design precis
 
 ## Summary
 
-CellCheck is an eight-channel bench grader for salvaged 18650 and 21700 lithium-ion cells. Each channel charges one cell, measures its DC internal resistance with a two-step current pulse, discharges it at a constant 1 A to measure capacity, and recharges it for a 14-day self-discharge rest. Software then sorts the passing cells into grades and builds matched groups for a pack of a chosen series and parallel count, with a record for every cell. The calculation note CCK-CAL-001 finds 6.33 h of channel time per typical cell, 12.0 cells per attended 10 h day, MOSFET cases at 58.7 °C at full load and $164 in parts, $11 under the $175 budget that Amish accepted on 2026-09-25 to cover the single-fault protection added for TRL 3. Every figure is a paper estimate; nothing has been built or measured.
+CellCheck is an eight-channel bench grader for salvaged 18650 and 21700 lithium-ion cells. Each channel charges one cell, measures its DC internal resistance with a two-step current pulse, discharges it at a constant 1 A to measure capacity, and recharges it for a 14-day self-discharge rest. Software then sorts the passing cells into grades and builds matched groups for a pack of a chosen series and parallel count, with a record for every cell. The calculation note CCK-CAL-001 finds 6.33 h of channel time per typical cell, 12.0 cells per attended 10 h day, MOSFET cases at 58.7 °C at full load and $172.40 in parts, $2.60 under the $175 budget that Amish accepted on 2026-09-25 to cover the single-fault protection added for TRL 3. Every figure is a paper estimate; nothing has been built or measured.
 
 ![CellCheck on a bench with its rest rack and a salvaged laptop pack](../media/hero.png)
 
@@ -59,23 +63,24 @@ Table 1. Main components, numbered as in the exploded view (Figure 3), `bom/bom.
 | # | Component | Choice | Notes |
 | --- | --- | --- | --- |
 | 1 | Steel tray with liner | 460 x 300 x 45 mm steel tray, 1.5 mm, 3 mm ceramic fibre sheet on the floor, two fan intake slots in the back wall | Contains ejecta from a venting cell; the whole unit sits in it |
-| 2 | Base plate | 2 mm aluminium, 430 x 270 mm, on four standoffs | Carries all modules |
+| 2 | Base plate | 1.5 mm aluminium, 430 x 270 mm, on six standoffs screwed to the tray through rubber feet (line 19) | Carries all modules |
 | 3 | Cell holders | Eight holders for 18650 and 21700 at a 40 mm pitch with spring contacts, separate force and sense contacts at each end (four-wire) | Kelvin sensing keeps contact resistance out of the reading |
-| 4 | Temperature sensing | 10 kΩ NTC thermistor clipped to each cell | Read by the controller's ADC, ±1.0 K at 45 °C |
-| 5 | Cell guard | Perforated steel cover over the cells | Stops loose ejecta; cells stay visible |
+| 4 | Temperature sensing | 10 kΩ NTC thermistor in a printed C-clip on each cell | Read by the controller's ADC, ±1.0 K at 45 °C |
+| 5 | Cell guard | Folded perforated steel cover over the cells, held by two thumb screws | Stops loose ejecta; cells stay visible; lifts off to change cells |
 | 6 | Chargers | 1 A CC-CV buck charger module per channel, 4.20 V, fed from 12 V (TP5100 class) | Module sets its own voltage limit, independent of firmware |
-| 7 | Sense and switch boards | INA226-class current and voltage monitor with a 25 mΩ shunt, plus a charge switch in series between charger and cell, per channel | 16-bit readings over I2C at addresses 0x40 to 0x47; calibrated per channel at build |
+| 7 | Channel boards | INA226-class current and voltage monitor with a 25 mΩ shunt on a perfboard with the series charge switch, the op-amp of the load loop and the 3 A channel fuse, per channel | 16-bit readings over I2C at addresses 0x40 to 0x47; calibrated per channel at build |
 | 8 | Load MOSFETs | Logic-level MOSFET in TO-220 with an op-amp loop per channel, constant current 0.5 to 2.0 A | Linear load; energy ends up as heat |
 | 9 | Heatsink | Aluminium spine 320 x 6 x 50 mm with 40 vertical fins 30 mm deep at 8 mm pitch | 0.58 K/W with the fans (CCK-CAL-001) |
 | 10 | Fans | Two 60 mm 12 V fans with tachometers on a shroud behind the fins, pushing air forward into the fin channels | Air leaves through the open fin tops |
 | 11 | Controller | ESP32-S3 class board | Runs the test sequence, logs to microSD, serves a local web page |
-| 12 | Display and buttons | 2.8 in display with three buttons | Channel status without a laptop |
-| 13 | Power inlet | DC jack, 6.3 A main fuse, switch | Only 12 V DC enters the unit |
+| 12 | Display and buttons | 2.8 in display with three buttons on a printed stand | Channel status without a laptop |
+| 13 | Power inlet | DC jack, 6.3 A main fuse, switch in a printed housing | Only 12 V DC enters the unit |
 | 14 | Power supply | Certified 12 V 5 A mains adapter | No mains wiring inside CellCheck |
 | 15 | Rest rack | 3D-printed rack for 48 cells, numbered slots | Holds cells for the 14-day check |
 | 18 | Watchdog and undervoltage board | Hardware watchdog gating all charge and load enables; eight 2.5 V comparators removing load gate drive | Added for R9 (CCK-DDR-001 item 3) |
+| 21 | 5 V converter | 12 V to 5 V 3 A buck converter | Feeds the controller, display and channel boards (CCK-DDR-003) |
 
-Lines 16 (wiring and 3 A channel fuses) and 17 (labels and insulator rings) are in the BOM but not modelled. The general arrangement drawing is CCK-DWG-001 Rev P1 (`cad/drawings/CCK-DWG-001.pdf`), generated from `cad/src/model.py`.
+Lines 16 (wiring and 3 A channel fuses) and 17 (labels and insulator rings) are in the BOM but not modelled; line 19 (rubber feet) is drawn with the tray and line 20 (fixings) with the parts they hold. The general arrangement drawing is CCK-DWG-001 Rev P2 (`cad/drawings/CCK-DWG-001.pdf`), generated from `cad/src/model.py`.
 
 ![Exploded view with BOM numbers](../media/exploded.png)
 
@@ -113,8 +118,8 @@ Table 3. Key numbers.
 | Heatsink | 0.58 K/W with fans (1.07 K/W needed); MOSFET cases 58.7 °C at 35 °C room; about 99 °C if the fans stop | R8 met |
 | Adapter load, all channels charging | 42.5 W of 60 W; 3.54 A at 12 V | R13 met |
 | Energy per cell from the mains | 16.8 Wh, well under $0.01 at $0.15/kWh | |
-| Size and mass | 460 x 300 x 75 mm; 4.97 kg without adapter | R11 at risk |
-| Parts cost | $164.00 against the $175 budget | R12 met |
+| Size and mass | 460 x 300 x 85 mm; 4.91 kg without adapter | R11 at risk |
+| Parts cost | $172.40 against the $175 budget | R12 met |
 
 ## Key design choices
 

@@ -221,3 +221,57 @@ This is an appearance model only: no tolerances, PCB layouts or fabrication deta
 - Kit 1.5.0 synced: STANDARDS v1.5 (sections 12 to 15: product renders, storefront images and image quality, public release, authorship and signing), `.kit/cards.py`, `.kit/image_qc.py`, `.kit/release_gate.py`, issue templates, and the `/render-product` and `/release` commands. `CLAUDE.md` now matches `.kit/CLAUDE.md`.
 - Every `media/render-*.png` recaptioned from its original render with the new layout: the title, concept label and repository sit in a band above the render and the view note in a band below it, each line wrapped to the image width, so no text overlaps other text or the render or runs off the image. `media/card.png` and `media/social-preview.png` regenerated with the same rules.
 - `python .kit/image_qc.py` and `python .kit/release_gate.py` pass. trl stays 3.
+
+## Session 2026-10-01: design made constructable and prototype build plan (kit 1.7.0)
+
+Amish approved the build plan format on 2026-09-30 and asked for it across all repos, with outstanding decisions kept out of the build plan in a separate design decisions register. Kit 1.7.0 is installed (`.kit/`, `.claude/commands/`, root `CLAUDE.md`).
+
+### What was done
+
+- Constructability review with build123d of every part: what touches what, what holds it, and whether it can be made as described. `cad/src/model.py` now builds every component with its fixings and runs 129 constructability checks (`python cad/src/model.py --check`); all pass.
+- `docs/decisions/0003-design-for-construction.md` (CCK-DDR-003 v0.1, Draft): every change, with the reason, made under Amish's 2026-09-30 instruction to make the design physically buildable; open for his review.
+- `docs/05-build-plan.md` (CCK-BLD-001 v0.1): the illustrated build plan, with no open decisions in it.
+- `docs/06-design-decisions.md` (CCK-DEC-001 v0.1): 11 open decisions, 10 items to confirm when parts are bought, and the decisions made.
+- `cad/src/build_plan_media.py`: overview, 10 making sketches (`cad/drawings/CCK-DWG-101` to `110`), a plate hole layout, 7 joint close-ups, 11 step pictures and the block wiring diagram (the picture for step 9), all in `docs/05-build-plan/`.
+- `bom/bom.csv`: lines 19 (rubber feet), 20 (fixings) and 21 (5 V converter) added; lines 1 to 5, 7 to 10, 12, 13 and 16 respecified. $172.40, $2.60 under the $175 budget.
+- Recalculated: CCK-CAL-001 v0.3 (size, mass, cost), with `sizing.py` and `results.csv`; CCK-PRC-001 v0.5 and CCK-REQ-001 v0.5 updated to match.
+- Regenerated: STEP and STL, the general arrangement CCK-DWG-001 at Rev P2, and the concept media (`hero.png`, `exploded.png`, `flow.png`, `concept-blueprint`, `model.glb`, `viewer.html`).
+- `project.yaml`: `design_state: constructable`; the build plan, register and CCK-DDR-003 added to `trl_evidence`. `README.md`: links line and a "Building the prototype" section with the overview picture.
+
+### Design changes made for construction (CCK-DDR-003)
+
+1. Six rubber feet with M4 studs through the tray floor into six 12 mm hex standoffs on the bare steel; the plate screws onto them (the concept's four standoffs rested loose on the liner).
+2. Base plate 1.5 mm on six standoffs instead of 2 mm on four; every screw reachable from above (two concept screws sat under the display and the inlet).
+3. Two M3 screws per cell holder; two 16 x 5 mm wire slots per channel through the plate, leads run underneath.
+4. Guard folded from one perforated steel blank with end flanges, held by two M4 thumb screws into rivet nuts in the plate; lifts off to change cells.
+5. Every board on two 5 mm nylon standoffs; controller and watchdog board moved 10 mm right to clear the thumb screw.
+6. Display stand enlarged to 88 x 62 mm to take a 2.8 in display module (the concept's 60 mm stand was too small); buttons in its foot.
+7. Heatsink screwed to the plate from below; each MOSFET clamped with an insulated M3 screw.
+8. Fan shroud folded with side flanges screwed to the spine ends; fans screwed from inside; the unfoldable top lip dropped.
+9. Thermistor clip made a printed C-clip, in 21700 and 18650 sizes.
+10. Inlet housing printed open-bottomed with the jack, fuse holder and switch on top (the concept's jack faced the tray wall 23 mm away).
+11. Added the 5 V converter; the channel board now carries the charge switch, the load loop's op-amp and the 3 A fuse clips.
+12. Cells rest in their holder grooves and touch both contacts.
+
+### Key results
+
+- Size 460 x 300 x 85 mm (was 75 mm high); mass 4.91 kg (was 4.97 kg); parts $172.40 (was $164.00).
+- No requirement changed status: none not met; R5, R6 and R11 at risk (R11 margin now 0.09 kg); R10 not verifiable at TRL 3; 13 met on paper.
+
+### Proposed, awaiting Amish
+
+- Guard hold-down (thumb screws as modelled, toggle latches or a hinge); it is part of the containment arrangement (CCK-DDR-003 A1). Recommendation: thumb screws for the prototype.
+- Seal the wire slots under the guard with high-temperature silicone after wiring (CCK-DDR-003 A2). Recommendation: seal.
+- The earlier open items stay open and are listed in CCK-DEC-001.
+
+### Stale media (made on Amish's Mac; not regenerated here)
+
+The design changed visibly (feet, guard, display stand, inlet, shroud), so `cad/src/product_model.py`, `media/render-hero.png`, `media/render-exploded.png`, `media/render-detail.png`, `media/card.png` and `media/social-preview.png` are stale and should be regenerated on the Mac.
+
+### Safety concerns
+
+Unchanged in substance. The guard now lifts off by hand, which is what a cell change needs but makes its hold-down part of the containment question (A1). The wire slots open the guard space to the underside of the plate inside the tray (A2). The build plan sets safety stops S1 to S7 before cells, power, first charge, first discharge and any unattended period.
+
+### Recommended next step
+
+Amish to review CCK-DDR-003 and decide A1 and A2 in the register. TRL 4 (building to this plan) remains on hold by Amish's instruction.

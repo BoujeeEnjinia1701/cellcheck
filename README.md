@@ -8,7 +8,7 @@ A second-life battery cell grader: it measures capacity, internal resistance and
 
 ![CellCheck: bench grader for salvaged lithium cells, product render](media/render-hero.png)
 
-[Exploded render](media/render-exploded.png) · [Detail render](media/render-detail.png) · [Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement CCK-DWG-001 (PDF)](cad/drawings/CCK-DWG-001.pdf) · [Sizing note CCK-CAL-001](docs/04-calcs/01-sizing.md) · [Review note](docs/REVIEW.md)
+[Exploded render](media/render-exploded.png) · [Detail render](media/render-detail.png) · [Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement CCK-DWG-001 (PDF)](cad/drawings/CCK-DWG-001.pdf) · [Sizing note CCK-CAL-001](docs/04-calcs/01-sizing.md) · [Prototype build plan](docs/05-build-plan.md) · [Design decisions](docs/06-design-decisions.md) · [Review note](docs/REVIEW.md)
 
 ## Concept rationale
 
@@ -59,7 +59,7 @@ Full problem statement: [docs/01-problem.md](docs/01-problem.md)
 
 A second-life battery cell grader: it measures capacity, internal resistance and self-discharge of salvaged lithium cells and sorts them into matched groups for rebuilt packs such as SwapCell.
 
-Eight channels each charge a cell at 1 A, measure DC internal resistance with a 0.5 A then 2.0 A pulse in the IEC 61960 pattern, discharge at 1 A to measure capacity and recharge until the cell reads 4.10 V under current. Cells then rest 14 days in a printed rack and come back for a voltage check. Software grades each cell (A, B, C or reject) and builds groups for any series and parallel count, with each parallel group within ±1 % of the mean capacity. A hardware watchdog, per-channel undervoltage comparators and 3 A cell fuses cover single faults. The sizing note CCK-CAL-001 finds 6.33 h of channel time per typical cell, 12.0 cells per attended 10 h day, 33.6 W of peak heat with MOSFET cases at about 59 °C, 460 x 300 x 75 mm and 4.97 kg, and $164 in parts, $11 under the $175 budget.
+Eight channels each charge a cell at 1 A, measure DC internal resistance with a 0.5 A then 2.0 A pulse in the IEC 61960 pattern, discharge at 1 A to measure capacity and recharge until the cell reads 4.10 V under current. Cells then rest 14 days in a printed rack and come back for a voltage check. Software grades each cell (A, B, C or reject) and builds groups for any series and parallel count, with each parallel group within ±1 % of the mean capacity. A hardware watchdog, per-channel undervoltage comparators and 3 A cell fuses cover single faults. The sizing note CCK-CAL-001 finds 6.33 h of channel time per typical cell, 12.0 cells per attended 10 h day, 33.6 W of peak heat with MOSFET cases at about 59 °C, 460 x 300 x 85 mm and 4.91 kg, and $172.40 in parts, $2.60 under the $175 budget.
 
 SwapCell stays in the pitch. Its reference pack uses new high-current cells, which graded laptop cells cannot match, so a second-life variant is planned: the TRL 3 study finds a low-current storage pack for PowerBox (about 334 Wh, 165 W) feasible, and e-bike use is ruled out. Amish decided on 2026-09-25 to go with this recommendation; it needs the SwapCell project's agreement (see the decision records [CCK-DDR-001](docs/decisions/0001-trl2-review-decisions.md) and [CCK-DDR-002](docs/decisions/0002-recommendations-accepted.md)).
 
@@ -83,7 +83,13 @@ On paper CellCheck meets 13 of its 17 requirements, and none is failed outright.
 - Steel tray with ceramic fibre liner and a perforated steel cell guard
 - Certified 12 V 5 A adapter and a printed 48-cell rest rack
 
-The priced bill of materials is in [bom/bom.csv](bom/bom.csv): $164 in parts against the $175 budget.
+The priced bill of materials is in [bom/bom.csv](bom/bom.csv): $172.40 in parts against the $175 budget.
+
+## Building the prototype
+
+The [prototype build plan](docs/05-build-plan.md) (CCK-BLD-001) shows how to make and fit every component, in pictures generated from the model, in 12 assembly steps with safety stops before any cell or power goes near the unit. The grader is built in a bought steel tray on six rubber feet; an aluminium base plate on six standoffs carries the holders, modules, heatsink and fans, and a folded perforated guard lifts off after two thumb screws to change cells. The work is cutting, drilling, tapping and folding sheet metal, 3D printing four parts and wiring bought modules; no mains wiring and no custom circuit board are needed. The design was made buildable under decision record [CCK-DDR-003](docs/decisions/0003-design-for-construction.md); decisions still open are in the [design decisions register](docs/06-design-decisions.md).
+
+![Every component of the prototype, pulled apart and numbered in build order](docs/05-build-plan/overview.png)
 
 ## Safety
 
@@ -96,7 +102,7 @@ The priced bill of materials is in [bom/bom.csv](bom/bom.csv): $164 in parts aga
 | `docs/` | Problem, concept, requirements, calculations and design decisions |
 | `cad/src/` | build123d Python source, the source of truth for all geometry |
 | `cad/step/`, `cad/stl/` | Exported models for FreeCAD, other CAD tools and printing |
-| `cad/drawings/` | General arrangement CCK-DWG-001 (Rev P1) |
+| `cad/drawings/` | General arrangement CCK-DWG-001 (Rev P2) and making sketches CCK-DWG-101 to 110 |
 | `bom/` | Bill of materials |
 | `electronics/` | KiCad schematics and PCB layouts |
 | `firmware/` | Microcontroller code |

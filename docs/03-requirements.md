@@ -3,9 +3,9 @@ doc_id: CCK-REQ-001
 title: CellCheck requirements
 project: CellCheck
 doc_type: Requirements
-version: "0.4"
+version: "0.5"
 status: Draft
-date: '2026-09-25'
+date: '2026-10-01'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -25,11 +25,15 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Recommendations accepted by Amish (DDR-002). R12 target $175 and met; R4 met with the temperature-gated pulse; R6 read in the same channel; status table from CCK-CAL-001 v0.2
+- version: "0.5"
+  date: '2026-10-01'
+  author: Amish Chadha
+  change: R11 and R12 values for the constructable design (CCK-DDR-003, CCK-CAL-001 v0.3); no status changed
 ---
 
 # CellCheck requirements
 
-These are first-pass requirements for the concept. Targets are proposals for review, not user-validated needs, and will be revised with the first trial partner. Status in Table 2 comes from the calculation note CCK-CAL-001 v0.2. No requirement is failed outright; three are at risk (R5, R6 and R11), and R10 cannot be verified at TRL 3. R14 was redefined in v0.3 under CCK-DDR-001 item 2, and R12 was restated in v0.4 for the $175 budget; both follow decisions Amish accepted on 2026-09-25 (CCK-DDR-002).
+These are first-pass requirements for the concept. Targets are proposals for review, not user-validated needs, and will be revised with the first trial partner. Status in Table 2 comes from the calculation note CCK-CAL-001 v0.3. No requirement is failed outright; three are at risk (R5, R6 and R11), and R10 cannot be verified at TRL 3. R14 was redefined in v0.3 under CCK-DDR-001 item 2, and R12 was restated in v0.4 for the $175 budget; both follow decisions Amish accepted on 2026-09-25 (CCK-DDR-002).
 
 Table 1. Requirements.
 
@@ -53,13 +57,13 @@ Table 1. Requirements.
 | R16 | Keep a record for every cell | CSV row per cell with ID, source, measurements, grade, group and dates; export over USB or local Wi-Fi with no cloud account | Design review of the file format |
 | R17 | Be buildable and open | Off-the-shelf modules, no fine-pitch assembly; hardware CERN-OHL-S-2.0, software MIT | Design review of the parts list |
 
-Table 2. Status at TRL 3 (CCK-CAL-001 v0.2, paper estimates; at risk first, no requirement failed outright).
+Table 2. Status at TRL 3 (CCK-CAL-001 v0.3, paper estimates; at risk first, no requirement failed outright).
 
 | ID | Status | Basis |
 | --- | --- | --- |
 | R5 | **At risk** | 12.0 cells per attended day if current stages finish the same day; 12.8 with an overnight pause; 8.0 for 2.5 Ah cells |
 | R6 | **At risk** | ±2.3 mV in the same channel (±10.6 mV across channels, no longer allowed); cohort median cancels common relaxation, but the spread between cells is not bounded |
-| R11 | **At risk** | 460 x 300 x 75 mm; 4.97 kg against 5 kg |
+| R11 | **At risk** | 460 x 300 x 85 mm; 4.91 kg against 5 kg (constructable design, CCK-DDR-003) |
 | R10 | Not verifiable at TRL 3 | Containment cannot be analysed credibly on paper; mean tray rise about 84 K for an assumed 100 kJ event |
 | R1 | Met (design review) | Eight holders for 18650 and 21700 cells |
 | R2 | Met | ±1.1 % without calibration, ±0.4 % with |
@@ -68,7 +72,7 @@ Table 2. Status at TRL 3 (CCK-CAL-001 v0.2, paper estimates; at risk first, no r
 | R7 | Met (accuracy) | ±1.0 K at 45 °C, 1 Hz sampling; clip response time not verifiable at TRL 3 |
 | R8 | Met | MOSFET cases 58.7 °C with fans; about 99 °C if the fans stop, so the firmware stops discharges on a fan fault |
 | R9 | Met (analysis) | Watchdog, undervoltage comparators, 3 A channel fuses and a series charge switch (CCK-CAL-001 Table 3); a detached thermistor is narrowed by a plausibility check but remains a residual risk |
-| R12 | Met | $164.00 in parts, $11.00 under $175 (was $4.00 over the former $160) |
+| R12 | Met | $172.40 in parts, $2.60 under $175 (lines 19 to 21 added for construction, CCK-DDR-003) |
 | R13 | Met (design review) | Certified 12 V adapter; 12.6 V highest inside; 42.5 W of 60 W |
 | R14 | Met (design review) | As redefined in v0.3 |
 | R15 | Met (synthetic data) | 0.006 % group deviation for a 4S6P pack from synthetic cells |

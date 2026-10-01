@@ -1,4 +1,4 @@
-"""CellCheck sizing calculations, CCK-CAL-001 v0.2 (TRL 3).
+"""CellCheck sizing calculations, CCK-CAL-001 v0.3 (TRL 3).
 
 Run from the repo root:  python docs/04-calcs/sizing.py
 Prints every number quoted in docs/04-calcs/01-sizing.md and writes docs/04-calcs/results.csv.
@@ -94,10 +94,11 @@ BOUGHT = {            # kg, assumptions for bought parts
     "sense boards (8 x 8 g)": 8 * 0.008, "MOSFETs and op-amps (8 x 4 g)": 8 * 0.004,
     "controller": 0.030, "display and stand": 0.060, "fans (2 x 45 g)": 2 * 0.045,
     "inlet, fuse, switch": 0.050, "watchdog board": 0.020, "wiring and fuses": 0.200,
-    "standoffs and fasteners": 0.100, "NTC clips": 0.010,
+    "standoffs and fasteners": 0.150, "NTC clips": 0.010,
+    "rubber feet (6 x 8 g)": 6 * 0.008, "5 V converter": 0.010,   # added for construction (CCK-DDR-003)
 }
 
-print("CellCheck sizing, CCK-CAL-001 v0.2 (all values are paper estimates)")
+print("CellCheck sizing, CCK-CAL-001 v0.3 (all values are paper estimates)")
 
 # ---------------------------------------------------------------- 2. Cycle time (R5)
 head("2. Cycle time per cell")
@@ -364,11 +365,13 @@ M_PLATE = P["plate_l"] * P["plate_w"] * P["plate_t"] / 1e9 * RHO_AL
 spine = (hx1 - hx0) * P["spine_t"] * P["fin_h"]
 fins = nf * P["fin_t"] * P["fin_depth"] * P["fin_h"]
 M_HS = (spine + fins) / 1e9 * RHO_AL
-M_SHROUD = ((hx1 - hx0) * P["fan"] + (hx1 - hx0) * P["fin_depth"]) * P["shroud_t"] / 1e9 * RHO_AL
+# shroud: back sheet plus two side flanges reaching the spine ends (CCK-DDR-003)
+M_SHROUD = ((hx1 - hx0 + 2 * P["shroud_t"]) * P["fan"]
+            + 2 * (P["spine_t"] + P["fin_depth"] + P["shroud_gap"]) * P["fin_h"]) * P["shroud_t"] / 1e9 * RHO_AL
 gx = (N - 1) * P["pitch"] + 2 * P["guard_margin_x"]
 gy = 2 * P["guard_margin_y"]
 gz = P["cell_axis_h"] + P["cell_r"] + P["guard_clear"]
-M_GUARD = (gx * gy + 2 * gx * gz + 2 * gy * gz) / 1e6 * GUARD_T * RHO_STEEL * (1 - GUARD_OPEN)
+M_GUARD = (gx * gy + 2 * gx * gz + 2 * gy * gz + 2 * P["guard_flange"] * gy) / 1e6 * GUARD_T * RHO_STEEL * (1 - GUARD_OPEN)
 M_LINER = (P["tray_l"] * P["tray_w"]) / 1e6 * P["liner_t"] / 1000 * RHO_LINER
 masses = {"steel tray": M_TRAY, "base plate": M_PLATE, "heatsink": M_HS, "fan shroud": M_SHROUD,
           "guard": M_GUARD, "liner": M_LINER, **BOUGHT}
