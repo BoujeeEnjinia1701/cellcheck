@@ -3,9 +3,9 @@ doc_id: CCK-CAL-001
 title: CellCheck sizing calculations
 project: CellCheck
 doc_type: Calculation note
-version: "0.4"
+version: "0.5"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -25,6 +25,10 @@ revisions:
   date: '2026-10-01'
   author: Amish Chadha
   change: Budget treated as a value-engineering target; cost wording only, no number changed
+- version: "0.5"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: R5 row of Table 4 names the same-day scheduling rule and section 8 the tray decision of 2026-10-02 (CCK-DEC-001, items 4 and 5); no number changed
 ---
 
 # CellCheck sizing calculations
@@ -126,7 +130,7 @@ The 1.5 mm steel tray has 0.206 m² of sheet and weighs **2.43 kg**. If a 21700 
 
 ## 8. Size and mass (R11)
 
-The model envelope is **460 x 300 x 85 mm** (the display stand and the 8 mm rubber feet set the height), inside 500 x 320 x 120 mm. The mass without the adapter is **4.91 kg**: tray 2.43 kg, base plate 0.47 kg, heatsink 0.52 kg, guard 0.24 kg, shroud 0.06 kg, liner 0.05 kg, and 1.14 kg of bought parts, fixings and wiring. **R11 is at risk** with 0.09 kg of margin. In version 0.2 the unit was 75 mm and 4.97 kg; the constructable design (CCK-DDR-003) adds feet, fixings, guard flanges and a 5 V converter (about 0.12 kg) and takes 0.16 kg off by making the base plate 1.5 mm thick on six standoffs instead of 2 mm on four. With six supports the plate spans at most 165 mm between standoffs, so it stays stiff. A 1.2 mm tray would save about 0.49 kg; no response has been chosen and it stays Proposed, awaiting Amish (item 14), because the tray is also the containment.
+The model envelope is **460 x 300 x 85 mm** (the display stand and the 8 mm rubber feet set the height), inside 500 x 320 x 120 mm. The mass without the adapter is **4.91 kg**: tray 2.43 kg, base plate 0.47 kg, heatsink 0.52 kg, guard 0.24 kg, shroud 0.06 kg, liner 0.05 kg, and 1.14 kg of bought parts, fixings and wiring. **R11 is at risk** with 0.09 kg of margin. In version 0.2 the unit was 75 mm and 4.97 kg; the constructable design (CCK-DDR-003) adds feet, fixings, guard flanges and a 5 V converter (about 0.12 kg) and takes 0.16 kg off by making the base plate 1.5 mm thick on six standoffs instead of 2 mm on four. With six supports the plate spans at most 165 mm between standoffs, so it stays stiff. A 1.2 mm tray would save about 0.49 kg, but the tray is also the containment, so Amish decided on 2026-10-02 to keep the 1.5 mm tray and accept 4.91 kg, with the prototype weighed at TRL 4 (CCK-DEC-001, item 5).
 
 ## 9. Grading and matching on synthetic data (R15)
 
@@ -146,7 +150,7 @@ The 21 BOM lines total **$172.40**, $2.60 under the $175 value-engineering targe
 
 | ID | Value | Target | Status |
 | --- | --- | --- | --- |
-| R5 | 12.0 cells per day if current stages finish the same day; 12.8 with an overnight pause; 8.0 for 2.5 Ah cells | 12 cells per attended day on 1.8 Ah cells | At risk |
+| R5 | 12.0 cells per day under the same-day rule decided on 2026-10-02 (CCK-DEC-001, item 4); 12.8 with an overnight pause, not used; 8.0 for 2.5 Ah cells | 12 cells per attended day on 1.8 Ah cells | At risk |
 | R6 | ±2.3 mV in the same channel, judged against the same-day cohort median (±10.6 mV across channels, no longer allowed); spread of relaxation not bounded | ±3 mV; flag above 50 mV | At risk |
 | R11 | 460 x 300 x 85 mm; 4.91 kg | 500 x 320 x 120 mm; 5 kg | At risk |
 | R10 | Mean tray rise 84 K for an assumed 100 kJ event; jets and flame not analysable | Hold one venting 21700 in the tray | Not verifiable at TRL 3 |

@@ -3,9 +3,9 @@ doc_id: CCK-DDR-002
 title: CellCheck recommendations accepted
 project: CellCheck
 doc_type: Design decision record
-version: "0.1"
+version: "0.2"
 status: Draft
-date: '2026-09-25'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -13,12 +13,16 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Record Amish's acceptance of all recommendations and what changed in the repo
+- version: "0.2"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: Items 10, 12, 14 and 16 decided by Amish on 2026-10-02 as recommended in CCK-DEC-001
 ---
 
 # 0002: Recommendations accepted
 
 - **Date:** 2026-09-25
-- **Status:** accepted by Amish. Every item with a recommendation in `docs/REVIEW.md` and CCK-DDR-001 is Decided by Amish, 2026-09-25: go with recommendation. Items without a recommendation stay Proposed, awaiting Amish.
+- **Status:** accepted by Amish. Every item with a recommendation in `docs/REVIEW.md` and CCK-DDR-001 is Decided by Amish, 2026-09-25: go with recommendation. Items without a recommendation (10, 12, 14 and 16) were given recommendations in the design decisions register (CCK-DEC-001, items 3 to 6) and decided by Amish on 2026-10-02: "i approve your recommendations for all 555 open decisions."
 
 ## Context
 
@@ -54,16 +58,16 @@ No part was added or resized, so `cad/src/model.py`, the STEP and STL files and 
 | Not verifiable at TRL 3 | R10 |
 | Met on paper | R1, R2, R3, R4, R7, R8, R9, R12, R13, R14, R15, R16, R17 (13 of 17; was 11) |
 
-## Items still open
+## Items left open by this record
 
-*Table 3. Items that had no recommendation and stay Proposed, awaiting Amish.*
+*Table 3. Items that had no recommendation here, decided by Amish on 2026-10-02 as recommended in CCK-DEC-001.*
 
-| # (DDR-001) | Item |
-| --- | --- |
-| 10 | First trial partner: repair café, e-bike repair shop or battery collection point (no preference stated) |
-| 12 | Scheduling rule for the attended day: finish current stages the same day, or pause overnight with the unit off |
-| 14 | Responses to R11 (mass) and R5 (throughput) |
-| 16 | Grade A resistance limit per cell model (needs named data sheets) |
+| # (DDR-001) | Item | Decision of 2026-10-02 |
+| --- | --- | --- |
+| 10 | First trial partner: repair café, e-bike repair shop or battery collection point (no preference stated) | A local Repair Café group that passes laptop batteries to a collection point, with that point as the source of trial cells; the first candidate to approach, not yet agreed (CCK-DEC-001, item 3) |
+| 12 | Scheduling rule for the attended day: finish current stages the same day, or pause overnight with the unit off | A charge or discharge starts only if it finishes the same day (CCK-DEC-001, item 4) |
+| 14 | Responses to R11 (mass) and R5 (throughput) | Accept 4.91 kg with the 1.5 mm tray and weigh at TRL 4; throughput by the same-day rule (CCK-DEC-001, item 5) |
+| 16 | Grade A resistance limit per cell model (needs named data sheets) | 60 mΩ default; per-model limits from measured DC resistance for the commonest models only (CCK-DEC-001, item 6) |
 
 ## Consequences
 

@@ -3,9 +3,9 @@ doc_id: CCK-PRC-001
 title: CellCheck design precis
 project: CellCheck
 doc_type: Design precis
-version: "0.6"
+version: "0.7"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -33,6 +33,10 @@ revisions:
   date: '2026-10-01'
   author: Amish Chadha
   change: Budget treated as a value-engineering target; cost wording only, no number changed
+- version: "0.7"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: 'Decisions of 2026-10-02 carried in (CCK-DEC-001 items 1, 2, 4 to 6, 9 and 11): scheduling rule, grade A limit, containment hold-down and slot sealing, fan finger guards, pack study; open questions closed'
 ---
 
 # CellCheck design precis
@@ -101,7 +105,7 @@ Table 2. Grades. The thresholds are starting values decided by Amish on 2026-09-
 | C | 50 % or more | 150 mΩ or less | As A | Low-drain uses only: lights, small sensor nodes |
 | Reject | Below 50 % | Above 150 mΩ | Or any failed condition, arrival voltage below 2.0 V, or visible damage | Battery recycling |
 
-Rated capacity comes from the cell model printed on the wrap, looked up in a cell table; if the model is unknown, the grade uses measured capacity only and the record says so. The 60 mΩ default for grade A is an assumption for a typical laptop 18650 in good health; setting it per cell model needs named data sheets and remains open (CCK-DDR-001 item 16). At 1 A a 60 mΩ cell warms by about 1.4 K and the worst 418 mΩ cell reported by Olivero-Ortiz et al. by about 10 K, so the 8 K limit separates them.
+Rated capacity comes from the cell model printed on the wrap, looked up in a cell table; if the model is unknown, the grade uses measured capacity only and the record says so. The 60 mΩ default for grade A is an assumption for a typical laptop 18650 in good health; Amish decided on 2026-10-02 (CCK-DEC-001, item 6) to keep it as the default and to add per-model limits only for the few cell models most common in the trial partner's intake, set from DC resistance measured on known-good cells of each model. Data sheet impedance is not used, because it is normally a 1 kHz AC value and reads lower than CellCheck's DC pulse. At 1 A a 60 mΩ cell warms by about 1.4 K and the worst 418 mΩ cell reported by Olivero-Ortiz et al. by about 10 K, so the 8 K limit separates them.
 
 ## Key numbers
 
@@ -112,7 +116,7 @@ Table 3. Key numbers.
 | Quantity | Value | Requirement |
 | --- | --- | --- |
 | Channel time per cell | 6.33 h for 1.8 Ah; 8.30 h for 2.5 Ah; 13.93 h for a 4.5 Ah 21700 | |
-| Throughput | 12.0 cells per attended 10 h day if current stages finish the same day; 12.8 with an overnight pause | R5 at risk |
+| Throughput | 12.0 cells per attended 10 h day: a current stage starts only if it finishes the same day (decided 2026-10-02; the overnight pause, 12.8, is not used) | R5 at risk |
 | Cells for one 4S6P pack | about 36 candidates, about 3 attended days plus the 14-day rest | |
 | Capacity error | ±1.1 % without calibration, ±0.4 % with | R2 met |
 | Voltage error | ±12.4 mV without calibration, ±4.8 mV after per-channel calibration | R3 met with calibration |
@@ -143,7 +147,7 @@ These were decided by Amish on 2026-09-25 (CCK-DDR-001 and CCK-DDR-002: go with 
 
 ## Relation to other lab projects
 
-- **SwapCell.** The pitch keeps SwapCell (CCK-DDR-001 item 1, decided by Amish, 2026-09-25). SwapCell's reference pack uses new 5 Ah 21700 cells carrying 10 A continuous each, which graded laptop cells cannot match. The TRL 3 study (CCK-CAL-001 section 10) finds a 13S4P second-life pack of grade A cells feasible as a low-current storage pack for PowerBox, about 334 Wh and 165 W, with PowerBox's AC output limited to about 150 W; e-bike use is ruled out. The variant needs the SwapCell project's agreement and its own pack design.
+- **SwapCell.** The pitch keeps SwapCell (CCK-DDR-001 item 1, decided by Amish, 2026-09-25). SwapCell's reference pack uses new 5 Ah 21700 cells carrying 10 A continuous each, which graded laptop cells cannot match. The TRL 3 study (CCK-CAL-001 section 10) finds a 13S4P second-life pack of grade A cells feasible as a low-current storage pack for PowerBox, about 334 Wh and 165 W, with PowerBox's AC output limited to about 150 W; e-bike use is ruled out. The variant needs the SwapCell project's agreement and its own pack design. Decided by Amish, 2026-10-02 (CCK-DEC-001, item 11): the study is sent to the SwapCell and PowerBox projects as a proposal, and CellCheck takes no further action on it.
 - **CellGuard.** Packs rebuilt from graded LFP cells would use CellGuard; lithium-ion packs depend on CellGuard's NMC profile, which was decided for CellGuard on 2026-09-25 (hardware for both, LFP firmware first).
 - **ReflowEconomy.** CellCheck is the grading step for the battery stream in ReflowEconomy's micro-factory, where cells that cannot be reused are exported for industrial recycling. Two passport schema gaps are raised with that project (CCK-DDR-001 item 15).
 
@@ -156,14 +160,15 @@ These were decided by Amish on 2026-09-25 (CCK-DDR-001 and CCK-DDR-002: go with 
 - **Charging.** Each charger module limits voltage to 4.20 V by itself; the firmware adds voltage, current, temperature and time limits and opens the series charge switch. A cell that passes 45 °C or rises 8 K above the bench is disconnected and flagged; the operator moves it to a metal container of sand once it is cool.
 - **Single faults.** The watchdog, undervoltage comparators and 3 A channel fuses cover the faults in R9 on paper (CCK-CAL-001 Table 3). A thermistor clip that falls off is caught only by the plausibility check, which is untested, so it remains a residual risk. None of this is tested.
 - **Heat.** MOSFET cases reach about 59 °C with the fans running and could approach 99 °C if both fans stopped, so the firmware stops discharges on a fan or heatsink fault. Keep hands off the heatsink during discharge.
-- **Containment.** The steel tray, ceramic fibre liner and steel guard are meant to hold ejecta from one venting cell. This cannot be verified on paper and must not be relied on. The fan intake slots are an opening in the tray wall.
+- **Containment.** The steel tray, ceramic fibre liner and steel guard are meant to hold ejecta from one venting cell. This cannot be verified on paper and must not be relied on. The fan intake slots are an opening in the tray wall. The guard is held by two thumb screws, and the TRL 4 containment test is to be run with it held that way; the wire slots under the guard are sealed round their leads with high-temperature silicone after wiring (CCK-DEC-001, items 1 and 2, decided 2026-10-02).
+- **Fans.** The two fans carry finger guards (CCK-DEC-001, item 9).
 - **Transport and storage.** Store graded cells at about 3.7 V in a non-flammable container with terminals covered. Rejected cells go to a battery collection point, never to household waste.
 - **Scope.** CellCheck is a research and prototype tool. Its grades do not certify any cell or pack as safe.
 
 ## Open questions
 
-- [ ] Which partner should supply cells for first trials: a repair café, an e-bike repair shop or a collection point? Proposed, awaiting Amish (item 10).
-- [ ] Scheduling rule for the attended day. Proposed, awaiting Amish (item 12).
-- [ ] Responses to R11 and R5. Proposed, awaiting Amish (item 14).
-- [ ] Grade A resistance limit per cell model. Proposed, awaiting Amish (item 16).
+- [x] First trial partner (item 10). Decided 2026-10-02: a local Repair Café group that passes laptop batteries to a collection point is the first candidate to approach, with that collection point as the source of trial cells.
+- [x] Scheduling rule for the attended day (item 12). Decided 2026-10-02: a current stage starts only if it finishes the same day.
+- [x] Responses to R11 and R5 (item 14). Decided 2026-10-02: accept 4.91 kg with the 1.5 mm tray and weigh at TRL 4; throughput by the same-day rule, more channels later.
+- [x] Grade A resistance limit per cell model (item 16). Decided 2026-10-02: 60 mΩ default; per-model limits from measured DC resistance for the commonest models only.
 - [ ] ReflowEconomy passport gaps: decided to raise with that project (item 15); cross-repo action.

@@ -3,9 +3,9 @@ doc_id: CCK-DEC-001
 title: CellCheck design decisions register
 project: CellCheck
 doc_type: Design decisions register
-version: "0.2"
+version: "0.3"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -17,6 +17,10 @@ revisions:
     date: '2026-10-01'
     author: Amish Chadha
     change: Budget treated as a value-engineering target
+  - version: "0.3"
+    date: '2026-10-02'
+    author: Amish Chadha
+    change: Amish approved the recommendations of open items 1 to 11 on 2026-10-02; all moved to decisions made; value-engineering savings line updated
 ---
 
 # CellCheck design decisions register
@@ -25,21 +29,7 @@ Every design decision still to be made, and every decision made, in one place. E
 
 ## Open decisions
 
-*Table 1. Decisions still to be made.*
-
-| # | Decision needed | Options | Recommendation | Affects in the build | Source |
-| --- | --- | --- | --- | --- | --- |
-| 1 | How the guard is held down (part of the containment arrangement) | (a) two knurled thumb screws, as modelled; (b) two toggle latches; (c) a hinge at the back with one latch | (a) for the first prototype; decide for later units after the TRL 4 containment test | Guard flanges, rivet nuts (build plan sections 3.8 and step 11) | CCK-DDR-003, A1 |
-| 2 | Whether the wire slots under the guard are sealed after wiring | (a) open with grommet strip, as modelled; (b) filled round the leads with high-temperature silicone | (b) | Wiring step 9 | CCK-DDR-003, A2 |
-| 3 | First trial partner | Repair café, e-bike repair shop or battery collection point | None stated | Not part of the build; sets the cells used at TRL 4 | CCK-DDR-001, item 10 |
-| 4 | Scheduling rule for the attended day | (a) start a current stage only if it finishes the same day (12.0 cells per day); (b) pause overnight with the unit off (12.8 cells per day) | None made; (b) adds an unquantified capacity error | Firmware sketch only | CCK-DDR-001, item 12 |
-| 5 | Responses to the requirements at risk, R11 (mass, 4.91 kg against 5 kg) and R5 (throughput) | For R11: accept and weigh at TRL 4, or a 1.2 mm tray (saves about 0.49 kg but thins the containment); for R5: scheduling rule, more channels later | None made | Tray thickness if R11 changes | CCK-DDR-001, item 14; CCK-CAL-001 section 8 |
-| 6 | Grade A resistance limit per cell model (60 mΩ default) | Values per cell model from named data sheets | None; needs data sheets | Grading table only | CCK-DDR-001, item 16 |
-| 7 | 18650 cells shown in the product renders where the model uses the 21700 envelope | Accept for the renders, or render 21700 cells | Accept; the model keeps the 21700 envelope for clearance checks | None | REVIEW 2026-09-26 |
-| 8 | Bins for matched groups A, B and C shown in the renders | (a) render context only; (b) a BOM line for three bins, costed against the value-engineering target | (a) now; decide (b) with TRL 4 purchasing | None now | REVIEW 2026-09-26 |
-| 9 | Fan finger guards shown in the renders | Add to BOM line 10 at TRL 4 and cost them then, or leave out | Add at TRL 4 | Fans (step 7) | REVIEW 2026-09-26 |
-| 10 | Guard perforation drawn as slots and 1.0 mm sheet in the renders | Accept as appearance, or redraw with round holes and 0.8 mm | Accept; the BOM specification stays as written | None | REVIEW 2026-09-26 |
-| 11 | Second-life SwapCell pack for PowerBox (low-current storage, about 334 Wh, 165 W) | Agree with the SwapCell and PowerBox projects, or not | Raise with those projects (cross-repo action) | None | CCK-DDR-001, item 1; CCK-CAL-001 section 10 |
+None. All open decisions were decided on 2026-10-02.
 
 ## To confirm when parts are bought
 
@@ -66,7 +56,7 @@ Main cost drivers (CCK-CAL-001, section 11): the per-channel parts, which are bo
 
 Savings worth trying, should indicative prices rise above the target:
 
-- Leave the matched-group bins and the fan finger guards out of the BOM until TRL 4 purchasing (open decisions 8 and 9).
+- Leave the matched-group bins out of the BOM until TRL 4 purchasing (decided 2026-10-02). The fan finger guards were decided on 2026-10-02 to go into BOM line 10 now with an estimated price; that small addition is not yet in the $172.40 estimate.
 - Look for a cheaper cell holder or charger module, since each saving is multiplied by eight.
 
 ## Decisions made
@@ -79,3 +69,14 @@ Savings worth trying, should indicative prices rise above the target:
 | 2026-09-25 | Budget raised from $160 to $175 (item 4) | Amish, same instruction | CCK-DDR-001, CCK-DDR-002 |
 | 2026-09-25 | DC four-wire resistance and a 14-day rest (item 11); firmware and build rules: same-channel cohort self-discharge reading, temperature-gated resistance pulse, per-channel calibration, fan-fault stop, detached-thermistor check (item 13); raise the passport gaps with ReflowEconomy (item 15) | Amish, same instruction | CCK-DDR-001, CCK-DDR-002 |
 | 2026-10-01 | Design for construction: feet and standoffs, 1.5 mm plate on six standoffs, holder fixings and wire slots, folded guard with thumb screws, board standoffs, larger display stand, heatsink and shroud fixings, thermistor C-clips, inlet housing, 5 V converter and channel boards (P1 to P12) | Made under Amish's 2026-09-30 instruction: "If you are realising that the design cannot be built as per concept - fix the design assumptions to match and be physically feasible as you draw the illustrations." Open for his review | CCK-DDR-003 |
+| 2026-10-02 | Open item 1: the guard is held down by the two knurled M4 thumb screws for the first prototype, and the TRL 4 containment test is run with the guard held exactly that way; latches are revisited only if the test or users show the screws being left loose | Amish: "i approve your recommendations for all 555 open decisions." | CCK-DDR-003, A1 |
+| 2026-10-02 | Open item 2: each wire slot under the guard is filled round its leads with high-temperature silicone after wiring, closing the guard space again | Amish: "i approve your recommendations for all 555 open decisions." | CCK-DDR-003, A2 |
+| 2026-10-02 | Open item 3: first trial partner, the first candidate to approach (not yet agreed), is a local Repair Café group that already passes laptop batteries to an e-waste or battery collection point, with that collection point as the source of trial cells | Amish: "i approve your recommendations for all 555 open decisions." | CCK-DDR-001, item 10 |
+| 2026-10-02 | Open item 4: scheduling rule for the attended day: a charge or discharge starts only if it will finish the same day (12.0 cells per day); no overnight pause | Amish: "i approve your recommendations for all 555 open decisions." | CCK-DDR-001, item 12 |
+| 2026-10-02 | Open item 5: R11, the 4.91 kg mass is accepted with the 1.5 mm tray kept, and the prototype is weighed at TRL 4; R5, throughput rests on the same-day rule of item 4, and more channels are left for a later version | Amish: "i approve your recommendations for all 555 open decisions." | CCK-DDR-001, item 14; CCK-CAL-001 section 8 |
+| 2026-10-02 | Open item 6: 60 mΩ stays the grade A default; per-model limits are added only for the few cell models most common in the partner's intake, set from DC resistance measured on known-good cells of each model, not from data sheet impedance | Amish: "i approve your recommendations for all 555 open decisions." | CCK-DDR-001, item 16 |
+| 2026-10-02 | Open item 7: 18650 cells accepted in the product renders; the model keeps the 21700 envelope for clearance checks | Amish: "i approve your recommendations for all 555 open decisions." | `docs/REVIEW.md`, 2026-09-26 |
+| 2026-10-02 | Open item 8: the matched-group bins are render context only for now; a BOM line is decided at TRL 4 purchasing | Amish: "i approve your recommendations for all 555 open decisions." | `docs/REVIEW.md`, 2026-09-26 |
+| 2026-10-02 | Open item 9: fan finger guards are added to BOM line 10 now, with an estimated price, rather than at TRL 4 | Amish: "i approve your recommendations for all 555 open decisions." | `docs/REVIEW.md`, 2026-09-26 |
+| 2026-10-02 | Open item 10: the guard's slotted perforation and 1.0 mm sheet in the renders are accepted as appearance only; the BOM keeps round holes in 0.8 mm sheet | Amish: "i approve your recommendations for all 555 open decisions." | `docs/REVIEW.md`, 2026-09-26 |
+| 2026-10-02 | Open item 11: the second-life pack study (about 334 Wh, 165 W) is sent to the SwapCell and PowerBox projects as a proposal; no further CellCheck action | Amish: "i approve your recommendations for all 555 open decisions." | CCK-DDR-001, item 1; CCK-CAL-001 section 10 |

@@ -275,3 +275,53 @@ Unchanged in substance. The guard now lifts off by hand, which is what a cell ch
 ### Recommended next step
 
 Amish to review CCK-DDR-003 and decide A1 and A2 in the register. TRL 4 (building to this plan) remains on hold by Amish's instruction.
+
+## Session 2026-10-02: open decisions decided
+
+On 2026-10-02 Amish approved every recommendation written for the open decisions: "i approve your recommendations for all 555 open decisions." trl stays 3; nothing was built or tested.
+
+### Decisions recorded
+
+11 decisions recorded in the design decisions register (CCK-DEC-001 v0.3, Decisions made, dated 2026-10-02): guard hold-down (1), wire slot sealing (2), first trial partner (3), scheduling rule (4), responses to R11 and R5 (5), grade A limit per cell model (6), 18650 cells in the renders (7), bins as render context (8), fan finger guards in BOM line 10 (9), guard perforation as appearance (10) and the second-life pack study sent to SwapCell and PowerBox (11). The partner in item 3 is the first candidate to approach, not an agreed partner.
+
+### Documents changed
+
+- `docs/06-design-decisions.md` (CCK-DEC-001 v0.3): all 11 open items moved to Decisions made; Open decisions now reads "None"; the value-engineering savings line updated for items 8 and 9.
+- `docs/decisions/0003-design-for-construction.md` (CCK-DDR-003 v0.3): status line and Table 3 record A1 and A2 as accepted; consequence added; status stays Draft; Tables 1 and 2 still open for Amish's review (see Points found in the review).
+- `docs/decisions/0001-trl2-review-decisions.md` (CCK-DDR-001 v0.3): items 10, 12, 14 and 16 recorded as decided.
+- `docs/decisions/0002-recommendations-accepted.md` (CCK-DDR-002 v0.2): the same four items recorded as decided in Table 3.
+- `docs/01-problem.md` (CCK-PRB-001 v0.6): first trial partner named as the first candidate to approach.
+- `docs/02-concept.md` (CCK-PRC-001 v0.7): throughput rule, grade A limit, containment hold-down and slot sealing, fan finger guards, pack study; open questions closed.
+- `docs/03-requirements.md` (CCK-REQ-001 v0.7): R5 and R11 status notes; no status changed.
+- `docs/04-calcs/01-sizing.md` (CCK-CAL-001 v0.5): R5 row of Table 4 names the decided rule, and section 8 the tray decision; no number changed.
+- `docs/05-build-plan.md` (CCK-BLD-001 v0.2): step 9 seals the wire slots with high-temperature silicone; silicone and fan finger guards in the bought components.
+- `bom/bom-notes.md`: the decided part and material choices noted; the line 10 and 16 changes are follow-ups.
+- `README.md`: the register sentence and the SwapCell paragraph.
+- PDFs re-rendered with `python .kit/render.py`; superseded versions removed.
+
+No CAD model, BOM quantity or price, or picture was changed. Requirement status is unchanged: R5, R6 and R11 at risk, R10 not verifiable at TRL 3, 13 met on paper.
+
+### Follow-up actions to carry approved decisions into the design
+
+1. Decision 2 (bom): Add high-temperature silicone sealant to the specification of BOM line 16 (price unchanged or re-estimated).
+2. Decision 2 (pictures): Show the sealed wire slots in the step 9 picture and the plate figures of the build plan (`cad/src/build_plan_media.py`).
+3. Decision 9 (bom): Add two 60 mm fan finger guards to BOM line 10 with an estimated price.
+4. Decision 9 (calcs): Update the cost in CCK-CAL-001 section 11 (`sizing.py`, `results.csv`), R12 in CCK-REQ-001 and the value-engineering figure in CCK-DEC-001, README and `bom/bom-notes.md` once lines 10 and 16 are repriced.
+5. Decision 9 (model): Add the finger guards to the fans in `cad/src/model.py` and the exploded view so the model matches BOM line 10.
+6. Decision 11 (docs): Send the second-life pack study (CCK-CAL-001 section 10) to the SwapCell and PowerBox repositories as a proposal.
+7. Decision 7 (pictures): Regenerate the appearance model and photoreal renders on Amish's Mac to the constructable design (guard, display stand, inlet, feet), keeping 18650 cells and the slotted guard as accepted appearance.
+
+### Points found in the review
+
+- The register has no open row asking Amish to accept CCK-DDR-003 (P1 to P12), although the decisions-made table says it is open for his review; recommend adding it with the recommendation "accept".
+- Items 4 and 5 overlap: the throughput half of item 5 is the scheduling rule of item 4.
+- The 60 mΩ grade A default should not be replaced with data sheet impedance figures, which are normally 1 kHz AC values and not comparable with the DC pulse measurement.
+- The appearance model and renders still show the concept guard, display, inlet and no feet.
+
+### Safety
+
+The guard's two thumb screws and the silicone-sealed wire slots are now part of the containment arrangement, which is still not verifiable on paper. The TRL 4 containment test must be run with the guard held by the thumb screws exactly as in the build plan. The fan finger guards are decided but not yet in the BOM.
+
+### Recommended next step
+
+Amish to decide whether to accept CCK-DDR-003 Tables 1 and 2 (no register row asked for it), then carry out the follow-up actions above. TRL 4 remains on hold by Amish's instruction.

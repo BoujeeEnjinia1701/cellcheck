@@ -3,9 +3,9 @@ doc_id: CCK-BLD-001
 title: CellCheck prototype build plan
 project: CellCheck
 doc_type: Build plan
-version: "0.1"
+version: "0.2"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -13,6 +13,10 @@ revisions:
     date: '2026-10-01'
     author: Amish Chadha
     change: First build plan, with pictures by component and step; design made constructable (CCK-DDR-003)
+  - version: "0.2"
+    date: '2026-10-02'
+    author: Amish Chadha
+    change: 'Decided items of 2026-10-02 carried in: wire slots sealed with high-temperature silicone after wiring (step 9), fan finger guards (CCK-DEC-001, items 2 and 9)'
 ---
 
 # CellCheck prototype build plan
@@ -337,11 +341,11 @@ Buy to specification, not brand. Line numbers are those of the bill of materials
 - **Cell holders (line 3).** Eight adjustable holders for 18650 and 21700 cells up to 70 mm long, spring contacts with separate force and sense leads at each end, and two M3 fixing holes in the base.
 - **Thermistors (line 4).** Eight 10 kΩ 1 % NTC thermistors, B value 3950.
 - **Charger modules, channel boards, load transistors (lines 6 to 8), controller (line 11), watchdog board (line 18), 5 V converter (line 21).** As Table 2.
-- **Fans (line 10).** Two 60 mm 12 V fans with a tachometer lead and a 50 mm screw pattern.
+- **Fans (line 10).** Two 60 mm 12 V fans with a tachometer lead and a 50 mm screw pattern, each with a 60 mm finger guard.
 - **Display and buttons (line 12).** A 2.8 in SPI display module about 86 x 50 mm with four corner holes, and three panel-mount push buttons for 7 mm holes.
 - **Inlet parts (line 13).** Panel-mount DC jack to suit the adapter's plug, panel fuse holder with a 6.3 A fuse, rocker switch for a 12 x 16 cut-out.
 - **Adapter (line 14).** A certified 12 V 5 A (60 W) adapter with the safety marks of the country of use. Never a bare or uncertified supply.
-- **Wiring (line 16).** Silicone wire as section 3.11, eight 3 A fast fuses, connectors, heat-shrink and edge grommet strip.
+- **Wiring (line 16).** Silicone wire as section 3.11, eight 3 A fast fuses, connectors, heat-shrink, edge grommet strip and a tube of high-temperature silicone sealant for the wire slots.
 - **Labels (line 17).** Cell ID labels, insulator rings and wraps.
 - **Rubber feet (line 19).** Six rubber feet about 20 across and 8 tall with M4 x 8 steel studs.
 - **Fixings (line 20).** Stainless: 6 M4 x 12 hex standoffs (line 2); 6 M4 x 8 screws (plate); 16 M3 x 8 screws (holders); 3 M3 x 10 screws (heatsink); 8 M3 x 10 screws with shoulder washers (transistors); 4 M3 x 6 screws (shroud); 8 fan screws; 38 M3 x 8 screws and 38 5 mm nylon standoffs (boards); 4 M3 x 8 screws (display stand and inlet); 2 M4 blind rivet nuts for 0.5 to 3 mm sheet; 2 M4 x 10 knurled thumb screws with 14 mm heads; 16 3.2 mm steel rivets (guard).
@@ -402,7 +406,7 @@ Controller, watchdog board and converter on 5 mm nylon standoffs; display stand 
 
 ![Step 9](05-build-plan/wiring.png)
 
-Wire the plate as section 3.11 and Figure 20, with the inlet fuse out and no cell anywhere near. Run the cell leads down the slot behind each holder, along the underside of the plate and up the slot beside the channel board. **Hold point:** the wiring checks of section 3.11 pass.
+Wire the plate as section 3.11 and Figure 20, with the inlet fuse out and no cell anywhere near. Run the cell leads down the slot behind each holder, along the underside of the plate and up the slot beside the channel board. **Hold point:** the wiring checks of section 3.11 pass. Then fill each wire slot round its leads with high-temperature silicone, from above and below, and let it cure before step 10; this closes the space under the guard again.
 
 ### Step 10: plate assembly into the tray
 
@@ -470,5 +474,5 @@ Stop at each point. Carry on only when everything listed is true.
 - General arrangement: `cad/drawings/CCK-DWG-001.pdf`, Rev P2.
 - Calculations: `docs/04-calcs/01-sizing.md` (CCK-CAL-001 v0.3) and `docs/04-calcs/sizing.py`; size and mass in section 8, cost in section 11, heatsink in section 4, single-fault analysis in section 6.
 - Bill of materials: `bom/bom.csv`.
-- Decisions: `docs/decisions/0003-design-for-construction.md` (CCK-DDR-003), with CCK-DDR-001 and CCK-DDR-002; open decisions in `docs/06-design-decisions.md` (CCK-DEC-001).
+- Decisions: `docs/decisions/0003-design-for-construction.md` (CCK-DDR-003), with CCK-DDR-001 and CCK-DDR-002; decisions made and still open in `docs/06-design-decisions.md` (CCK-DEC-001).
 - Requirements: `docs/03-requirements.md` (CCK-REQ-001 v0.5).

@@ -3,9 +3,9 @@ doc_id: CCK-DDR-003
 title: CellCheck design for construction
 project: CellCheck
 doc_type: Design decision record
-version: "0.2"
+version: "0.3"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -17,12 +17,16 @@ revisions:
   date: '2026-10-01'
   author: Amish Chadha
   change: Budget treated as a value-engineering target; cost wording only, no number changed
+- version: "0.3"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: Amish accepted A1 and A2 as recommended on 2026-10-02; Tables 1 and 2 still open for his review
 ---
 
 # 0003: Design for construction
 
 - **Date:** 2026-10-01
-- **Status:** draft. The changes in Tables 1 and 2 were made under Amish's 2026-09-30 instruction to make the design physically buildable; open for his review. The items in Table 3 would touch the safety case and are Proposed, awaiting Amish.
+- **Status:** draft. The changes in Tables 1 and 2 were made under Amish's 2026-09-30 instruction to make the design physically buildable and remain open for his review: the register did not carry a row asking him to accept them. The items in Table 3, which touch the safety case, were accepted as recommended. Amish, 2026-10-02: "i approve your recommendations for all 555 open decisions." A1 and A2 are recorded in the design decisions register (CCK-DEC-001).
 
 ## Context
 
@@ -60,15 +64,16 @@ The changes keep what CellCheck does: eight channels at the same 40 mm pitch, th
 | Drawings | General arrangement CCK-DWG-001 Rev P2; making sketches CCK-DWG-101 to 110 added. | Follow the model |
 | Documents | CCK-CAL-001 v0.3, CCK-PRC-001 v0.5, CCK-REQ-001 v0.5: mass, height and cost updated. No requirement changed status. | Follow the model |
 
-*Table 3. Proposed, awaiting Amish.*
+*Table 3. Items that touch the safety case: proposed, then accepted by Amish as recommended on 2026-10-02.*
 
 | # | Question | Options | Recommendation |
 | --- | --- | --- | --- |
-| A1 | How the guard is held down. It is part of the containment arrangement of R10, and it now lifts off after two thumb screws so that cells can be changed without tools. | (a) two knurled thumb screws, as modelled; (b) two over-centre toggle latches; (c) a hinge along the back edge with one latch at the front. | (a) for the first prototype, and decide for later units after the containment test at TRL 4. A hinge would swing onto the charger row. |
-| A2 | The wire slots behind each holder open the space under the guard to the space under the plate. Both are inside the tray, so the tray still contains a venting cell, but hot gas could reach the underside of the electronics. | (a) leave the slots open with grommet strip, as modelled; (b) fill each slot round its leads with high-temperature silicone after wiring. | (b): no new part, about a dollar of sealant, and the guard space is closed again. |
+| A1 | How the guard is held down. It is part of the containment arrangement of R10, and it now lifts off after two thumb screws so that cells can be changed without tools. | (a) two knurled thumb screws, as modelled; (b) two over-centre toggle latches; (c) a hinge along the back edge with one latch at the front. | (a) for the first prototype, and decide for later units after the containment test at TRL 4. A hinge would swing onto the charger row. **Accepted 2026-10-02:** two knurled thumb screws; the TRL 4 containment test is run with the guard held exactly that way, and latches are revisited only if the test or users show the screws being left loose. |
+| A2 | The wire slots behind each holder open the space under the guard to the space under the plate. Both are inside the tray, so the tray still contains a venting cell, but hot gas could reach the underside of the electronics. | (a) leave the slots open with grommet strip, as modelled; (b) fill each slot round its leads with high-temperature silicone after wiring. | (b): no new part, about a dollar of sealant, and the guard space is closed again. **Accepted 2026-10-02:** each slot is filled round its leads with high-temperature silicone after wiring. |
 
 ## Consequences
 
+- With A1 and A2 accepted, the guard is held by two thumb screws for the first prototype and the TRL 4 containment test is run with it held that way, and each wire slot is sealed round its leads with high-temperature silicone after wiring (build plan CCK-BLD-001, step 9). The silicone is to be added to BOM line 16.
 - `design_state: constructable` in `project.yaml`. The build plan CCK-BLD-001 shows every component and step in pictures generated from the model (`cad/src/build_plan_media.py`).
 - Requirement status is unchanged: none not met, three at risk (R5, R6, R11), 13 met on paper, R10 not verifiable at TRL 3 (CCK-CAL-001 v0.3).
 - The appearance model `cad/src/product_model.py`, the photoreal renders (`media/render-*.png`), `media/card.png` and `media/social-preview.png` still show the concept guard, display, inlet and fixings and no feet; they need updating on Amish's Mac, where Blender is.

@@ -3,9 +3,9 @@ doc_id: CCK-PRB-001
 title: CellCheck problem statement
 project: CellCheck
 doc_type: Problem statement
-version: "0.5"
+version: "0.6"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -29,6 +29,10 @@ revisions:
   date: '2026-10-01'
   author: Amish Chadha
   change: Budget treated as a value-engineering target; cost wording only, no number changed
+- version: "0.6"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: First trial partner decided on 2026-10-02 (CCK-DEC-001, item 3)
 ---
 
 # CellCheck problem statement
@@ -85,7 +89,7 @@ Operating context assumed for the concept: cylindrical 18650 and 21700 lithium-i
 ## Open questions
 
 - Graded cells in SwapCell packs: CCK-DDR-001 item 1 keeps SwapCell in the pitch and plans a second-life variant. The TRL 3 study (CCK-CAL-001 section 10) finds only a low-current storage pack for PowerBox feasible. Decided by Amish, 2026-09-25: go with recommendation; it needs the SwapCell project's agreement.
-- Which partner should supply cells for first trials (a repair café, an e-bike repair shop or a collection point)? Proposed, awaiting Amish.
+- Which partner should supply cells for first trials? Decided by Amish, 2026-10-02 (CCK-DEC-001, item 3): the first candidate to approach, not yet agreed, is a local Repair Café group that already passes laptop batteries to an e-waste or battery collection point, with that collection point as the source of trial cells.
 - Unattended operation: charge and discharge attended only, the rest stage may be left (CCK-DDR-001 item 2). Decided by Amish, 2026-09-25: go with recommendation.
 
 > **Safety:** Salvaged lithium-ion cells can hide damage and can overheat, vent and burn during charge or discharge. Any work on them needs a non-flammable surface, a smoke alarm, an extinguisher or sand bucket within reach and a person present while current flows.

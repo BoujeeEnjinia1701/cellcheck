@@ -3,9 +3,9 @@ doc_id: CCK-DDR-001
 title: CellCheck TRL 2 review decisions
 project: CellCheck
 doc_type: Design decision record
-version: "0.2"
+version: "0.3"
 status: Draft
-date: '2026-09-25'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -17,12 +17,16 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Recommendations accepted by Amish (DDR-002)
+- version: "0.3"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: Items 10, 12, 14 and 16 decided by Amish on 2026-10-02 as recommended in CCK-DEC-001
 ---
 
 # 0001: TRL 2 review decisions
 
 - **Date:** 2026-09-25
-- **Status:** decided for items with a recommendation. On 2026-09-25 Amish accepted all recommendations (CCK-DDR-002): items 1 to 9, 11, 13 and 15 are Decided by Amish, 2026-09-25: go with recommendation. Items 10, 12, 14 and 16 have no recommendation and remain Proposed, awaiting Amish.
+- **Status:** decided for items with a recommendation. On 2026-09-25 Amish accepted all recommendations (CCK-DDR-002): items 1 to 9, 11, 13 and 15 are Decided by Amish, 2026-09-25: go with recommendation. Items 10, 12, 14 and 16, which had no recommendation here, were given recommendations in the design decisions register (CCK-DEC-001, open items 3 to 6) and accepted by Amish on 2026-10-02: "i approve your recommendations for all 555 open decisions."
 
 ## Context
 
@@ -51,22 +55,22 @@ The options for each item are in `docs/REVIEW.md` (TRL 2 session) and CCK-PRC-00
 | 13 | TRL 3 engineering proposals from CCK-CAL-001 | Decided by Amish, 2026-09-25: go with recommendation. Firmware and build rules: read self-discharge in the same channel and against the median of the same-day cohort (R6); start the resistance pulse only within 1 K of the bench (R4, now met at ±2.09 mΩ); per-channel two-point voltage calibration at build (R3); stop discharges on a fan or heatsink fault (R8); a plausibility check for a detached thermistor (R9). Writing and testing the firmware and doing the calibration are TRL 4 work and on hold | CCK-PRC-001 v0.4, CCK-CAL-001 v0.2 section 5, CCK-REQ-001 v0.4 |
 | 15 | ReflowEconomy passport gaps: no `product_form` for graded cells and no electrical test in `identification.method` | Decided by Amish, 2026-09-25: go with recommendation. Raise with the ReflowEconomy project; listed under cross-repo actions in `docs/REVIEW.md`; this repo does not edit that schema | CCK-CAL-001 section 13, `docs/REVIEW.md` |
 
-### Items that remain open
+### Items decided on 2026-10-02
 
-*Table 2. Items still Proposed, awaiting Amish (no recommendation was made).*
+*Table 2. Items that had no recommendation here; decided by Amish on 2026-10-02 as recommended in the design decisions register (CCK-DEC-001).*
 
 | # | Item | Status |
 | --- | --- | --- |
-| 10 | First trial partner: a repair café, an e-bike repair shop or a battery collection point | Proposed, awaiting Amish. No preference stated |
-| 12 | Scheduling rule for the attended day: current stages start only if they finish the same day (12.0 cells per day), or pause overnight with the unit switched off (12.8) | Proposed, awaiting Amish. No recommendation was made; the pause rule adds an unquantified capacity error |
-| 14 | Responses to the requirements at risk: R11 (mass; a 1.2 mm tray saves about 0.49 kg but thins the containment) and R5 (throughput). R12 is now met through item 4 | Proposed, awaiting Amish. No choice has been made |
-| 16 | Grade A resistance limit per cell model (60 mΩ default) | Proposed, awaiting Amish. Needs named cell data sheets; no value was recommended |
+| 10 | First trial partner: a repair café, an e-bike repair shop or a battery collection point | Decided 2026-10-02: a local Repair Café group that already passes laptop batteries to an e-waste or battery collection point, with that collection point as the source of trial cells; the first candidate to approach, not yet agreed (CCK-DEC-001, item 3) |
+| 12 | Scheduling rule for the attended day: current stages start only if they finish the same day (12.0 cells per day), or pause overnight with the unit switched off (12.8) | Decided 2026-10-02: a charge or discharge starts only if it will finish the same day (12.0 cells per day); the overnight pause is not used, as it adds an unquantified capacity error (CCK-DEC-001, item 4) |
+| 14 | Responses to the requirements at risk: R11 (mass; a 1.2 mm tray saves about 0.49 kg but thins the containment) and R5 (throughput). R12 is now met through item 4 | Decided 2026-10-02: R11, accept 4.91 kg, keep the 1.5 mm tray and weigh the prototype at TRL 4; R5, the same-day rule of item 12, with more channels left for a later version (CCK-DEC-001, item 5) |
+| 16 | Grade A resistance limit per cell model (60 mΩ default) | Decided 2026-10-02: keep 60 mΩ as the default; add per-model limits only for the few cell models most common in the partner's intake, set from DC resistance measured on known-good cells of each model, not from data sheet impedance (normally 1 kHz AC values) (CCK-DEC-001, item 6) |
 
 ## Consequences
 
 - R9 is met on analysis, and R14 is met by design as redefined. The original R14 target (overnight grading without a person present) is superseded, not met.
 - The budget is $175, so R12 is met at $164.
 - The temperature-gated resistance pulse makes R4 met on the error budget (±2.09 mΩ against ±3.0 mΩ).
-- Attended-only operation makes throughput depend on scheduling; R5 is at risk at exactly 12.0 cells per day, and the scheduling rule (item 12) is still open.
+- Attended-only operation makes throughput depend on scheduling; R5 is at risk at exactly 12.0 cells per day under the same-day scheduling rule decided on 2026-10-02 (item 12).
 - The second-life SwapCell variant needs the SwapCell project's agreement and a pack design of its own. CellCheck supplies graded cells and records only.
 - TRL 4 is on hold by Amish's instruction.

@@ -3,9 +3,9 @@ doc_id: CCK-REQ-001
 title: CellCheck requirements
 project: CellCheck
 doc_type: Requirements
-version: "0.6"
+version: "0.7"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -33,6 +33,10 @@ revisions:
   date: '2026-10-01'
   author: Amish Chadha
   change: Budget treated as a value-engineering target; cost wording only, no number changed
+- version: "0.7"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: R5 and R11 status notes record the 2026-10-02 decisions (CCK-DEC-001, items 4 and 5); no status changed
 ---
 
 # CellCheck requirements
@@ -65,9 +69,9 @@ Table 2. Status at TRL 3 (CCK-CAL-001 v0.3, paper estimates; at risk first, no r
 
 | ID | Status | Basis |
 | --- | --- | --- |
-| R5 | **At risk** | 12.0 cells per attended day if current stages finish the same day; 12.8 with an overnight pause; 8.0 for 2.5 Ah cells |
+| R5 | **At risk** | 12.0 cells per attended day under the same-day rule decided on 2026-10-02 (CCK-DEC-001, item 4; the overnight pause, 12.8, is not used); 8.0 for 2.5 Ah cells; more channels left for a later version |
 | R6 | **At risk** | ±2.3 mV in the same channel (±10.6 mV across channels, no longer allowed); cohort median cancels common relaxation, but the spread between cells is not bounded |
-| R11 | **At risk** | 460 x 300 x 85 mm; 4.91 kg against 5 kg (constructable design, CCK-DDR-003) |
+| R11 | **At risk** | 460 x 300 x 85 mm; 4.91 kg against 5 kg (constructable design, CCK-DDR-003). Accepted for the prototype on 2026-10-02 with the 1.5 mm tray kept; weighed at TRL 4 (CCK-DEC-001, item 5) |
 | R10 | Not verifiable at TRL 3 | Containment cannot be analysed credibly on paper; mean tray rise about 84 K for an assumed 100 kJ event |
 | R1 | Met (design review) | Eight holders for 18650 and 21700 cells |
 | R2 | Met | ±1.1 % without calibration, ±0.4 % with |
