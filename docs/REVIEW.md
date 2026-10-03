@@ -287,7 +287,7 @@ On 2026-10-02 Amish approved every recommendation written for the open decisions
 ### Documents changed
 
 - `docs/06-design-decisions.md` (CCK-DEC-001 v0.3): all 11 open items moved to Decisions made; Open decisions now reads "None"; the value-engineering savings line updated for items 8 and 9.
-- `docs/decisions/0003-design-for-construction.md` (CCK-DDR-003 v0.3): status line and Table 3 record A1 and A2 as accepted; consequence added; status stays Draft; Tables 1 and 2 still open for Amish's review (see Points found in the review).
+- `docs/decisions/0003-design-for-construction.md` (CCK-DDR-003 v0.3): status line and Table 3 record A1 and A2 as accepted; consequence added; status stays Draft; Tables 1 and 2 still open for Amish's review at that point (see Points found in the review).
 - `docs/decisions/0001-trl2-review-decisions.md` (CCK-DDR-001 v0.3): items 10, 12, 14 and 16 recorded as decided.
 - `docs/decisions/0002-recommendations-accepted.md` (CCK-DDR-002 v0.2): the same four items recorded as decided in Table 3.
 - `docs/01-problem.md` (CCK-PRB-001 v0.6): first trial partner named as the first candidate to approach.
@@ -313,7 +313,7 @@ No CAD model, BOM quantity or price, or picture was changed. Requirement status 
 
 ### Points found in the review
 
-- The register has no open row asking Amish to accept CCK-DDR-003 (P1 to P12), although the decisions-made table says it is open for his review; recommend adding it with the recommendation "accept".
+- The register had no open row asking Amish to accept CCK-DDR-003 (P1 to P12), although the decisions-made table said it was open for his review; the recommendation was "accept". Amish accepted it later on 2026-10-02 (see the next session).
 - Items 4 and 5 overlap: the throughput half of item 5 is the scheduling rule of item 4.
 - The 60 mΩ grade A default should not be replaced with data sheet impedance figures, which are normally 1 kHz AC values and not comparable with the DC pulse measurement.
 - The appearance model and renders still show the concept guard, display, inlet and no feet.
@@ -324,4 +324,68 @@ The guard's two thumb screws and the silicone-sealed wire slots are now part of 
 
 ### Recommended next step
 
-Amish to decide whether to accept CCK-DDR-003 Tables 1 and 2 (no register row asked for it), then carry out the follow-up actions above. TRL 4 remains on hold by Amish's instruction.
+Carry out the follow-up actions above (Amish accepted CCK-DDR-003 Tables 1 and 2 later on 2026-10-02; see the next session). TRL 4 remains on hold by Amish's instruction.
+
+## Session 2026-10-02: design-for-construction changes accepted
+
+Amish, 2026-10-02: "APPROVED: Design-for-construction changes in 10 repos (CityTwin, CoolShade, PalletPilot, Heliolite, PotholeLog, EarthPress, ReadyKit, CellCheck, CargoMule and ThermaCart)". This accepts the design-for-construction changes P1 to P12 in Table 1 of CCK-DDR-003, with their knock-on changes in Table 2, which were left open for his review when the open decisions were decided earlier the same day. No other item is decided by it. trl stays 3; no build or test work was done, and the model, BOM, calculations and pictures are unchanged.
+
+### Documents changed
+
+- `docs/decisions/0003-design-for-construction.md` (CCK-DDR-003 v0.4, status Draft): status line now "accepted" with Amish's words.
+- `docs/06-design-decisions.md` (CCK-DEC-001 v0.4): Decisions made row added, dated 2026-10-02; the 2026-10-01 row no longer calls the changes open for review.
+- `docs/05-build-plan.md` (CCK-BLD-001 v0.3): section 2 says CCK-DDR-003 is accepted.
+- PDFs regenerated.
+
+### Recommended next step
+
+No change: the follow-up actions of the previous session stand. TRL 4 remains on hold by Amish's instruction.
+
+## Session 2026-10-02: approved follow-ups carried out
+
+Amish approved on 2026-10-02 that every follow-up action from the open-decision sign-off be carried out. trl stays 3; nothing was built or tested.
+
+### Follow-ups
+
+1. Decision 2, BOM: done. High-temperature silicone sealant added to line 16 ($8.00 to $12.00; a 30 g tube, estimated at $4.00 for a small tube rated to about 260 C).
+2. Decision 2, pictures: done. New step 9 picture (`docs/05-build-plan/step-09.png`) showing the 16 sealed slots; plate hole figure shades the slots as sealed; joint 6 shows a seal; the seals are in the model (16 plugs, BOM 16).
+3. Decision 9, BOM: done. Line 10 now "Fan with shroud and finger guard", $2.60 each for two (guard $0.60, a typical marketplace price for a 60 mm wire grill); line 20 counts eight small screws for the guards at no price change.
+4. Decision 9, calculations: done. `sizing.py` and `results.csv` rerun; CCK-CAL-001 sections 8 and 11, CCK-REQ-001, CCK-PRC-001, CCK-DEC-001, README and BOM notes brought into line. Mass 4.94 kg (4.91 kg before); cost $177.60.
+5. Decision 9, model: done. Finger guards (and their screws) and silicone seals added to `cad/src/model.py`, the exploded view and the build plan pictures; 139 constructability checks pass (129 before); STEP and STL regenerated.
+6. Decision 11, send the second-life pack study to SwapCell and PowerBox: not done here, it lives in other repos (see Cross-repo actions).
+7. Decision 7, appearance and renders: appearance model updated and render scenes exported (hero, exploded, detail); photoreal renders, `media/card.png` and `media/social-preview.png` are made on Amish's Mac.
+
+### Requirement status changes
+
+- R12: from "within the value-engineering target" to "over the value-engineering target". Value-engineering target: USD 175.00. Estimated cost of the constructable design: USD 177.60 (USD 2.60 over the target). `budget_usd` is unchanged.
+- R11: still at risk; 4.94 kg against 5 kg (0.06 kg of margin, was 0.09 kg).
+- On paper 12 of 17 are met (was 13); none is failed outright.
+
+### Proposed, awaiting Amish
+
+- The $2.60 overshoot of the value-engineering target: accept it as a control target, not a limit (recommended for the paper design), look for $2.60 of savings, or raise the target. Recorded as open decision 1 in CCK-DEC-001.
+- Appearance deviations in the appearance model: guard drawn slotted and 1.0 mm (accepted 2026-10-02), 18650 cells shown, rubber feet drawn as plain cylinders.
+
+### Pictures regenerated
+
+General arrangement CCK-DWG-001 Rev P3; making sketches CCK-DWG-101 to 110 (101 to 110 re-issued, notes added to 103 and 105); concept media (`media/hero.png`, exploded, flow, blueprint, viewer); build plan overview, plate hole figure, joints 1 to 7 (joint 4 redrawn from behind to show the guard), steps 1 to 12 (new step 9), wiring.
+
+### Appearance model and render scenes
+
+`cad/src/product_model.py` now has six feet and six standoffs, plate slots with silicone seals, the end-flanged guard with two thumb screws, boards lifted 5 mm, finger guards, and the unit lifted onto its feet, all dimensions from `cad/src/model.py`. Scenes exported to `/home/claude/renders/cellcheck`: hero, exploded and detail (one .npz and .json each, plus `cellcheck__jobs.json`).
+
+### Cross-repo actions
+
+- SwapCell and PowerBox: send the second-life pack study (CCK-CAL-001 section 10: 13S4P of grade A laptop cells, about 334 Wh, 165 W, low-current storage variant) as a proposal.
+
+### Documents changed
+
+CCK-CAL-001 v0.6, CCK-REQ-001 v0.8, CCK-PRC-001 v0.8, CCK-DEC-001 v0.5, CCK-DDR-003 v0.5, CCK-BLD-001 v0.4, CCK-DWG-001 Rev P3, `bom/bom.csv`, `bom/bom-notes.md`, README. PDFs re-rendered.
+
+### Recommended next step
+
+Decide the cost overshoot, render the photoreal images on the Mac, then ask Amish before any TRL 4 work.
+
+## 2026-10-02: photoreal renders redone on the constructable design
+
+Rendered with Blender Cycles on Amish's Mac from the updated appearance model; captioned with `.kit/photo_caption.py`; `media/card.png` and `media/social-preview.png` regenerated with `.kit/cards.py`. Views: hero, exploded, detail. image_qc passes. Appearance deviations are those logged above as proposed, awaiting Amish.

@@ -29,14 +29,14 @@ laptop_pack = box(-100, 100, -205, -160, 0, 22)   # salvaged laptop pack in fron
 context = [Part("Bench top", bench, "#C8CDD3"), Part("salvaged laptop pack", laptop_pack, "#8B95A1")]
 
 render_all(
-    parts, project="CellCheck", title="Cell grader concept", dwg_no="CCK-DWG-010", date="2026-10-01",
+    parts, project="CellCheck", title="Cell grader concept", dwg_no="CCK-DWG-010", date="2026-10-02",
     key_figures=["8 channels, 18650 and 21700 cells, four-wire contacts",
                  "1 A charge and 1 A discharge per channel",
                  "DC resistance: 0.5 A then 2.0 A pulse, IEC 61960 pattern",
                  "6.33 h per 1.8 Ah cell; 12.0 cells per 10 h day (calc.)",
                  "14-day self-discharge rest rack, 48 cells",
                  "33.6 W peak heat; MOSFET cases 59 C (calc.)",
-                 "460 x 300 x 85 mm, 4.91 kg; $172 in parts (est.)"],
+                 "460 x 300 x 85 mm, 4.94 kg; $178 in parts (est.)"],
     scale_figure=False, context=context,
     cut=False,  # open-top bench unit: the hero and exploded views already show every internal part
     flow={"title": "material flow per 100 salvaged cells (all values are estimates)", "unit": "cells",

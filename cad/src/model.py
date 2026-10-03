@@ -54,6 +54,8 @@ PARAMS = {
     "hs_screw_x": (-150.0, -30.0, 90.0),
     # 10 Fans on a folded shroud behind the fins, pushing air forward into the fin channels
     "shroud_t": 1.0, "shroud_gap": 3.0, "fan": 60.0, "fan_t": 15.0, "fan_x": (-110.0, 50.0),
+    "fan_guard_t": 1.6,                     # 60 mm steel wire finger guard on each fan (CCK-DEC-001, item 9)
+    "seal_bead": 1.5,                       # silicone bead standing proud of each wire slot, top and bottom (item 2)
     # 11, 12, 13, 18, 21 Right-hand bay: (x0, x1, y0, y1, height)
     "ctrl": (160.0, 210.0, -10.0, 50.0, 12.0),
     "watchdog": (160.0, 210.0, -60.0, -25.0, 8.0),
@@ -213,6 +215,13 @@ def build_components(p=PARAMS):
         for yc in (p["down_slot_y"], p["up_slot_y"]):
             plate -= bx(x - sw / 2, x + sw / 2, yc - sd / 2, yc + sd / 2, PB - 1, PZ + 1)
     add("plate", "Base plate", plate, 2, "made", "plate")
+    # 16 High-temperature silicone filling each wire slot round the leads after wiring (CCK-DEC-001, item 2);
+    #    the leads are not modelled, so the seal is drawn as a solid plug with a bead above and below
+    sb = p["seal_bead"]
+    seals = fuse(bx(x - sw_ / 2, x + sw_ / 2, yc - sd_ / 2, yc + sd_ / 2, PB - sb, PZ + sb)
+                 for x in cx for yc in (p["down_slot_y"], p["up_slot_y"])
+                 for sw_, sd_ in [(p["slot_w"], p["slot_d"])])
+    add("seals", "Silicone slot seals (16)", seals, 16, "bought", "seals")
     add("plate_screws", "M4 screws, plate to standoffs (6)",
         fuse(zcyl(x, y, PZ, 3.8, 2.2) + zcyl(x, y, PB - 5, 2.0, 5 + PT) for x, y in sxy), 20, "fixing", None)
 
@@ -319,7 +328,7 @@ def build_components(p=PARAMS):
         shroud -= xcyl(hx0 - st - 1, ym, z, 1.7, st + 2) + xcyl(hx1 - 1, ym, z, 1.7, st + 2)
         sscr.append(xcyl(hx0 - st - 2.0, ym, z, 2.75, 2.0) + xcyl(hx0 - st, ym, z, 1.5, st + 6))
         sscr.append(xcyl(hx1 + st, ym, z, 2.75, 2.0) + xcyl(hx1 - 6, ym, z, 1.5, st + 6))
-    fans, fscr = None, []
+    fans, fscr, fguards, fgscr = None, [], [], []
     for fx in p["fan_x"]:
         shroud -= ycyl(fx, sy0 - 1, fz, 27, st + 2)
         for dx in (-25, 25):
@@ -332,11 +341,27 @@ def build_components(p=PARAMS):
         for dx in (-25, 25):
             for dz in (-25, 25):
                 f -= ycyl(fx + dx, sy1 - 1, fz + dz, 1.4, 7)
+                f -= ycyl(fx + dx, sy1 + p["fan_t"] - 6, fz + dz, 1.4, 7)      # guard screw pilot holes
         fans = f if fans is None else fans + f
+        # Finger guard (CCK-DEC-001, item 9): steel wire guard on the outer face of the fan, three
+        # rings and a cross inside a square frame, held by four small self-tapping screws
+        gy, gw_ = sy1 + p["fan_t"], p["fan_guard_t"]
+        g = bx(fx - 30, fx + 30, gy, gy + gw_, fz - 30, fz + 30) - bx(fx - 28, fx + 28, gy - 1, gy + gw_ + 1, fz - 28, fz + 28)
+        for r in (10.0, 17.0, 24.0):
+            g += ycyl(fx, gy, fz, r + 0.8, gw_) - ycyl(fx, gy - 1, fz, r - 0.8, gw_ + 2)
+        g += bx(fx - 28, fx + 28, gy, gy + gw_, fz - 0.8, fz + 0.8) + bx(fx - 0.8, fx + 0.8, gy, gy + gw_, fz - 28, fz + 28)
+        for dx in (-25, 25):
+            for dz in (-25, 25):
+                g += bx(fx + dx - 4, fx + dx + 4, gy, gy + gw_, fz + dz - 4, fz + dz + 4)    # corner tabs
+                g -= ycyl(fx + dx, gy - 1, fz + dz, 1.7, gw_ + 2)
+                fgscr.append(ycyl(fx + dx, gy + gw_, fz + dz, 2.5, 1.2) + ycyl(fx + dx, gy - 5.0, fz + dz, 1.4, 5.0 + gw_))
+        fguards.append(g)
     add("shroud", "Fan shroud", shroud, 10, "made", "fans")
     add("shroud_screws", "M3 screws, shroud to heatsink (4)", fuse(sscr), 20, "fixing", None)
     add("fans", "Fans, 60 mm (2)", fans, 10, "bought", "fans")
     add("fan_screws", "Fan screws (8)", fuse(fscr), 20, "fixing", None)
+    add("fan_guards", "Fan finger guards, 60 mm (2)", fuse(fguards), 10, "bought", "fan_guards")
+    add("fan_guard_screws", "Fan guard screws (8)", fuse(fgscr), 20, "fixing", None)
 
     # 11 Controller, 18 watchdog board, 21 5 V converter, each on two nylon standoffs
     def blk(key):
@@ -441,8 +466,10 @@ GROUPS = [
     ("chargers", "Charger modules, 1 A CC-CV", "#0F766E", 6, (0, 40, 50)),
     ("boards", "Channel boards", "#15803D", 7, (0, 80, 110)),
     ("mosfets", "Load MOSFETs", "#1F2937", 8, (0, 120, 170)),
+    ("seals", "Silicone seals in the wire slots", "#F59E0B", 16, (0, 0, -40)),
     ("heatsink", "Heatsink, vertical fins", "#94A3B8", 9, (0, 190, 170)),
     ("fans", "Fans, 60 mm, on shroud", "#4B5563", 10, (0, 290, 170)),
+    ("fan_guards", "Fan finger guards, 60 mm", "#B8BEC6", 10, (0, 345, 170)),
     ("ctrl", "Controller, ESP32-S3 class", "#D4A017", 11, (120, 0, 60)),
     ("display", "Display and buttons on stand", "#38BDF8", 12, (130, -90, 40)),
     ("inlet", "Power inlet, fuse and switch", "#991B1B", 13, (140, 120, 40)),
@@ -465,7 +492,7 @@ def build_parts(p=PARAMS, C=None):
     return out
 
 
-UNIT_ITEMS = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 18, 19, 21}   # parts in or under the tray
+UNIT_ITEMS = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16, 18, 19, 21}   # parts in or under the tray
 
 
 def assemblies(parts=None):
@@ -544,6 +571,16 @@ def checks(p=PARAMS, C=None):
     chk("Fans on the shroud", S("fans"), S("shroud"), "touch")
     chk("Fans on the plate", S("fans"), S("plate"), "touch")
     chk("Fan screws clear of the fins", S("fan_screws"), S("heatsink"), 1.0)
+    chk("Finger guards on the fans", S("fan_guards"), S("fans"), "touch")
+    chk("Finger guards clear of the shroud", S("fan_guards"), S("shroud"), 10.0)
+    chk("Finger guards clear of the tray back wall", S("fan_guards"), S("tray"), 10.0)
+    chk("Guard screws in the finger guards", S("fan_guard_screws"), S("fan_guards"), "touch")
+    chk("Guard screws in the fan frames", S("fan_guard_screws"), S("fans"), "touch")
+    chk("Silicone seals fill the plate slots", S("seals"), S("plate"), "touch")
+    chk("Silicone seals clear of the holders", S("seals"), S("holders"), 1.0)
+    chk("Silicone seals clear of the chargers and channel boards", S("seals"), S("chargers") + S("boards"), 1.0)
+    chk("Silicone seals clear of the guard walls", S("seals"), S("guard"), 1.0)
+    chk("Silicone seals clear of the liner and standoffs", S("seals"), S("liner") + S("standoffs"), 1.0)
     chk("Fans clear of the tray back wall", S("fans"), S("tray"), 10.0)
     for k in ("ctrl", "watchdog", "buck"):
         chk(f"{C[k].name} on its standoffs", S(k), S("board_standoffs"), "touch")

@@ -3,7 +3,7 @@ doc_id: CCK-BLD-001
 title: CellCheck prototype build plan
 project: CellCheck
 doc_type: Build plan
-version: "0.2"
+version: "0.4"
 status: Draft
 date: '2026-10-02'
 author: Amish Chadha
@@ -17,6 +17,14 @@ revisions:
     date: '2026-10-02'
     author: Amish Chadha
     change: 'Decided items of 2026-10-02 carried in: wire slots sealed with high-temperature silicone after wiring (step 9), fan finger guards (CCK-DEC-001, items 2 and 9)'
+  - version: "0.3"
+    date: '2026-10-02'
+    author: Amish Chadha
+    change: "Section 2: the changes recorded in CCK-DDR-003 accepted by Amish on 2026-10-02"
+  - version: "0.4"
+    date: '2026-10-02'
+    author: Amish Chadha
+    change: "Pictures and text updated for the fan finger guards and the silicone-sealed wire slots: new step 9 picture, plate hole figure, joint 4 and joint 6, fan shroud sketch; figures of mass and cost; model checks 139; general arrangement Rev P3"
 ---
 
 # CellCheck prototype build plan
@@ -29,13 +37,13 @@ revisions:
 
 *Figure 1. Every component pulled apart and numbered in build order. The rest rack (18) and the adapter (19) stand on the bench beside the tray.*
 
-The prototype is an eight-channel cell grader built into a steel tray that stands on six rubber feet. Inside the tray a ceramic fibre liner covers the floor, and an aluminium base plate on six standoffs carries everything else: eight cell holders under a lift-off perforated steel guard, a charger module and a channel board for each channel, eight load transistors on a finned heatsink with two fans behind it, and a controller, watchdog board, 5 V converter, display and power inlet on the right. A printed rack beside the tray holds 48 cells during their 14-day rest, and a certified 12 V adapter powers the unit. Figure 1 shows the 19 components in the order you make or fit them. Ten are made or worked in a small workshop: the tray (cut and drilled), the liner, the base plate, the heatsink (drilled and tapped), the fan shroud, the guard, and four printed parts (display stand, inlet housing, thermistor clips and rest rack). Everything else is bought and fitted. The work is cutting, drilling, tapping and folding aluminium and steel sheet, cutting ceramic fibre, 3D printing, and wiring bought modules with soldered and crimped joints. The parts cost about $172 from the bill of materials.
+The prototype is an eight-channel cell grader built into a steel tray that stands on six rubber feet. Inside the tray a ceramic fibre liner covers the floor, and an aluminium base plate on six standoffs carries everything else: eight cell holders under a lift-off perforated steel guard, a charger module and a channel board for each channel, eight load transistors on a finned heatsink with two fans behind it, and a controller, watchdog board, 5 V converter, display and power inlet on the right. A printed rack beside the tray holds 48 cells during their 14-day rest, and a certified 12 V adapter powers the unit. Figure 1 shows the 19 components in the order you make or fit them. Ten are made or worked in a small workshop: the tray (cut and drilled), the liner, the base plate, the heatsink (drilled and tapped), the fan shroud, the guard, and four printed parts (display stand, inlet housing, thermistor clips and rest rack). Everything else is bought and fitted. The work is cutting, drilling, tapping and folding aluminium and steel sheet, cutting ceramic fibre, 3D printing, and wiring bought modules with soldered and crimped joints. The parts cost about $178 from the bill of materials.
 
 > **Safety:** CellCheck charges and discharges salvaged lithium-ion cells, which can overheat, vent flammable and toxic gas, and burn. Keep every cell out of the workshop until stop S1 in section 6, out of the holders until stop S5, and never leave a cell charging or discharging unattended. Ceramic fibre dust irritates the lungs and skin: cut it with a dust mask, gloves and long sleeves. Cut steel and aluminium edges are sharp: deburr everything and wear cut-resistant gloves for sheet work. The unit uses only 12 V from a certified adapter; never wire mains into it.
 
 ## 2. What changed to make it buildable
 
-The concept showed what the grader does; most of its parts had no fixing, two had no room for what goes in them, and three parts the electronics need were missing. Each change below keeps what the grader does, and all of them are recorded in decision record CCK-DDR-003, open for Amish's review.
+The concept showed what the grader does; most of its parts had no fixing, two had no room for what goes in them, and three parts the electronics need were missing. Each change below keeps what the grader does, and all of them are recorded in decision record CCK-DDR-003, accepted by Amish on 2026-10-02.
 
 *Table 1. Changes from the concept.*
 
@@ -109,7 +117,7 @@ Each rubber foot sits under a stud hole; its M4 stud passes through the 1.5 mm f
 
 ![Figure 6. Hole and slot positions on the base plate](05-build-plan/plate-holes.png)
 
-*Figure 6. Every hole and slot, measured from the left edge and the front edge. Each ring's colour says what goes through it.*
+*Figure 6. Every hole and slot, measured from the left edge and the front edge. Each ring's colour says what goes through it; the wire slots, shaded yellow, are filled with silicone after wiring (step 9).*
 
 **What it is and what it is made from.** The flat plate that carries every part inside the tray. Aluminium sheet 1.5 mm thick, 5052 or 6061 class, cut to 430 x 270.
 
@@ -121,7 +129,7 @@ Each rubber foot sits under a stud hole; its M4 stud passes through the 1.5 mm f
 4. On each channel line mark, measured up from the front edge: holder screw holes at 55 and 105; a wire slot centred at 125.5; a wire slot centred at 171.5; charger standoff holes 9 left of the line at 143 and 9 right at 165; channel board standoff holes 9 left at 178 and 9 right at 194.
 5. Mark the other holes from the key of Figure 6: six standoff holes, three heatsink screw holes, two rivet nut holes, and the holes for the controller, watchdog board, converter, display stand and inlet housing.
 6. Drill the standoff holes 4.5 mm, the rivet nut holes 6 mm and all the others 3.4 mm.
-7. Wire slots, 16 long and 5 wide: drill 5 mm at each end, cut between with a fine saw or nibbler, and file square. Fit edge grommet strip round each slot.
+7. Wire slots, 16 long and 5 wide: drill 5 mm at each end, cut between with a fine saw or nibbler, and file square. Fit edge grommet strip round each slot. After the wiring (step 9) each slot is filled with high-temperature silicone round the leads.
 8. Deburr every hole on both faces.
 9. Set an M4 blind rivet nut in each 6 mm hole with the hand tool, its thin head on the top face.
 
@@ -176,14 +184,15 @@ The heatsink stands on the plate with its fins to the back, held by three M3 scr
 4. Drill two 3.4 mm holes in each flange, 3 from its free end and 15 and 35 up from the bottom edge.
 5. Fold each flange 90° forward, square to the back. Deburr everything.
 6. Screw each fan to the back with four fan screws put in from the inside, the fan blowing forward through the hole.
+7. Fit a 60 mm steel wire finger guard on the outer face of each fan, held by four small self-tapping screws into the fan frame's corner holes.
 
 **How it fits the parts next to it.**
 
 ![Figure 11. Joint 4: fan shroud on the left end of the heatsink](05-build-plan/joint-04.png)
 
-*Figure 11. The flange lies flat on the end of the spine and is held by two M3 screws; the back stands 3 mm behind the fins.*
+*Figure 11. The flange lies flat on the end of the spine and is held by two M3 screws; the back stands 3 mm behind the fins; the finger guard covers the fan's outer face.*
 
-The flanges lie on the two ends of the spine, held by two M3 screws each; the back stands 3 mm behind the fins with its bottom edge resting on the plate, and the fans sit 15 mm in front of the tray's back wall, facing the intake slots.
+The flanges lie on the two ends of the spine, held by two M3 screws each; the back stands 3 mm behind the fins with its bottom edge resting on the plate, and the fans sit 15 mm in front of the tray's back wall, facing the intake slots, and their finger guards stand about 12 mm clear of the wall.
 
 **Check before moving on.** Hold the shroud on the heatsink: the flange holes line up with the tapped holes in the spine ends.
 
@@ -394,7 +403,7 @@ Fins to the back. Three M3 screws up from under the plate into the spine's botto
 
 ![Step 7](05-build-plan/step-07.png)
 
-With the fans already screwed to the shroud, slide its flanges over the spine ends and fit two M3 screws each side.
+With the fans (and their finger guards) already screwed to the shroud, slide its flanges over the spine ends and fit two M3 screws each side.
 
 ### Step 8: controller, watchdog board, converter, display and inlet
 
@@ -402,11 +411,13 @@ With the fans already screwed to the shroud, slide its flanges over the spine en
 
 Controller, watchdog board and converter on 5 mm nylon standoffs; display stand and inlet housing by two M3 screws each from under the plate.
 
-### Step 9: wiring
+### Step 9: wiring and sealing the wire slots
 
-![Step 9](05-build-plan/wiring.png)
+![Step 9, wiring](05-build-plan/wiring.png)
 
-Wire the plate as section 3.11 and Figure 20, with the inlet fuse out and no cell anywhere near. Run the cell leads down the slot behind each holder, along the underside of the plate and up the slot beside the channel board. **Hold point:** the wiring checks of section 3.11 pass. Then fill each wire slot round its leads with high-temperature silicone, from above and below, and let it cure before step 10; this closes the space under the guard again.
+Wire the plate as section 3.11 and Figure 20, with the inlet fuse out and no cell anywhere near. Run the cell leads down the slot behind each holder, along the underside of the plate and up the slot beside the channel board. **Hold point:** the wiring checks of section 3.11 pass. Then fill each wire slot round its leads with high-temperature silicone, from above and below, and let it cure before step 10; this closes the space under the guard again. The next picture shows the 16 sealed slots.
+
+![Step 9, sealed slots](05-build-plan/step-09.png)
 
 ### Step 10: plate assembly into the tray
 
@@ -443,7 +454,7 @@ These are the checks a TRL 4 test report would record; this plan only lists them
 | Voltage reading | R3 | Bench supply at 3.0 and 4.2 V on each channel, against a calibrated meter, then two-point calibration | Each channel within 10 mV after calibration |
 | Temperature reading | R7 | Each thermistor beside a reference thermometer at room temperature | Within 2 K |
 | Fans and heatsink | R8 | Fans on; tachometer readings at the controller | Both fans read; air comes out of the fin tops |
-| Mass and size | R11 | Weigh the unit without the adapter; measure | 5 kg or less (4.91 kg estimated); within 500 x 320 x 120 mm |
+| Mass and size | R11 | Weigh the unit without the adapter; measure | 5 kg or less (4.94 kg estimated); within 500 x 320 x 120 mm |
 
 ## 6. Safety stops
 
@@ -469,10 +480,10 @@ Stop at each point. Carry on only when everything listed is true.
 
 ## 8. Where the numbers come from
 
-- Model and constructability checks: `cad/src/model.py` (`python cad/src/model.py --check`, 129 checks); STEP and STL exports in `cad/step/` and `cad/stl/`.
+- Model and constructability checks: `cad/src/model.py` (`python cad/src/model.py --check`, 139 checks); STEP and STL exports in `cad/step/` and `cad/stl/`.
 - Pictures: `cad/src/build_plan_media.py`, using `.kit/build_views.py`; written to `docs/05-build-plan/` and `cad/drawings/CCK-DWG-101` to `CCK-DWG-110`.
-- General arrangement: `cad/drawings/CCK-DWG-001.pdf`, Rev P2.
-- Calculations: `docs/04-calcs/01-sizing.md` (CCK-CAL-001 v0.3) and `docs/04-calcs/sizing.py`; size and mass in section 8, cost in section 11, heatsink in section 4, single-fault analysis in section 6.
+- General arrangement: `cad/drawings/CCK-DWG-001.pdf`, Rev P3.
+- Calculations: `docs/04-calcs/01-sizing.md` (CCK-CAL-001 v0.6) and `docs/04-calcs/sizing.py`; size and mass in section 8, cost in section 11, heatsink in section 4, single-fault analysis in section 6.
 - Bill of materials: `bom/bom.csv`.
 - Decisions: `docs/decisions/0003-design-for-construction.md` (CCK-DDR-003), with CCK-DDR-001 and CCK-DDR-002; decisions made and still open in `docs/06-design-decisions.md` (CCK-DEC-001).
-- Requirements: `docs/03-requirements.md` (CCK-REQ-001 v0.5).
+- Requirements: `docs/03-requirements.md` (CCK-REQ-001 v0.8).

@@ -25,7 +25,7 @@ sys.path.insert(0, str(HERE))
 
 from build123d import (Align, Axis, Box, Compound, Cylinder, Plane, Pos, Rectangle, RectangleRounded,
                        RegularPolygon, Rot, SlotOverall, Sphere, Text, Vector, extrude, fillet)
-from model import PARAMS, channel_x, heatsink_extent, n_fins
+from model import PARAMS, channel_x, guard_studs, heatsink_extent, n_fins, standoff_xy
 
 TITLE = "CellCheck: bench grader for salvaged lithium cells"
 RENDER_VIEWS = [
@@ -72,6 +72,7 @@ FONT = str(HERE.parents[1] / ".kit/fonts/IBMPlexSans-SemiBold.ttf")
 P = PARAMS
 CX = channel_x(P)
 PZ = P["plate_top"]
+F = P["foot_h"]                                            # rubber feet lift the tray off the bench
 CY = P["cell_y"]
 GROOVE_Z = PZ + P["cell_axis_h"] - (P["cell_r"] + 0.5)   # bottom of the holder groove
 CZ18 = GROOVE_Z + R18                                      # 18650 axis resting in the groove
@@ -199,19 +200,26 @@ def product_parts(P=PARAMS):
     pl, pw = P["plate_l"] / 2, P["plate_w"] / 2
     plate = _prism(2 * pl, 2 * pw, 6.0, PZ - P["plate_t"], P["plate_t"])
     plate = _fillet_try(plate, _top(plate), [0.6, 0.3])
+    seal_s = []
+    for x in cx:                                      # two wire slots per channel, sealed with silicone
+        for yc in (P["down_slot_y"], P["up_slot_y"]):
+            plate -= _b(x - P["slot_w"] / 2, x + P["slot_w"] / 2, yc - P["slot_d"] / 2, yc + P["slot_d"] / 2,
+                        PZ - P["plate_t"] - 1, PZ + 1)
+            sl = _b(x - P["slot_w"] / 2 - 0.3, x + P["slot_w"] / 2 + 0.3, yc - P["slot_d"] / 2 - 0.3,
+                    yc + P["slot_d"] / 2 + 0.3, PZ - P["plate_t"], PZ + P["seal_bead"])
+            seal_s.append(_fillet_try(sl, _top(sl), [1.0, 0.6]))
     add("Base plate, aluminium", plate, C_ALU, "metal", 2, "internal", (0, 0, -90))
     z_floor = t + P["liner_t"]
     std = []
     heads = []
-    for sx in (-pl + 15, pl - 15):
-        for sy in (-pw + 15, pw - 15):
-            hgt = PZ - P["plate_t"] - z_floor
-            std.append(Pos(sx, sy, z_floor) * extrude(RegularPolygon(4.6, 6), amount=hgt))
-            if sx < 0:   # the two right-hand heads sit under the display and the inlet
-                hd = Pos(sx, sy, PZ + 1.0) * Cylinder(3.6, 2.0)
-                hd = _fillet_try(hd, _top(hd), [0.8, 0.5])
-                hd -= Pos(sx, sy, PZ + 2.0) * (Box(4.0, 0.8, 1.6) + Box(0.8, 4.0, 1.6))
-                heads.append(hd)
+    for sx, sy in standoff_xy(P):                     # six standoffs, every screw head reachable from above
+        hgt = PZ - P["plate_t"] - z_floor
+        std.append(Pos(sx, sy, z_floor) * extrude(RegularPolygon(4.6, 6), amount=hgt))
+        hd = Pos(sx, sy, PZ + 1.0) * Cylinder(3.6, 2.0)
+        hd = _fillet_try(hd, _top(hd), [0.8, 0.5])
+        hd -= Pos(sx, sy, PZ + 2.0) * (Box(4.0, 0.8, 1.6) + Box(0.8, 4.0, 1.6))
+        heads.append(hd)
+    add("Silicone slot seals", _cmp(seal_s), "#D97706", "rubber", 16, "internal", (0, 0, -40))
     add("Standoffs", _cmp(std), C_ALU, "metal", 2, "internal", (0, 0, -120))
     add("Plate screws", _cmp(heads), C_NICKEL, "metal", 2, "internal", (0, 0, -40))
     nums = []
@@ -312,30 +320,31 @@ def product_parts(P=PARAMS):
     left = Pos(gx0, gyc, gz0 + gh / 2) * Rot(0, -90, 0) * Pos(0, 0, -gs) * en
     right = Pos(gx1, gyc, gz0 + gh / 2) * Rot(0, -90, 0) * en
     guard = top + front + back + left + right
-    fl_f = _b(gx0, gx1, gy0 - 9, gy0 - gs + 0.01, gz0, gz0 + gs)
-    fl_b = _b(gx0, gx1, gy1 + gs - 0.01, gy1 + 9, gz0, gz0 + gs)
-    fl_f = _fillet_try(fl_f, fl_f.edges().filter_by(Axis.Z), [2.5, 1.0])
-    fl_b = _fillet_try(fl_b, fl_b.edges().filter_by(Axis.Z), [2.5, 1.0])
-    guard += fl_f + fl_b
+    gfl = P["guard_flange"]
+    fl_l = _b(gx0 - gfl, gx0 + 0.01, gy0, gy1, gz0, gz0 + gs)
+    fl_r = _b(gx1 - 0.01, gx1 + gfl, gy0, gy1, gz0, gz0 + gs)
+    fl_l = _fillet_try(fl_l, fl_l.edges().filter_by(Axis.Z), [2.5, 1.0])
+    fl_r = _fillet_try(fl_r, fl_r.edges().filter_by(Axis.Z), [2.5, 1.0])
+    guard += fl_l + fl_r
     add("Perforated steel cell guard", guard, C_STEEL, "metal", 5, "shell", (0, -120, 240))
     gscr = []
-    for gx in (gx0 + 12, gxc, gx1 - 12):
-        for gy in (gy0 - 5, gy1 + 5):
-            hd = Pos(gx, gy, gz0 + gs + 0.8) * Cylinder(2.8, 1.6)
-            hd = _fillet_try(hd, _top(hd), [0.6, 0.4])
-            hd -= Pos(gx, gy, gz0 + gs + 1.6) * (Box(3.2, 0.7, 1.2) + Box(0.7, 3.2, 1.2))
-            gscr.append(hd)
-    add("Guard screws", _cmp(gscr), C_NICKEL, "metal", 5, "shell", (0, -120, 200))
+    for gx, gy in guard_studs(P):                     # two knurled M4 thumb screws through the end flanges
+        hd = Pos(gx, gy, gz0 + gs + 3.0) * Cylinder(7.0, 6.0)
+        hd = _fillet_try(hd, _top(hd), [1.2, 0.6])
+        for k in range(12):
+            hd -= Pos(gx, gy, gz0 + gs + 3.0) * Rot(0, 0, k * 30) * Pos(7.0, 0, 0) * Cylinder(0.6, 6.2)
+        gscr.append(hd)
+    add("Guard thumb screws", _cmp(gscr), C_NICKEL, "metal", 20, "shell", (0, -120, 300))
 
     # ---- 6 Charger modules (TP5100 class)
     y0, y1 = P["charger_y"]
     pcbs, dark, caps, term = [], [], [], []
     for x in cx:
-        pcbs.append(_prism(24, y1 - y0, 1.0, PZ + 1.5, 1.6, x=x, y=(y0 + y1) / 2))
+        pcbs.append(_prism(24, y1 - y0, 1.0, PZ + P["board_lift"], 1.6, x=x, y=(y0 + y1) / 2))
         for sx in (-9.5, 9.5):
             for sy in (y0 + 3, y1 - 3):
-                pcbs.append(Pos(x + sx, sy, PZ + 0.75) * Cylinder(1.6, 1.5))
-        zt = PZ + 3.1
+                pcbs.append(Pos(x + sx, sy, PZ + P["board_lift"] / 2) * Cylinder(1.6, P["board_lift"]))
+        zt = PZ + P["board_lift"] + 1.6
         ind = _b(x - 4, x + 4, y0 + 12, y0 + 20, zt, zt + 4.6)
         dark.append(_fillet_try(ind, ind.edges().filter_by(Axis.Z), [1.2, 0.6]))
         dark.append(_b(x - 7.5, x - 3.5, y0 + 4, y0 + 9, zt, zt + 1.1))
@@ -350,11 +359,11 @@ def product_parts(P=PARAMS):
     y0, y1 = P["sense_y"]
     spcb, schips, shunts, led_g, led_a, led_off = [], [], [], [], [], []
     for i, x in enumerate(cx):
-        spcb.append(_prism(24, y1 - y0, 1.0, PZ + 1.2, 1.6, x=x, y=(y0 + y1) / 2))
+        spcb.append(_prism(24, y1 - y0, 1.0, PZ + P["board_lift"], 1.6, x=x, y=(y0 + y1) / 2))
         for sx in (-9.5, 9.5):
             for sy in (y0 + 3, y1 - 3):
-                spcb.append(Pos(x + sx, sy, PZ + 0.6) * Cylinder(1.5, 1.2))
-        zt = PZ + 2.8
+                spcb.append(Pos(x + sx, sy, PZ + P["board_lift"] / 2) * Cylinder(1.5, P["board_lift"]))
+        zt = PZ + P["board_lift"] + 1.6
         schips.append(_b(x - 2, x + 2, y0 + 8, y0 + 12, zt, zt + 1.0))
         schips.append(_b(x - 9, x - 3, y0 + 12, y0 + 17, zt, zt + 1.4))
         schips.append(_b(x + 5, x + 11, y1 - 5, y1 - 2.5, zt, zt + 2.5))
@@ -538,7 +547,7 @@ def product_parts(P=PARAMS):
     lab = _prism(70, 34, 2.0, ah - 0.05, 0.3, x=(ax0 + ax1) / 2, y=(ay0 + ay1) / 2)
     add("Adapter rating label", lab, "#D9DDE2", "paper", 14, "accessory", (220, 0, 0))
     pts = [(ax0 - 6, 50, 14), (ax0 - 20, 58, 3), (240, 80, 3), (236, 98, 20), (231, 105, 50),
-           (220, 105, 50), (212, 105, PZ + 20), (x1 + 3.5, 105, PZ + 14)]
+           (220, 105, 50), (212, 105, PZ + F + 20), (x1 + 3.5, 105, PZ + F + 14)]
     cab = None
     for a, b in zip(pts[:-1], pts[1:]):
         va, vb = Vector(*a), Vector(*b)
@@ -625,6 +634,15 @@ def product_parts(P=PARAMS):
     flush(("bin", "metal"), "Cell terminals graded", C_NICKEL, "metal", None, "context", (0, 0, 0))
     flush(("bin", "ring"), "Cell insulator rings graded", C_LABEL, "paper", None, "context", (0, 0, 0))
     flush(("bin", "label"), "Cell ID labels graded", C_LABEL, "paper", None, "context", (0, 0, 0))
+    # the tray and everything in it stands on six rubber feet (the bench items stay at bench level)
+    for o in out:
+        if o["group"] in ("shell", "internal"):
+            o["shape"] = Pos(0, 0, F) * o["shape"]
+    feet = []
+    for fx, fy in standoff_xy(P):
+        ft_ = Pos(fx, fy, F / 2) * Cylinder(P["foot_d"] / 2, F)
+        feet.append(_fillet_try(ft_, ft_.edges(), [2.0, 1.0]))
+    add("Rubber feet", _cmp(feet), "#1F2328", "rubber", 19, "shell", (0, 0, -210))
     return out
 
 

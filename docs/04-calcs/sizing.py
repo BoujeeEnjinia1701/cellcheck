@@ -95,6 +95,7 @@ BOUGHT = {            # kg, assumptions for bought parts
     "controller": 0.030, "display and stand": 0.060, "fans (2 x 45 g)": 2 * 0.045,
     "inlet, fuse, switch": 0.050, "watchdog board": 0.020, "wiring and fuses": 0.200,
     "standoffs and fasteners": 0.150, "NTC clips": 0.010,
+    "fan finger guards (2 x 6 g)": 2 * 0.006, "silicone sealant used (about 10 g)": 0.010,   # decided 2026-10-02
     "rubber feet (6 x 8 g)": 6 * 0.008, "5 V converter": 0.010,   # added for construction (CCK-DDR-003)
 }
 
@@ -483,8 +484,8 @@ out("BOM lines", len(bom), "{:.0f}")
 out("parts cost", COST, "{:.2f}", "USD")
 out("against project.yaml budget $175", COST - BUDGET, "{:+.2f}", "USD")
 out("against the former budget $160", COST - BUDGET_OLD, "{:+.2f}", "USD")
-rows.append(("R12", f"${COST:.2f}; ${BUDGET - COST:.2f} under the $175 budget",
-             "$175 or less (project.yaml)", "Not met" if COST > BUDGET else "Met"))
+rows.append(("R12", f"${COST:.2f}; ${abs(BUDGET - COST):.2f} {'over' if COST > BUDGET else 'under'} the $175 target",
+             "$175 or less (project.yaml)", "Over the value-engineering target" if COST > BUDGET else "Met"))
 
 # ---------------------------------------------------------------- 12. Design review items
 rows += [
@@ -498,7 +499,7 @@ rows += [
      "Met (design review)"),
 ]
 
-order = {"Not met": 0, "At risk": 1, "Not verifiable at TRL 3": 2}
+order = {"Not met": 0, "Over the value-engineering target": 0, "At risk": 1, "Not verifiable at TRL 3": 2}
 rows.sort(key=lambda r: (order.get(r[3].split(" (")[0], 3), int(r[0][1:])))
 head("Results")
 for r in rows:

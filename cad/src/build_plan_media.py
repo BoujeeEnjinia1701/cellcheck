@@ -23,7 +23,7 @@ from model import (PARAMS as P, build_components, channel_x, heatsink_extent, gu
 
 OUT = ROOT / "docs" / "05-build-plan"
 DWG = ROOT / "cad" / "drawings"
-DATE = "2026-10-01"
+DATE = "2026-10-02"
 F = P["foot_h"]
 PZ = P["plate_top"] + F                  # plate top above the bench
 C = build_components(P)
@@ -70,7 +70,8 @@ def made():
         "mosfets": part("Load MOSFETs (8)", S("mosfets", "mosfet_screws"), COL["mosfets"]),
         "heatsink": part("Heatsink, drilled and tapped", S("heatsink", "hs_screws"), COL["heatsink"]),
         "shroud": part("Fan shroud", S("shroud", "shroud_screws"), COL["shroud"]),
-        "fans": part("Fans (2)", S("fans", "fan_screws"), COL["fans"]),
+        "fans": part("Fans with finger guards (2)", S("fans", "fan_screws", "fan_guards", "fan_guard_screws"), COL["fans"]),
+        "seals": part("Silicone seals in the wire slots (16)", S("seals"), "#F59E0B"),
         "bay": part("Controller, watchdog board, 5 V converter", S("ctrl", "watchdog", "buck"), COL["ctrl"]),
         "display": part("Display stand and display", S("stand", "display"), COL["display"]),
         "inlet": part("Inlet housing, jack, fuse, switch", S("inlet_house", "inlet_parts", "bay_screws"), COL["inlet_house"]),
@@ -159,6 +160,7 @@ def sheets():
                "Two 6 mm holes for the guard rivet nuts; set M4 rivet nuts in them.",
                "Three 3.4 mm heatsink screw holes; 3.4 mm holes for the right-hand bay.",
                "Slots: drill 5 mm at each end, cut between, file; fit edge grommet strip.",
+               "  After wiring, each slot is filled with silicone round the leads.",
                "Check: lay the holders and heatsink on it and look through each hole."], **base))
 
     out.append(bv.component_sheet(
@@ -188,7 +190,8 @@ def sheets():
                "Fold each end flange 90 degrees forward, square to the back.",
                "Two 3.4 mm holes in each flange, 3 mm from the free end (in line",
                "  with the spine), 15 and 35 mm up from the bottom edge.",
-               "Fit the fans to the back first, screws from the inside.",
+               "Fit the fans to the back first, screws from the inside; each fan",
+               "  gets a 60 mm finger guard on its outer face (four small screws).",
                "Fit: the flanges lie on the spine ends; the back stands 3 mm",
                "  behind the fins; the bottom edge rests on the plate.",
                "Check: the flange holes line up with the tapped holes in the spine."], **base))
@@ -307,7 +310,7 @@ def layouts():
     sw, sd = P["slot_w"], P["slot_d"]
     for x in CX:
         for yc in (P["down_slot_y"], P["up_slot_y"]):
-            ax.add_patch(Rectangle((X(x) - sw / 2, Y(yc) - sd / 2), sw, sd, fc="white", ec="#7C3AED", lw=1.2))
+            ax.add_patch(Rectangle((X(x) - sw / 2, Y(yc) - sd / 2), sw, sd, fc="#FDE68A", ec="#7C3AED", lw=1.2))
     # channel centre lines and their positions from the left edge
     for i, x in enumerate(CX):
         ax.plot([X(x), X(x)], [0, 2 * pw], color=AC, lw=0.4, ls=(0, (6, 3)))
@@ -332,6 +335,7 @@ def layouts():
          "  holder screws: on the line, 55 and 105 up",
          "  wire slot 16 x 5 behind the holder, 125.5 up",
          "  wire slot 16 x 5, 171.5 up",
+         "  (both slots filled with silicone after wiring)",
          "  charger standoffs: 9 left at 143, 9 right at 165",
          "  board standoffs: 9 left at 178, 9 right at 194",
          "",
@@ -353,7 +357,7 @@ def layouts():
     for i, t in enumerate(k):
         fig.text(0.735, 0.85 - i * 0.024, t, fontsize=7.6, color=INK, va="top")
     y0 = 0.85 - len(k) * 0.024 - 0.01
-    for i, (name, col, _, _) in enumerate(groups + [("Wire slots 16 x 5", "#7C3AED", [], 0)]):
+    for i, (name, col, _, _) in enumerate(groups + [("Wire slots 16 x 5, silicone sealed", "#7C3AED", [], 0)]):
         fig.patches.append(plt.Circle((0.745, y0 - i * 0.024), 0.005, transform=fig.transFigure, fc="white", ec=col, lw=1.4))
         fig.text(0.758, y0 - i * 0.024, name, fontsize=7.6, color=INK, va="center")
     fig.text(0.03, 0.015, "BUILD PLAN ILLUSTRATION, PLAN NOT YET BUILT", fontsize=7, color="#B45309")
@@ -401,16 +405,17 @@ def joints():
         OUT / "joint-03.png", "Joint 3: load MOSFET on the heatsink (cut through channel 1)",
         subtitle="Tab flat on the spine with an insulating pad; one M3 screw into a tapped hole between two fins",
         cut="-X", elev=12, azim=-20, size=(8, 6)))
-    box_ = (hx0 - 6, hx0 + 70, hy0 - 4, hy1 + 22, PZ - 2, PZ + 64)
+    box_ = (hx0 - 6, hx0 + 125, hy0 - 4, hy1 + 26, PZ - 2, PZ + 64)
     out.append(bv.joint([
         part("Heatsink", win(S("heatsink"), *box_), COL["heatsink"]),
         part("Shroud side flange and back", win(S("shroud"), *box_), "#60A5FA"),
         part("Two M3 screws into the spine end", win(S("shroud_screws"), *box_), COL["bolt"]),
         part("Fan, screwed from inside the shroud", win(S("fans"), *box_), COL["fans"]),
+        part("Finger guard on the fan's outer face", win(S("fan_guards", "fan_guard_screws"), *box_), "#B8BEC6"),
         part("Base plate", win(S("plate"), *box_), COL["plate"])],
         OUT / "joint-04.png", "Joint 4: fan shroud on the left end of the heatsink",
-        subtitle="Seen from the front left. The flange lies on the spine end; the back stands 3 mm behind the fins",
-        elev=25, azim=-150, size=(8, 6)))
+        subtitle="Seen from behind on the left. The flange lies on the spine end; the back stands 3 mm behind the fins; the guard covers the fan",
+        elev=26, azim=45, size=(8, 6)))
     (sx, sy), _ = guard_studs(P)
     box_ = (sx - 12, sx + 16, sy - 16, sy + 16, PZ - 10, PZ + 20)
     out.append(bv.joint([
@@ -427,9 +432,10 @@ def joints():
         part("Base plate (wire slot between the boards)", win(S("plate"), *box_), COL["plate"]),
         part("Nylon standoffs, 5 mm", win(S("board_standoffs"), *box_), "#E7E5E4"),
         part("Charger module", win(S("chargers"), *box_), COL["chargers"]),
-        part("Channel board", win(S("boards"), *box_), COL["boards"])],
+        part("Channel board", win(S("boards"), *box_), COL["boards"]),
+        part("Silicone seal in the slot", win(S("seals"), *box_), "#F59E0B")],
         OUT / "joint-06.png", "Joint 6: charger and channel board on their standoffs (channel 1)",
-        subtitle="Each board stands 5 mm off the plate on two nylon standoffs; the cell leads come up through the slot",
+        subtitle="Each board stands 5 mm off the plate on two nylon standoffs; the cell leads come up through the slot, which is sealed with silicone",
         elev=30, azim=-50, size=(8, 6)))
     ix0, ix1, iy0, iy1, ih = P["inlet"]
     box_ = (ix0 - 4, ix1 + 4, iy0 - 4, iy1 + 4, PZ - 3, PZ + ih + 14)
@@ -477,10 +483,10 @@ def steps():
     on_plate = [M["plate"], M["holders"], M["rivets"], M["modules"]]
     st(6, on_plate, [mv(hs, (0, 0, 70))], "heatsink onto the plate",
        "Fins to the back; three M3 screws up from under the plate into the spine", elev=30, azim=-60, label_done=False)
-    st(7, on_plate + [hs], [mv(part("Shroud with fans", S("shroud", "shroud_screws", "fans", "fan_screws"), COL["shroud"]), (0, 90, 0))],
+    st(7, on_plate + [hs], [mv(part("Shroud with fans", S("shroud", "shroud_screws", "fans", "fan_screws", "fan_guards", "fan_guard_screws"), COL["shroud"]), (0, 90, 0))],
        "fan shroud and fans onto the heatsink",
-       "Seen from behind. Fans screwed to the shroud first, from inside; then two M3 screws into each spine end", elev=30, azim=55, label_done=False)
-    fan = part("Shroud with fans", S("shroud", "shroud_screws", "fans", "fan_screws"), COL["shroud"])
+       "Seen from behind. Fans (with their finger guards) screwed to the shroud first, from inside; then two M3 screws into each spine end", elev=30, azim=55, label_done=False)
+    fan = part("Shroud with fans", S("shroud", "shroud_screws", "fans", "fan_screws", "fan_guards", "fan_guard_screws"), COL["shroud"])
     st(8, on_plate + [hs, fan], [mv(part("Controller, watchdog board, 5 V converter", S("ctrl", "watchdog", "buck"), COL["ctrl"]), (0, 0, 60)),
                                  mv(M["display"], (0, -40, 50)), mv(M["inlet"], (0, 30, 60))],
        "controller, watchdog board, converter, display and inlet",
@@ -488,8 +494,16 @@ def steps():
        elev=30, azim=-60, label_done=False)
     full_plate = part("Base plate with everything on it", S("plate", "holders", "holder_screws", "rivet_nuts", "chargers", "boards", "board_standoffs",
                                                            "heatsink", "hs_screws", "mosfets", "mosfet_screws", "shroud", "shroud_screws", "fans",
-                                                           "fan_screws", "ctrl", "watchdog", "buck", "stand", "display", "inlet_house", "inlet_parts",
-                                                           "bay_screws"), "#3B82F6")
+                                                           "fan_screws", "fan_guards", "fan_guard_screws", "ctrl", "watchdog", "buck", "stand", "display",
+                                                           "inlet_house", "inlet_parts", "bay_screws", "seals"), "#3B82F6")
+    plate_wired = part("Base plate with everything on it", S("plate", "holders", "holder_screws", "rivet_nuts", "chargers", "boards",
+                                                            "board_standoffs", "heatsink", "hs_screws", "mosfets", "mosfet_screws",
+                                                            "shroud", "shroud_screws", "fans", "fan_screws", "fan_guards",
+                                                            "fan_guard_screws", "ctrl", "watchdog", "buck", "stand", "display",
+                                                            "inlet_house", "inlet_parts", "bay_screws"), "#94A3B8")
+    st(9, [plate_wired], [mv(M["seals"], (0, 0, 70))], "wire slots sealed with silicone",
+       "After wiring, each of the 16 slots is filled round its leads from above and below and left to cure; the leads are not drawn",
+       elev=48, azim=-60, size=(9, 6.5), label_done=False)
     tray_done = [M["tray"], M["feet"], M["standoffs"], M["liner"]]
     st(10, tray_done, [mv(full_plate, (0, 0, 120)), mv(part("Six M4 screws", S("plate_screws"), COL["bolt"]), (0, 0, 170))],
        "plate assembly into the tray",

@@ -3,7 +3,7 @@ doc_id: CCK-DDR-003
 title: CellCheck design for construction
 project: CellCheck
 doc_type: Design decision record
-version: "0.3"
+version: "0.5"
 status: Draft
 date: '2026-10-02'
 author: Amish Chadha
@@ -21,12 +21,20 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: Amish accepted A1 and A2 as recommended on 2026-10-02; Tables 1 and 2 still open for his review
+- version: "0.4"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "Changes P1 to P12 (Table 1) and their knock-on changes (Table 2) accepted by Amish on 2026-10-02"
+- version: "0.5"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "Consequences updated: finger guards and silicone in the BOM, R12 over the value-engineering target, appearance model brought into line"
 ---
 
 # 0003: Design for construction
 
 - **Date:** 2026-10-01
-- **Status:** draft. The changes in Tables 1 and 2 were made under Amish's 2026-09-30 instruction to make the design physically buildable and remain open for his review: the register did not carry a row asking him to accept them. The items in Table 3, which touch the safety case, were accepted as recommended. Amish, 2026-10-02: "i approve your recommendations for all 555 open decisions." A1 and A2 are recorded in the design decisions register (CCK-DEC-001).
+- **Status:** accepted. Amish, 2026-10-02: "APPROVED: Design-for-construction changes in 10 repos (CityTwin, CoolShade, PalletPilot, Heliolite, PotholeLog, EarthPress, ReadyKit, CellCheck, CargoMule and ThermaCart)". This covers the changes P1 to P12 in Table 1 and their knock-on changes in Table 2, made under Amish's 2026-09-30 instruction to make the design physically buildable, and is recorded in the design decisions register (CCK-DEC-001). The items in Table 3, which touch the safety case, were accepted as recommended earlier the same day. Amish, 2026-10-02: "i approve your recommendations for all 555 open decisions." A1 and A2 are recorded in the design decisions register (CCK-DEC-001).
 
 ## Context
 
@@ -73,8 +81,8 @@ The changes keep what CellCheck does: eight channels at the same 40 mm pitch, th
 
 ## Consequences
 
-- With A1 and A2 accepted, the guard is held by two thumb screws for the first prototype and the TRL 4 containment test is run with it held that way, and each wire slot is sealed round its leads with high-temperature silicone after wiring (build plan CCK-BLD-001, step 9). The silicone is to be added to BOM line 16.
+- With A1 and A2 accepted, the guard is held by two thumb screws for the first prototype and the TRL 4 containment test is run with it held that way, and each wire slot is sealed round its leads with high-temperature silicone after wiring (build plan CCK-BLD-001, step 9). The silicone is in BOM line 16 and the fan finger guards in line 10 (CCK-DEC-001, items 2 and 9).
 - `design_state: constructable` in `project.yaml`. The build plan CCK-BLD-001 shows every component and step in pictures generated from the model (`cad/src/build_plan_media.py`).
-- Requirement status is unchanged: none not met, three at risk (R5, R6, R11), 13 met on paper, R10 not verifiable at TRL 3 (CCK-CAL-001 v0.3).
-- The appearance model `cad/src/product_model.py`, the photoreal renders (`media/render-*.png`), `media/card.png` and `media/social-preview.png` still show the concept guard, display, inlet and fixings and no feet; they need updating on Amish's Mac, where Blender is.
+- Requirement status after these changes (CCK-CAL-001 v0.3): none not met, three at risk (R5, R6, R11), 13 met on paper, R10 not verifiable at TRL 3. With the finger guards and silicone added on 2026-10-02 (CCK-CAL-001 v0.6) R12 is $2.60 over the value-engineering target ($177.60), so 12 are met.
+- The appearance model `cad/src/product_model.py` now follows the constructable design (six feet and standoffs, end-flanged guard with thumb screws, sealed wire slots, lifted boards, finger guards) and its render scenes are exported; the photoreal renders (`media/render-*.png`), `media/card.png` and `media/social-preview.png` are made on Amish's Mac, where Blender is.
 - The tray, modules, display and heatsink are chosen at TRL 4; the items in the "to confirm when parts are bought" table of the design decisions register CCK-DEC-001 must be checked then.

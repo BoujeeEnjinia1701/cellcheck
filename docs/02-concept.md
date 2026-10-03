@@ -3,7 +3,7 @@ doc_id: CCK-PRC-001
 title: CellCheck design precis
 project: CellCheck
 doc_type: Design precis
-version: "0.7"
+version: "0.8"
 status: Draft
 date: '2026-10-02'
 author: Amish Chadha
@@ -37,6 +37,10 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: 'Decisions of 2026-10-02 carried in (CCK-DEC-001 items 1, 2, 4 to 6, 9 and 11): scheduling rule, grade A limit, containment hold-down and slot sealing, fan finger guards, pack study; open questions closed'
+- version: "0.8"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "Size, mass and cost figures updated for the fan finger guards and silicone (4.94 kg; $177.60, $2.60 over the value-engineering target; CCK-CAL-001 v0.6)"
 ---
 
 # CellCheck design precis
@@ -126,8 +130,8 @@ Table 3. Key numbers.
 | Heatsink | 0.58 K/W with fans (1.07 K/W needed); MOSFET cases 58.7 °C at 35 °C room; about 99 °C if the fans stop | R8 met |
 | Adapter load, all channels charging | 42.5 W of 60 W; 3.54 A at 12 V | R13 met |
 | Energy per cell from the mains | 16.8 Wh, well under $0.01 at $0.15/kWh | |
-| Size and mass | 460 x 300 x 85 mm; 4.91 kg without adapter | R11 at risk |
-| Parts cost | $172.40 estimated against the $175 value-engineering target | R12 within the value-engineering target ($2.60 under) |
+| Size and mass | 460 x 300 x 85 mm; 4.94 kg without adapter | R11 at risk |
+| Parts cost | $177.60 estimated against the $175 value-engineering target | R12 over the value-engineering target ($2.60 over) |
 
 ## Key design choices
 
@@ -169,6 +173,6 @@ These were decided by Amish on 2026-09-25 (CCK-DDR-001 and CCK-DDR-002: go with 
 
 - [x] First trial partner (item 10). Decided 2026-10-02: a local Repair Café group that passes laptop batteries to a collection point is the first candidate to approach, with that collection point as the source of trial cells.
 - [x] Scheduling rule for the attended day (item 12). Decided 2026-10-02: a current stage starts only if it finishes the same day.
-- [x] Responses to R11 and R5 (item 14). Decided 2026-10-02: accept 4.91 kg with the 1.5 mm tray and weigh at TRL 4; throughput by the same-day rule, more channels later.
+- [x] Responses to R11 and R5 (item 14). Decided 2026-10-02: accept the mass (4.91 kg then, 4.94 kg with the finger guards and silicone) with the 1.5 mm tray and weigh at TRL 4; throughput by the same-day rule, more channels later.
 - [x] Grade A resistance limit per cell model (item 16). Decided 2026-10-02: 60 mΩ default; per-model limits from measured DC resistance for the commonest models only.
 - [ ] ReflowEconomy passport gaps: decided to raise with that project (item 15); cross-repo action.

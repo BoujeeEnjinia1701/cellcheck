@@ -69,7 +69,7 @@ Full design precis: [docs/02-concept.md](docs/02-concept.md) · Requirements: [d
 
 ![General arrangement CCK-DWG-001](cad/drawings/CCK-DWG-001.png)
 
-On paper CellCheck meets 13 of its 17 requirements, and none is failed outright. R5 (throughput), R6 (self-discharge reading) and R11 (mass) are at risk; R10 (containment of a venting cell) cannot be verified at TRL 3.
+On paper CellCheck meets 12 of its 17 requirements, is $2.60 over its value-engineering target (R12) and fails none outright. R5 (throughput), R6 (self-discharge reading) and R11 (mass, 4.94 kg against 5 kg) are at risk; R10 (containment of a venting cell) cannot be verified at TRL 3.
 
 ## Key components
 
@@ -83,7 +83,7 @@ On paper CellCheck meets 13 of its 17 requirements, and none is failed outright.
 - Steel tray with ceramic fibre liner and a perforated steel cell guard
 - Certified 12 V 5 A adapter and a printed 48-cell rest rack
 
-The priced bill of materials is in [bom/bom.csv](bom/bom.csv): an estimated $172.40 in parts against the $175 value-engineering target ($2.60 under).
+The priced bill of materials is in [bom/bom.csv](bom/bom.csv): Value-engineering target: USD 175. Estimated cost of the constructable design: USD 177.60 (USD 2.60 over the target). The fan finger guards and the silicone for the wire slots, both decided on 2026-10-02, account for the $5.20 added since the last estimate.
 
 ## Building the prototype
 

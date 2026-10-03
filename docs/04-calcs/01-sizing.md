@@ -3,7 +3,7 @@ doc_id: CCK-CAL-001
 title: CellCheck sizing calculations
 project: CellCheck
 doc_type: Calculation note
-version: "0.5"
+version: "0.6"
 status: Draft
 date: '2026-10-02'
 author: Amish Chadha
@@ -29,11 +29,15 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: R5 row of Table 4 names the same-day scheduling rule and section 8 the tray decision of 2026-10-02 (CCK-DEC-001, items 4 and 5); no number changed
+- version: "0.6"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "Fan finger guards (line 10) and silicone sealant (line 16) added to the mass and cost: 4.94 kg (R11 still at risk) and $177.60, $2.60 over the value-engineering target (R12 status changed from within to over); sizing.py and results.csv rerun; CCK-DEC-001 items 9 and 2"
 ---
 
 # CellCheck sizing calculations
 
-On paper, CellCheck meets 13 of its 17 requirements, and no requirement is failed outright. Version 0.2 applies the decisions Amish accepted on 2026-09-25 (CCK-DDR-002): the value-engineering target in `project.yaml` is now $175 (a hypothetical control target, not a limit), so the estimated parts cost is within the target for **R12** (it was $4 over the former $160 target), and the resistance pulse now starts only within 1 K of the bench reading, so **R4** is met at ±2.09 mΩ against ±3.0 mΩ (it was ±2.99 mΩ, at risk). Three requirements remain **at risk**: R5 (throughput is exactly 12 cells per attended day), R6 (self-discharge reading) and R11 (mass is 4.91 kg against 5 kg). R10 (containment) cannot be verified at TRL 3. The TRL 2 figures change in several places: time per cell falls from about 6.5 to 6.33 h, capacity error without calibration is ±1.1 % rather than ±2 %, voltage error without calibration is ±12.4 mV rather than ±10 mV, and the unit is 85 mm high and 4.91 kg rather than 90 mm and 3.5 kg. The heatsink fins in the TRL 2 massing model ran across the fan airflow; they are now vertical plates in line with it. Version 0.3 reruns size, mass and cost for the constructable design of CCK-DDR-003 (feet, a thinner base plate on six standoffs, fixings and a 5 V converter): 85 mm high, 4.91 kg and $172.40, so R11 stays at risk and R12 stays met with $2.60 of margin. No other result changes.
+On paper, CellCheck meets 12 of its 17 requirements, is over its value-engineering target on one (R12, by $2.60) and fails none outright. Version 0.2 applies the decisions Amish accepted on 2026-09-25 (CCK-DDR-002): the value-engineering target in `project.yaml` is now $175 (a hypothetical control target, not a limit), so the estimated parts cost is within the target for **R12** (it was $4 over the former $160 target), and the resistance pulse now starts only within 1 K of the bench reading, so **R4** is met at ±2.09 mΩ against ±3.0 mΩ (it was ±2.99 mΩ, at risk). Three requirements remain **at risk**: R5 (throughput is exactly 12 cells per attended day), R6 (self-discharge reading) and R11 (mass is 4.91 kg against 5 kg). R10 (containment) cannot be verified at TRL 3. The TRL 2 figures change in several places: time per cell falls from about 6.5 to 6.33 h, capacity error without calibration is ±1.1 % rather than ±2 %, voltage error without calibration is ±12.4 mV rather than ±10 mV, and the unit is 85 mm high and 4.91 kg rather than 90 mm and 3.5 kg. The heatsink fins in the TRL 2 massing model ran across the fan airflow; they are now vertical plates in line with it. Version 0.3 reruns size, mass and cost for the constructable design of CCK-DDR-003 (feet, a thinner base plate on six standoffs, fixings and a 5 V converter): 85 mm high, 4.91 kg and $172.40, so R11 stays at risk and R12 stays met with $2.60 of margin. Version 0.6 adds the fan finger guards and the silicone for the wire slots that Amish decided on 2026-10-02 (CCK-DEC-001, items 9 and 2): 4.94 kg and $177.60, so R11 stays at risk with 0.06 kg of margin and R12 is now $2.60 over the $175 value-engineering target. No other result changes.
 
 Every number here is printed by `docs/04-calcs/sizing.py` (run from the repo root: `python docs/04-calcs/sizing.py`), which also writes `docs/04-calcs/results.csv`. The script reads the geometry from `cad/src/model.py` and the costs from `bom/bom.csv`. All values are first-principles estimates; nothing is measured.
 
@@ -130,7 +134,7 @@ The 1.5 mm steel tray has 0.206 m² of sheet and weighs **2.43 kg**. If a 21700 
 
 ## 8. Size and mass (R11)
 
-The model envelope is **460 x 300 x 85 mm** (the display stand and the 8 mm rubber feet set the height), inside 500 x 320 x 120 mm. The mass without the adapter is **4.91 kg**: tray 2.43 kg, base plate 0.47 kg, heatsink 0.52 kg, guard 0.24 kg, shroud 0.06 kg, liner 0.05 kg, and 1.14 kg of bought parts, fixings and wiring. **R11 is at risk** with 0.09 kg of margin. In version 0.2 the unit was 75 mm and 4.97 kg; the constructable design (CCK-DDR-003) adds feet, fixings, guard flanges and a 5 V converter (about 0.12 kg) and takes 0.16 kg off by making the base plate 1.5 mm thick on six standoffs instead of 2 mm on four. With six supports the plate spans at most 165 mm between standoffs, so it stays stiff. A 1.2 mm tray would save about 0.49 kg, but the tray is also the containment, so Amish decided on 2026-10-02 to keep the 1.5 mm tray and accept 4.91 kg, with the prototype weighed at TRL 4 (CCK-DEC-001, item 5).
+The model envelope is **460 x 300 x 85 mm** (the display stand and the 8 mm rubber feet set the height), inside 500 x 320 x 120 mm. The mass without the adapter is **4.94 kg**: tray 2.43 kg, base plate 0.47 kg, heatsink 0.52 kg, guard 0.24 kg, shroud 0.06 kg, liner 0.05 kg, and 1.17 kg of bought parts, fixings and wiring, which now include two fan finger guards (about 12 g) and the silicone used on the wire slots (about 10 g). **R11 is at risk** with 0.06 kg of margin (0.09 kg in version 0.5, before those two additions). In version 0.2 the unit was 75 mm and 4.97 kg; the constructable design (CCK-DDR-003) adds feet, fixings, guard flanges and a 5 V converter (about 0.12 kg) and takes 0.16 kg off by making the base plate 1.5 mm thick on six standoffs instead of 2 mm on four. With six supports the plate spans at most 165 mm between standoffs, so it stays stiff. A 1.2 mm tray would save about 0.49 kg, but the tray is also the containment, so Amish decided on 2026-10-02 to keep the 1.5 mm tray and accept the mass (4.91 kg when decided, 4.94 kg with the finger guards and silicone), with the prototype weighed at TRL 4 (CCK-DEC-001, item 5).
 
 ## 9. Grading and matching on synthetic data (R15)
 
@@ -142,7 +146,7 @@ CCK-DDR-001 item 1 keeps SwapCell in the pitch and asks for a second-life varian
 
 ## 11. Cost (R12)
 
-The 21 BOM lines total **$172.40**, $2.60 under the $175 value-engineering target in `project.yaml`, which is a hypothetical control target, not a limit. Amish accepted the $175 target on 2026-09-25 (CCK-DDR-002 item 4). **R12 is within the value-engineering target.** The increase over TRL 2 is line 18 (watchdog and comparators, $5.00); the increase over version 0.2 ($164.00) is lines 19 to 21, added for construction (rubber feet $2.40, fixings $4.00, 5 V converter $2.00).
+Value-engineering target: USD 175.00. Estimated cost of the constructable design: USD 177.60 (USD 2.60 over the target). The target is in `project.yaml`, a hypothetical control target, not a limit; `budget_usd` is unchanged. Amish accepted the $175 target on 2026-09-25 (CCK-DDR-002 item 4). The 21 BOM lines total **$177.60**, so **R12 is over the value-engineering target by $2.60**. The increase over TRL 2 is line 18 (watchdog and comparators, $5.00); the increase over version 0.2 ($164.00) is lines 19 to 21, added for construction (rubber feet $2.40, fixings $4.00, 5 V converter $2.00); the increase over version 0.5 ($172.40) is $5.20, the two fan finger guards on line 10 ($0.60 each, $1.20 for two, a typical online marketplace price for a 60 mm wire fan grill) and a small tube of high-temperature silicone on line 16 ($4.00, a 30 g tube rated to about 260 °C). All prices are estimates, not quotes.
 
 ## 12. Results against requirements
 
@@ -152,7 +156,7 @@ The 21 BOM lines total **$172.40**, $2.60 under the $175 value-engineering targe
 | --- | --- | --- | --- |
 | R5 | 12.0 cells per day under the same-day rule decided on 2026-10-02 (CCK-DEC-001, item 4); 12.8 with an overnight pause, not used; 8.0 for 2.5 Ah cells | 12 cells per attended day on 1.8 Ah cells | At risk |
 | R6 | ±2.3 mV in the same channel, judged against the same-day cohort median (±10.6 mV across channels, no longer allowed); spread of relaxation not bounded | ±3 mV; flag above 50 mV | At risk |
-| R11 | 460 x 300 x 85 mm; 4.91 kg | 500 x 320 x 120 mm; 5 kg | At risk |
+| R11 | 460 x 300 x 85 mm; 4.94 kg | 500 x 320 x 120 mm; 5 kg | At risk |
 | R10 | Mean tray rise 84 K for an assumed 100 kJ event; jets and flame not analysable | Hold one venting 21700 in the tray | Not verifiable at TRL 3 |
 | R1 | Eight channels; holders for 18650 and 21700 cells up to 70 mm long | 18650 and 21700; 8 channels or more | Met (design review) |
 | R2 | ±1.1 % uncalibrated; ±0.4 % calibrated | ±2 % | Met |
@@ -161,7 +165,7 @@ The 21 BOM lines total **$172.40**, $2.60 under the $175 value-engineering targe
 | R7 | ±1.0 K at 45 °C; 1 Hz sampling | 1 Hz, ±2 K; stop at 45 °C or +8 K | Met (accuracy); response time not verifiable at TRL 3 |
 | R8 | 58.7 °C case with fans (0.58 K/W); 99 °C if the fans stop | 75 °C or less at 35 °C | Met |
 | R9 | Watchdog, undervoltage comparators, 3 A fuses; detached thermistor narrowed by a plausibility check, still residual | No single fault past 4.25 V, 60 °C or 2.5 V | Met (analysis) |
-| R12 | $172.40; $2.60 under $175 | $175 value-engineering target (`project.yaml`) | Within the value-engineering target ($2.60 under) |
+| R12 | $177.60; $2.60 over $175 | $175 value-engineering target (`project.yaml`) | Over the value-engineering target ($2.60 over) |
 | R13 | Certified 12 V adapter; 12.6 V highest; 42.5 W of 60 W | Certified 12 V; 13 V or less | Met (design review) |
 | R14 | Rest stage unattended; current stages attended | As redefined in CCK-REQ-001 v0.3 | Met (design review) |
 | R15 | 0.006 % group deviation on synthetic 4S6P | ±1 % | Met (synthetic data) |
@@ -202,8 +206,8 @@ Gap 1: the schema has no `product_form` for graded cells. Gap 2: `identification
 | Heatsink fins | Plates across the fan airflow | Vertical plates in line with it | Model, PRC v0.3 |
 | Energy per cell | about 18 Wh | 16.8 Wh | PRC v0.3 |
 | Cell heating at 1 A | about 0.1 W, a few kelvin | 0.06 W and 1.4 K at 60 mΩ | PRC v0.3 |
-| Height and mass | 90 mm; about 3.5 kg (tray 2.0 kg) | 85 mm; 4.91 kg (tray 2.43 kg); 75 mm and 4.97 kg in v0.2 | PRC v0.5, REQ v0.5, README |
-| Parts cost | about $159 | $172.40; $164.00 in v0.2 | PRC v0.5, REQ v0.5, README, BOM notes |
+| Height and mass | 90 mm; about 3.5 kg (tray 2.0 kg) | 85 mm; 4.94 kg (tray 2.43 kg); 75 mm and 4.97 kg in v0.2 | PRC v0.5, REQ v0.5, README |
+| Parts cost | about $159 | $177.60; $164.00 in v0.2 | PRC v0.5, REQ v0.5, README, BOM notes |
 | Rest voltage | "rest at 4.10 V" | Recharge stops at 4.10 V under 1 A, about 80 % state of charge | PRC v0.3 |
 
 > **Safety:** These are paper calculations for a device that charges and discharges salvaged lithium-ion cells. The single-fault analysis and the containment estimate are not evidence that the unit is safe. Operate it only attended during charge and discharge, on a non-flammable surface with a smoke alarm and an extinguisher or sand bucket within reach. CellCheck is a research and prototype tool, and its grades do not certify any cell or pack as safe.

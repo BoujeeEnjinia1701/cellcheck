@@ -3,7 +3,7 @@ doc_id: CCK-DEC-001
 title: CellCheck design decisions register
 project: CellCheck
 doc_type: Design decisions register
-version: "0.3"
+version: "0.5"
 status: Draft
 date: '2026-10-02'
 author: Amish Chadha
@@ -21,6 +21,14 @@ revisions:
     date: '2026-10-02'
     author: Amish Chadha
     change: Amish approved the recommendations of open items 1 to 11 on 2026-10-02; all moved to decisions made; value-engineering savings line updated
+  - version: "0.4"
+    date: '2026-10-02'
+    author: Amish Chadha
+    change: "Design for construction (CCK-DDR-003, P1 to P12) accepted by Amish on 2026-10-02; the 2026-10-01 row no longer says open for review"
+  - version: "0.5"
+    date: '2026-10-02'
+    author: Amish Chadha
+    change: "Estimated cost updated to $177.60 ($2.60 over the target) after the fan finger guards and silicone were priced; open decision 1 added for the overshoot"
 ---
 
 # CellCheck design decisions register
@@ -29,7 +37,11 @@ Every design decision still to be made, and every decision made, in one place. E
 
 ## Open decisions
 
-None. All open decisions were decided on 2026-10-02.
+*Table 1. Open decisions.*
+
+| # | Decision | Options | Recommendation |
+| --- | --- | --- | --- |
+| 1 | The estimated cost is $2.60 over the $175 value-engineering target once the fan finger guards (line 10, $1.20) and the silicone (line 16, $4.00) decided on 2026-10-02 are priced | (a) Accept the overshoot: the target is a control target, not a limit. (b) Look for savings of $2.60 or more, for example a cheaper holder or charger module (each saving is multiplied by eight). (c) Raise the target, which `budget_usd` would follow | (a) for the paper design; revisit with real quotes at TRL 4 purchasing. Proposed, awaiting Amish |
 
 ## To confirm when parts are bought
 
@@ -50,13 +62,13 @@ None. All open decisions were decided on 2026-10-02.
 
 ## Value engineering
 
-Value-engineering target: USD 175.00 (a hypothetical control target, not a limit). Estimated cost of the constructable design: USD 172.40 (USD 2.60 under the target).
+Value-engineering target: USD 175.00 (a hypothetical control target, not a limit). Estimated cost of the constructable design: USD 177.60 (USD 2.60 over the target).
 
 Main cost drivers (CCK-CAL-001, section 11): the per-channel parts, which are bought eight times (cell holder with four-wire contacts, charger module, channel board, load MOSFET and op-amp loop, thermistor: about $66 for the eight channels), the mains adapter ($15), the steel tray with liner ($12) and the controller board ($10). The parts added for construction (lines 19 to 21) cost $8.40.
 
 Savings worth trying, should indicative prices rise above the target:
 
-- Leave the matched-group bins out of the BOM until TRL 4 purchasing (decided 2026-10-02). The fan finger guards were decided on 2026-10-02 to go into BOM line 10 now with an estimated price; that small addition is not yet in the $172.40 estimate.
+- Leave the matched-group bins out of the BOM until TRL 4 purchasing (decided 2026-10-02). The fan finger guards (line 10, $1.20 for two) and the silicone for the wire slots (line 16, $4.00) decided on 2026-10-02 are now in the estimate; they are the reason it is over the target (open decision 1).
 - Look for a cheaper cell holder or charger module, since each saving is multiplied by eight.
 
 ## Decisions made
@@ -68,7 +80,7 @@ Savings worth trying, should indicative prices rise above the target:
 | 2026-09-25 | Keep SwapCell in the pitch and plan a second-life variant; charge and discharge attended only (rest stage may be left); hardware watchdog and undervoltage comparators; grading thresholds, 14-day rest and ±1 % group tolerance as starting values; TP5100, INA226 and ESP32-S3 class modules; eight channels with a linear load; LFP profile later; per-cell CSV mapped to the ReflowEconomy passport (items 1 to 3 and 5 to 9) | Amish: "i accept all your recommendations, go with them across all repos." | CCK-DDR-001, CCK-DDR-002 |
 | 2026-09-25 | Budget raised from $160 to $175 (item 4) | Amish, same instruction | CCK-DDR-001, CCK-DDR-002 |
 | 2026-09-25 | DC four-wire resistance and a 14-day rest (item 11); firmware and build rules: same-channel cohort self-discharge reading, temperature-gated resistance pulse, per-channel calibration, fan-fault stop, detached-thermistor check (item 13); raise the passport gaps with ReflowEconomy (item 15) | Amish, same instruction | CCK-DDR-001, CCK-DDR-002 |
-| 2026-10-01 | Design for construction: feet and standoffs, 1.5 mm plate on six standoffs, holder fixings and wire slots, folded guard with thumb screws, board standoffs, larger display stand, heatsink and shroud fixings, thermistor C-clips, inlet housing, 5 V converter and channel boards (P1 to P12) | Made under Amish's 2026-09-30 instruction: "If you are realising that the design cannot be built as per concept - fix the design assumptions to match and be physically feasible as you draw the illustrations." Open for his review | CCK-DDR-003 |
+| 2026-10-01 | Design for construction: feet and standoffs, 1.5 mm plate on six standoffs, holder fixings and wire slots, folded guard with thumb screws, board standoffs, larger display stand, heatsink and shroud fixings, thermistor C-clips, inlet housing, 5 V converter and channel boards (P1 to P12) | Made under Amish's 2026-09-30 instruction: "If you are realising that the design cannot be built as per concept - fix the design assumptions to match and be physically feasible as you draw the illustrations." The changes themselves were accepted on 2026-10-02 (below) | CCK-DDR-003 |
 | 2026-10-02 | Open item 1: the guard is held down by the two knurled M4 thumb screws for the first prototype, and the TRL 4 containment test is run with the guard held exactly that way; latches are revisited only if the test or users show the screws being left loose | Amish: "i approve your recommendations for all 555 open decisions." | CCK-DDR-003, A1 |
 | 2026-10-02 | Open item 2: each wire slot under the guard is filled round its leads with high-temperature silicone after wiring, closing the guard space again | Amish: "i approve your recommendations for all 555 open decisions." | CCK-DDR-003, A2 |
 | 2026-10-02 | Open item 3: first trial partner, the first candidate to approach (not yet agreed), is a local Repair Café group that already passes laptop batteries to an e-waste or battery collection point, with that collection point as the source of trial cells | Amish: "i approve your recommendations for all 555 open decisions." | CCK-DDR-001, item 10 |
@@ -80,3 +92,4 @@ Savings worth trying, should indicative prices rise above the target:
 | 2026-10-02 | Open item 9: fan finger guards are added to BOM line 10 now, with an estimated price, rather than at TRL 4 | Amish: "i approve your recommendations for all 555 open decisions." | `docs/REVIEW.md`, 2026-09-26 |
 | 2026-10-02 | Open item 10: the guard's slotted perforation and 1.0 mm sheet in the renders are accepted as appearance only; the BOM keeps round holes in 0.8 mm sheet | Amish: "i approve your recommendations for all 555 open decisions." | `docs/REVIEW.md`, 2026-09-26 |
 | 2026-10-02 | Open item 11: the second-life pack study (about 334 Wh, 165 W) is sent to the SwapCell and PowerBox projects as a proposal; no further CellCheck action | Amish: "i approve your recommendations for all 555 open decisions." | CCK-DDR-001, item 1; CCK-CAL-001 section 10 |
+| 2026-10-02 | Design for construction accepted: the changes P1 to P12 and their knock-on changes, as made | Amish: "APPROVED: Design-for-construction changes in 10 repos (CityTwin, CoolShade, PalletPilot, Heliolite, PotholeLog, EarthPress, ReadyKit, CellCheck, CargoMule and ThermaCart)" | [CCK-DDR-003](decisions/0003-design-for-construction.md), Tables 1 and 2 |
