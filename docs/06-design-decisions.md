@@ -3,9 +3,9 @@ doc_id: CCK-DEC-001
 title: CellCheck design decisions register
 project: CellCheck
 doc_type: Design decisions register
-version: "0.5"
+version: "0.6"
 status: Draft
-date: '2026-10-02'
+date: '2026-10-03'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -29,6 +29,10 @@ revisions:
     date: '2026-10-02'
     author: Amish Chadha
     change: "Estimated cost updated to $177.60 ($2.60 over the target) after the fan finger guards and silicone were priced; open decision 1 added for the overshoot"
+  - version: "0.6"
+    date: '2026-10-03'
+    author: Amish Chadha
+    change: "Amish accepted the cost overrun against the value-engineering target on 2026-10-03; row added to decisions made; value engineering section updated"
 ---
 
 # CellCheck design decisions register
@@ -37,11 +41,7 @@ Every design decision still to be made, and every decision made, in one place. E
 
 ## Open decisions
 
-*Table 1. Open decisions.*
-
-| # | Decision | Options | Recommendation |
-| --- | --- | --- | --- |
-| 1 | The estimated cost is $2.60 over the $175 value-engineering target once the fan finger guards (line 10, $1.20) and the silicone (line 16, $4.00) decided on 2026-10-02 are priced | (a) Accept the overshoot: the target is a control target, not a limit. (b) Look for savings of $2.60 or more, for example a cheaper holder or charger module (each saving is multiplied by eight). (c) Raise the target, which `budget_usd` would follow | (a) for the paper design; revisit with real quotes at TRL 4 purchasing. Proposed, awaiting Amish |
+None. Open decision 1 (the USD 2.60 overshoot) was decided on 2026-10-03.
 
 ## To confirm when parts are bought
 
@@ -64,11 +64,13 @@ Every design decision still to be made, and every decision made, in one place. E
 
 Value-engineering target: USD 175.00 (a hypothetical control target, not a limit). Estimated cost of the constructable design: USD 177.60 (USD 2.60 over the target).
 
+Amish accepted this overrun on 2026-10-03: the estimated cost of USD 177.60 against the USD 175 target (USD 2.60 over; open decision 1, option a). Amish: "Cost over target - i accept all the cost variations and overruns". It stays reported against the target as an accepted overrun, and the savings below remain worth trying.
+
 Main cost drivers (CCK-CAL-001, section 11): the per-channel parts, which are bought eight times (cell holder with four-wire contacts, charger module, channel board, load MOSFET and op-amp loop, thermistor: about $66 for the eight channels), the mains adapter ($15), the steel tray with liner ($12) and the controller board ($10). The parts added for construction (lines 19 to 21) cost $8.40.
 
 Savings worth trying, should indicative prices rise above the target:
 
-- Leave the matched-group bins out of the BOM until TRL 4 purchasing (decided 2026-10-02). The fan finger guards (line 10, $1.20 for two) and the silicone for the wire slots (line 16, $4.00) decided on 2026-10-02 are now in the estimate; they are the reason it is over the target (open decision 1).
+- Leave the matched-group bins out of the BOM until TRL 4 purchasing (decided 2026-10-02). The fan finger guards (line 10, $1.20 for two) and the silicone for the wire slots (line 16, $4.00) decided on 2026-10-02 are now in the estimate; they are the reason it is over the target (accepted by Amish on 2026-10-03).
 - Look for a cheaper cell holder or charger module, since each saving is multiplied by eight.
 
 ## Decisions made
@@ -93,3 +95,4 @@ Savings worth trying, should indicative prices rise above the target:
 | 2026-10-02 | Open item 10: the guard's slotted perforation and 1.0 mm sheet in the renders are accepted as appearance only; the BOM keeps round holes in 0.8 mm sheet | Amish: "i approve your recommendations for all 555 open decisions." | `docs/REVIEW.md`, 2026-09-26 |
 | 2026-10-02 | Open item 11: the second-life pack study (about 334 Wh, 165 W) is sent to the SwapCell and PowerBox projects as a proposal; no further CellCheck action | Amish: "i approve your recommendations for all 555 open decisions." | CCK-DDR-001, item 1; CCK-CAL-001 section 10 |
 | 2026-10-02 | Design for construction accepted: the changes P1 to P12 and their knock-on changes, as made | Amish: "APPROVED: Design-for-construction changes in 10 repos (CityTwin, CoolShade, PalletPilot, Heliolite, PotholeLog, EarthPress, ReadyKit, CellCheck, CargoMule and ThermaCart)" | [CCK-DDR-003](decisions/0003-design-for-construction.md), Tables 1 and 2 |
+| 2026-10-03 | Cost overrun accepted: the estimated cost of USD 177.60 against the USD 175 target (USD 2.60 over; open decision 1, option a) | Amish: "Cost over target - i accept all the cost variations and overruns" | [REVIEW.md](REVIEW.md), session 2026-10-03 |
